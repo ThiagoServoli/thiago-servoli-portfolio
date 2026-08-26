@@ -32,9 +32,7 @@ export default function Hero() {
             <span className="text-neon-gradient">experiências digitais</span>
           </h1>
 
-          <p className="mt-4 font-mono text-2xl font-semibold text-neon-green sm:text-3xl">
-            {profile.displayName}
-          </p>
+          
 
           <p className="mt-7 max-w-xl text-balance text-lg leading-relaxed text-bone-300 sm:text-xl">
             Desenvolvedor Full Stack especializado em criar aplicações web

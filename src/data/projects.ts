@@ -14,43 +14,38 @@ export interface Project {
   featured: boolean;
 }
 
-/**
- * IMPORTANTE — Regra de conteúdo:
- * Apenas nome e URL de cada projeto foram fornecidos até o momento.
- * Descrição, problema, contribuição e tecnologias específicas ainda
- * não foram detalhadas — os campos abaixo usam placeholders explícitos
- * ([...]) em vez de conteúdo inventado. Atualize este arquivo com as
- * informações reais assim que estiverem disponíveis; nenhum outro
- * componente precisa ser alterado.
- */
 export const projects: Project[] = [
   {
     slug: "puglisystems",
     code: "PROJECT 01",
     name: "PugliSystems",
-    description: "[DESCRIÇÃO DO PROJETO PUGLISYSTEMS]",
-    problem: "[PROBLEMA QUE O PROJETO RESOLVE]",
-    contribution: "[CONTRIBUIÇÃO DE THIAGO NO PROJETO]",
-    technologies: ["[TECNOLOGIAS UTILIZADAS]"],
+    description:
+      "Site institucional estático da Pugli Systems, apresentando o ecossistema da marca e sua primeira solução, a Cogni. Construído inteiramente em HTML, CSS e JavaScript puros, sem necessidade de build, bundler ou backend.",
+    problem:
+      "Projeto de página pessoal para apresentar habilidades e projetos de desenvolvimento web.",
+    contribution: "Dev Front-End",
+    technologies: ["HTML5", "CSS3", "JavaScript", "GSAP"],
     liveUrl: "https://thiagoservoli.github.io/puglisystems/",
     repoUrl: "https://github.com/ThiagoServoli",
-    image: "/images/projects/project-01.webp",
-    logo: "/images/brands/pugli-full-dark.png",
-    accentColor: "#2f6bff",
+    image: "/images/projects/screenpugli.png",
+    logo: "/images/brands/pugli-systems-logo-full-transparente.png",
+    accentColor: "#146ef5",
     featured: true,
   },
   {
     slug: "cogni",
     code: "PROJECT 02",
     name: "Cogni",
-    description: "[DESCRIÇÃO DO PROJETO COGNI]",
-    problem: "[PROBLEMA QUE O PROJETO RESOLVE]",
-    contribution: "[CONTRIBUIÇÃO DE THIAGO NO PROJETO]",
-    technologies: ["[TECNOLOGIAS UTILIZADAS]"],
+    description:
+      "Landing page da Cogni, a primeira solução da Pugli Systems: uma plataforma de automação que identifica problemas a partir de eventos e decide com autonomia ajustável se apenas observa, sugere ou executa uma ação corretiva, sempre com trilha de auditoria completa.",
+    problem:
+      "Empresas recebem sinais operacionais (como um pagamento em atraso) que exigem reação rápida, mas hoje dependem de processos manuais lentos e sujeitos a falha humana.",
+    contribution: "Dev Front-End",
+    technologies: ["HTML5", "CSS3", "JavaScript", "GSAP"],
     liveUrl: "https://thiagoservoli.github.io/puglisystems/cogni.html",
     repoUrl: "https://github.com/ThiagoServoli",
-    image: "/images/projects/project-02.webp",
-    logo: "/images/brands/cogni-full.png",
+    image: "/images/projects/screencogni.png",
+    logo: "/images/brands/cogni-logo-full-transparente.png",
     accentColor: "#39ff88",
     featured: true,
   },
