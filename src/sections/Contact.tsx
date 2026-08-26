@@ -1,4 +1,4 @@
-import { Github } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 import { profile } from "@/data/profile";
 import { buildMailto } from "@/lib/utils";
 import Reveal from "@/components/Reveal";
@@ -29,6 +29,12 @@ export default function Contact() {
             <MagneticButton href={profile.socials.github} variant="secondary" external>
               <Github size={18} />
               GitHub
+            </MagneticButton>
+          )}
+          {profile.socials.linkedin && (
+            <MagneticButton href={profile.socials.linkedin} variant="secondary" external>
+              <Linkedin size={18} />
+              LinkedIn
             </MagneticButton>
           )}
         </div>

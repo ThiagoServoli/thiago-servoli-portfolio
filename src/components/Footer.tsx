@@ -1,4 +1,4 @@
-import { Github, Mail } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "@/data/profile";
 import { buildMailto } from "@/lib/utils";
 
@@ -27,6 +27,20 @@ export default function Footer() {
               <Github size={20} />
             </a>
           )}
+
+          {profile.socials.linkedin && (
+            <a
+              href={profile.socials.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn de Thiago Servoli"
+              data-cursor-hover
+              className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/10 text-bone-300 transition-all duration-300 hover:border-neon-green hover:text-neon-green hover:shadow-[0_0_20px_rgba(57,255,136,0.4)]"
+            >
+              <Linkedin size={20} />
+            </a>
+          )}
+
           <a
             href={buildMailto(profile.email)}
             aria-label="Enviar e-mail para Thiago Servoli"
@@ -44,3 +58,4 @@ export default function Footer() {
     </footer>
   );
 }
+

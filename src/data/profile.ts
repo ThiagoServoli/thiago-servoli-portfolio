@@ -16,7 +16,7 @@ export const profile = {
   ],
   socials: {
     github: "https://github.com/ThiagoServoli",
-    linkedin: null,
+    linkedin: "https://www.linkedin.com/in/thiagoservoli/", 
     instagram: null,
   },
   stats: [
@@ -24,6 +24,10 @@ export const profile = {
     { value: 13, suffix: "+", label: "Tecnologias" },
     { value: 2, suffix: "", label: "Projetos em destaque" },
     { value: 25, suffix: "", label: "Anos" },
+  ],
+  languages: [
+    { name: "Português", level: "Nativo" },
+    { name: "Inglês", level: "Fluente" },
   ],
   timeline: [
     {

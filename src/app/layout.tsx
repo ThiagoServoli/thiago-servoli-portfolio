@@ -75,7 +75,7 @@ export const metadata: Metadata = {
 };
 
 function PersonJsonLd() {
-  const data = {
+    const data = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: profile.name,
@@ -88,7 +88,8 @@ function PersonJsonLd() {
       addressCountry: "BR",
     },
     url: siteUrl,
-    sameAs: [profile.socials.github].filter(Boolean),
+    sameAs: [profile.socials.github, profile.socials.linkedin].filter(Boolean),
+    knowsLanguage: ["pt-BR", "en"],
     knowsAbout: [
       "JavaScript",
       "TypeScript",

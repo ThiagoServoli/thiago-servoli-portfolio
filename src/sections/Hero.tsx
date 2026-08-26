@@ -39,6 +39,17 @@ export default function Hero() {
             modernas, performáticas e escaláveis.
           </p>
 
+                    <div className="mt-6 flex flex-wrap items-center gap-3">
+            {profile.languages.map((lang) => (
+              <span
+                key={lang.name}
+                className="rounded-full border border-neon-green/30 bg-neon-green/5 px-4 py-1.5 font-mono text-sm font-semibold text-neon-green"
+              >
+                {lang.name} · {lang.level}
+              </span>
+            ))}
+          </div>
+
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <MagneticButton href="#projetos">Ver projetos</MagneticButton>
             <MagneticButton href="#contato" variant="secondary">
