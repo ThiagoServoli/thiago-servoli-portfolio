@@ -81,3 +81,27 @@ public/
 - `npm audit`: sem vulnerabilidades exploráveis em produção; o único alerta remanescente
   vem de uma dependência interna do próprio Next.js 14 (postcss embutido no bundler),
   que não afeta o runtime de um site estático como este.
+
+## Correção importante (v2.1)
+
+Foi identificado e corrigido um bug crítico: o header de segurança
+Content-Security-Policy bloqueava `eval()`, mas o modo de desenvolvimento do
+Next.js (`npm run dev`) depende de `eval()` para o Fast Refresh / HMR. Isso
+fazia com que **todo o JavaScript do site falhasse silenciosamente no navegador**,
+deixando qualquer conteúdo com animação de entrada permanentemente invisível.
+
+A correção:
+- O CSP agora libera `'unsafe-eval'` apenas quando `NODE_ENV !== 'production'`.
+  Em produção (`npm run build && npm run start`, e no deploy da Vercel), o CSP
+  continua estrito, sem `unsafe-eval`.
+- Como camada extra de segurança, o componente `Reveal` agora começa **visível
+  por padrão** e só assume o estado oculto/animado se a classe `js` for
+  adicionada ao `<html>` (via um pequeno script síncrono no `<head>`, que não
+  usa `eval`). Ou seja: mesmo que o JavaScript falhe por qualquer outro motivo
+  no futuro, o conteúdo nunca mais fica invisível.
+- Também havia um aviso do GSAP (`Invalid property scrollTrigger`) porque o
+  plugin `ScrollTrigger` nunca era registrado — corrigido em `src/lib/gsap.ts`.
+
+Também removida a cor roxa de toda a interface: a paleta agora é
+grafite escuro + verde neon puro (mantendo apenas as cores oficiais reais
+das marcas de tecnologia nos ícones da seção Stack).
