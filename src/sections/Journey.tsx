@@ -6,7 +6,7 @@ export default function Journey() {
     <section id="trajetoria" className="border-t border-white/10 px-6 py-32 lg:px-10">
       <div className="mx-auto max-w-content">
         <Reveal className="mb-16 max-w-2xl">
-          <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-neon-cyan">
+          <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-neon-green">
             Trajetória
           </p>
           <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl">

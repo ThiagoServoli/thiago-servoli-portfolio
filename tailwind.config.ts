@@ -23,10 +23,7 @@ const config: Config = {
         neon: {
           green: "#39ff88",
           greenDim: "#1fae5c",
-          purple: "#b953ff",
-          purpleDim: "#7e2fd6",
-          pink: "#ff4ecb",
-          cyan: "#3ef1ff",
+          greenSoft: "#8dffbf",
         },
         pugli: "#2f6bff",
       },

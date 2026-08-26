@@ -31,7 +31,7 @@ export default function Footer() {
             href={buildMailto(profile.email)}
             aria-label="Enviar e-mail para Thiago Servoli"
             data-cursor-hover
-            className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/10 text-bone-300 transition-all duration-300 hover:border-neon-purple hover:text-neon-purple hover:shadow-[0_0_20px_rgba(185,83,255,0.4)]"
+            className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/10 text-bone-300 transition-all duration-300 hover:border-neon-green hover:text-neon-green hover:shadow-[0_0_20px_rgba(57,255,136,0.4)]"
           >
             <Mail size={20} />
           </a>

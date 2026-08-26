@@ -31,10 +31,21 @@ export default function Reveal({
     const el = ref.current;
     if (!el) return;
 
+    // Rede de segurança: se o navegador não suportar IntersectionObserver,
+    // ou se por qualquer motivo o observer nunca disparar, o conteúdo é
+    // revelado de qualquer forma após um pequeno atraso.
+    if (typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+
+    const fallback = window.setTimeout(() => setVisible(true), 2500);
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            window.clearTimeout(fallback);
             window.setTimeout(() => setVisible(true), delay);
             observer.unobserve(entry.target);
           }
@@ -44,7 +55,10 @@ export default function Reveal({
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      window.clearTimeout(fallback);
+      observer.disconnect();
+    };
   }, [delay]);
 
   const directionClass =

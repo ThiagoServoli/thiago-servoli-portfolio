@@ -49,12 +49,16 @@ body {
 }
 
 ::selection {
-  background-color: #b953ff;
-  color: #ffffff;
+  background-color: #39ff88;
+  color: #040308;
 }
 
-/* ---------- Reveal on scroll (IntersectionObserver-driven, no JS animation lib required) ---------- */
-.reveal {
+/* ---------- Reveal on scroll (IntersectionObserver-driven, no JS animation lib required) ----------
+   Por segurança: o estado inicial (oculto) só se aplica quando a classe "js" está
+   presente no <html> (adicionada por um script síncrono no <head>). Assim, se o
+   JavaScript falhar por qualquer motivo, o conteúdo aparece normalmente em vez de
+   ficar invisível para sempre. */
+.js .reveal {
   opacity: 0;
   transform: translateY(48px) scale(0.97);
   filter: blur(6px);
@@ -64,21 +68,21 @@ body {
     filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity, filter;
 }
-.reveal.reveal-visible {
+.js .reveal.reveal-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
   filter: blur(0);
 }
-.reveal-left {
+.js .reveal-left {
   transform: translateX(-60px) scale(0.97);
 }
-.reveal-left.reveal-visible {
+.js .reveal-left.reveal-visible {
   transform: translateX(0) scale(1);
 }
-.reveal-right {
+.js .reveal-right {
   transform: translateX(60px) scale(0.97);
 }
-.reveal-right.reveal-visible {
+.js .reveal-right.reveal-visible {
   transform: translateX(0) scale(1);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -107,7 +111,7 @@ body {
 
 /* ---------- Neon utilities ---------- */
 .text-neon-gradient {
-  background: linear-gradient(90deg, #39ff88, #3ef1ff 45%, #b953ff 75%, #ff4ecb);
+  background: linear-gradient(90deg, #1fae5c, #39ff88 45%, #8dffbf 75%, #39ff88);
   background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -117,9 +121,6 @@ body {
 
 .glow-green {
   filter: drop-shadow(0 0 12px rgba(57, 255, 136, 0.55));
-}
-.glow-purple {
-  filter: drop-shadow(0 0 12px rgba(185, 83, 255, 0.55));
 }
 
 .card-glass {
@@ -137,7 +138,7 @@ body {
   inset: -1px;
   padding: 1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(57, 255, 136, 0.6), rgba(185, 83, 255, 0.6));
+  background: linear-gradient(135deg, rgba(57, 255, 136, 0.75), rgba(57, 255, 136, 0.15));
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);

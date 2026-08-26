@@ -9,7 +9,7 @@ export default function Education() {
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-14">
           <div>
             <Reveal direction="left">
-              <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-neon-purple">
+              <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-neon-green">
                 Formação
               </p>
               <h2 className="mt-4 mb-10 font-display text-3xl font-bold text-white sm:text-4xl">
@@ -20,7 +20,7 @@ export default function Education() {
             <div className="flex flex-col gap-6">
               {education.map((item, i) => (
                 <Reveal key={item.institution} direction="left" delay={i * 100}>
-                  <div className="border-l-4 border-neon-purple/50 pl-5">
+                  <div className="border-l-4 border-neon-green/50 pl-5">
                     <p className="font-mono text-sm text-bone-500">{item.period}</p>
                     <p className="mt-1 font-display text-xl font-bold text-white">
                       {item.institution}

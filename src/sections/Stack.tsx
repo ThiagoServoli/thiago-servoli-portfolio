@@ -25,18 +25,18 @@ interface Tech {
 
 const technologies: Tech[] = [
   { name: "HTML5", icon: <SiHtml5 />, color: "#ff6b4a" },
-  { name: "CSS3", icon: <SiCss3 />, color: "#3ef1ff" },
+  { name: "CSS3", icon: <SiCss3 />, color: "#4a9fff" },
   { name: "JavaScript", icon: <SiJavascript />, color: "#f7df1e" },
-  { name: "TypeScript", icon: <SiTypescript />, color: "#3178c6" },
-  { name: "React", icon: <SiReact />, color: "#39ff88" },
+  { name: "TypeScript", icon: <SiTypescript />, color: "#4a9fff" },
+  { name: "React", icon: <SiReact />, color: "#61dafb" },
   { name: "Next.js", icon: <SiNextdotjs />, color: "#ffffff" },
   { name: "Node.js", icon: <SiNodedotjs />, color: "#39ff88" },
-  { name: "Python", icon: <SiPython />, color: "#3ef1ff" },
-  { name: "SQL", icon: <Database size={40} />, color: "#b953ff" },
-  { name: "PostgreSQL", icon: <SiPostgresql />, color: "#3ef1ff" },
-  { name: "APIs REST", icon: <Webhook size={40} />, color: "#ff4ecb" },
+  { name: "Python", icon: <SiPython />, color: "#4a9fff" },
+  { name: "SQL", icon: <Database size={40} />, color: "#39ff88" },
+  { name: "PostgreSQL", icon: <SiPostgresql />, color: "#4a9fff" },
+  { name: "APIs REST", icon: <Webhook size={40} />, color: "#39ff88" },
   { name: "Git", icon: <SiGit />, color: "#ff6b4a" },
-  { name: "Docker", icon: <SiDocker />, color: "#3ef1ff" },
+  { name: "Docker", icon: <SiDocker />, color: "#4a9fff" },
 ];
 
 function TechCard({ tech, index }: { tech: Tech; index: number }) {
@@ -92,7 +92,7 @@ export default function Stack() {
     <section id="stack" className="relative border-t border-white/10 px-6 py-32 lg:px-10">
       <div className="mx-auto max-w-content">
         <Reveal className="mb-16 max-w-3xl">
-          <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-neon-purple">
+          <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-neon-green">
             Stack
           </p>
           <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl">

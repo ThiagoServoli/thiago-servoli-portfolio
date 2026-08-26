@@ -80,8 +80,8 @@ export default function CustomCursor() {
       />
       <div
         ref={ringRef}
-        className="fixed left-0 top-0 h-9 w-9 rounded-full border-2 border-neon-purple/70 transition-[border-color] duration-200"
-        style={{ boxShadow: "0 0 18px rgba(185,83,255,0.55)" }}
+        className="fixed left-0 top-0 h-9 w-9 rounded-full border-2 border-neon-green/50"
+        style={{ boxShadow: "0 0 18px rgba(57,255,136,0.4)" }}
       />
     </div>
   );

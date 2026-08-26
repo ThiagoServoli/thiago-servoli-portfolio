@@ -132,8 +132,17 @@ export default function RootLayout({
     <html lang="pt-BR" className="dark">
       <head>
         <PersonJsonLd />
+        {/* Marca o <html> assim que possível, antes de qualquer hidratação.
+            Se o JS falhar depois disso por qualquer motivo, o conteúdo
+            permanece visível (ver regra ".js .reveal" em globals.css). */}
+        <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js');",
+          }}
+        />
       </head>
-      <body className="font-body antialiased selection:bg-neon-purple selection:text-white">
+      <body className="font-body antialiased selection:bg-neon-green selection:text-ink-950">
         <a
           href="#conteudo-principal"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded focus:bg-neon-green focus:px-4 focus:py-2 focus:text-ink-950 focus:font-bold"

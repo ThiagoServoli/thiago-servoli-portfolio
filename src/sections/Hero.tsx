@@ -32,7 +32,7 @@ export default function Hero() {
             <span className="text-neon-gradient">experiências digitais</span>
           </h1>
 
-          <p className="mt-4 font-mono text-2xl font-semibold text-neon-purple sm:text-3xl">
+          <p className="mt-4 font-mono text-2xl font-semibold text-neon-green sm:text-3xl">
             {profile.displayName}
           </p>
 
@@ -54,7 +54,7 @@ export default function Hero() {
             className="profile-ring absolute -inset-3 animate-spin-slow opacity-70"
             style={{
               background:
-                "conic-gradient(from 90deg, #39ff88, #3ef1ff, #b953ff, #ff4ecb, #39ff88)",
+                "conic-gradient(from 90deg, #39ff88, #8dffbf, #1fae5c, #8dffbf, #39ff88)",
             }}
             aria-hidden="true"
           />
