@@ -6,15 +6,20 @@ import Link from "next/link";
 import { ArrowUpRight, Github } from "lucide-react";
 import { projects } from "@/data/projects";
 import Reveal from "@/components/Reveal";
+import { useLanguage } from "@/context/LanguageContext";
+import type { Dictionary } from "@/i18n/translations";
 
 function ProjectCard({
   project,
   reversed,
+  t,
 }: {
   project: (typeof projects)[number];
   reversed: boolean;
+  t: Dictionary;
 }) {
   const imgRef = useRef<HTMLDivElement>(null);
+  const copy = t.projects.items[project.slug];
 
   const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
     const el = imgRef.current;
@@ -33,18 +38,18 @@ function ProjectCard({
   };
 
   return (
-    <article className="grid items-center gap-12 border-t border-white/10 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
+    <article className="grid items-center gap-12 border-t border-line/10 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
       <Reveal direction={reversed ? "right" : "left"} className={reversed ? "lg:order-2" : ""}>
         <div
           ref={imgRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="card-neon-border relative aspect-[16/11] w-full overflow-hidden rounded-3xl border border-white/10 bg-ink-900 transition-transform duration-200 ease-out"
+          className="card-neon-border relative aspect-[16/11] w-full overflow-hidden rounded-3xl border border-line/10 bg-ink-900 transition-transform duration-200 ease-out"
           style={{ boxShadow: `0 0 60px -15px ${project.accentColor}66` }}
         >
           <Image
             src={project.image}
-            alt={`Prévia do projeto ${project.name}`}
+            alt={t.projects.previewAlt.replace("{name}", project.name)}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
@@ -63,29 +68,27 @@ function ProjectCard({
         <div className="mt-5 h-14 w-auto max-w-[280px]">
           <Image
             src={project.logo}
-            alt={`Logo ${project.name}`}
+            alt={t.projects.logoAlt.replace("{name}", project.name)}
             width={560}
             height={140}
             className="h-full w-auto object-contain object-left"
           />
         </div>
 
-        <p className="mt-6 max-w-md text-lg leading-relaxed text-bone-300">
-          {project.description}
-        </p>
+        <p className="mt-6 max-w-md text-lg leading-relaxed text-fg2">{copy.description}</p>
 
         <dl className="mt-7 grid grid-cols-2 gap-5 text-base">
           <div>
-            <dt className="font-mono text-xs font-bold uppercase tracking-wider text-bone-700">
-              Problema
+            <dt className="font-mono text-xs font-bold uppercase tracking-wider text-fg4">
+              {t.projects.problemLabel}
             </dt>
-            <dd className="mt-1.5 text-bone-300">{project.problem}</dd>
+            <dd className="mt-1.5 text-fg2">{copy.problem}</dd>
           </div>
           <div>
-            <dt className="font-mono text-xs font-bold uppercase tracking-wider text-bone-700">
-              Contribuição
+            <dt className="font-mono text-xs font-bold uppercase tracking-wider text-fg4">
+              {t.projects.contributionLabel}
             </dt>
-            <dd className="mt-1.5 text-bone-300">{project.contribution}</dd>
+            <dd className="mt-1.5 text-fg2">{copy.contribution}</dd>
           </div>
         </dl>
 
@@ -105,10 +108,10 @@ function ProjectCard({
           <Link
             href={`/projects/${project.slug}`}
             data-cursor-hover
-            className="group inline-flex items-center gap-2 text-lg font-bold text-white transition-colors"
+            className="group inline-flex items-center gap-2 text-lg font-bold text-fg transition-colors"
             style={{ textShadow: `0 0 20px ${project.accentColor}55` }}
           >
-            Ver projeto
+            {t.projects.viewProject}
             <ArrowUpRight
               size={19}
               className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -120,10 +123,10 @@ function ProjectCard({
               target="_blank"
               rel="noopener noreferrer"
               data-cursor-hover
-              className="inline-flex items-center gap-2 text-base text-bone-500 transition-colors hover:text-white"
+              className="inline-flex items-center gap-2 text-base text-fg3 transition-colors hover:text-fg"
             >
               <Github size={17} />
-              Ver código
+              {t.projects.viewCode}
             </a>
           )}
         </div>
@@ -133,20 +136,22 @@ function ProjectCard({
 }
 
 export default function Projects() {
+  const { t } = useLanguage();
+
   return (
     <section id="projetos" className="px-6 py-4 lg:px-10">
       <div className="mx-auto max-w-content">
-        <Reveal className="max-w-2xl border-t border-white/10 pt-28">
+        <Reveal className="max-w-2xl border-t border-line/10 pt-28">
           <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-neon-green">
-            Projetos
+            {t.projects.eyebrow}
           </p>
-          <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
-            Produtos reais, do problema à solução
+          <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-fg sm:text-5xl">
+            {t.projects.title}
           </h2>
         </Reveal>
 
         {projects.map((project, index) => (
-          <ProjectCard key={project.slug} project={project} reversed={index % 2 === 1} />
+          <ProjectCard key={project.slug} project={project} reversed={index % 2 === 1} t={t} />
         ))}
       </div>
     </section>

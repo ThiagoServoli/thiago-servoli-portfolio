@@ -26,6 +26,12 @@ const config: Config = {
           greenSoft: "#8dffbf",
         },
         pugli: "#2f6bff",
+        page: "rgb(var(--c-page) / <alpha-value>)",
+        fg: "rgb(var(--c-fg) / <alpha-value>)",
+        fg2: "rgb(var(--c-fg2) / <alpha-value>)",
+        fg3: "rgb(var(--c-fg3) / <alpha-value>)",
+        fg4: "rgb(var(--c-fg4) / <alpha-value>)",
+        line: "rgb(var(--c-line) / <alpha-value>)",
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],

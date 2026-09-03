@@ -39,7 +39,7 @@ export default function AnimatedBackground() {
 
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
-      <div className="absolute inset-0 bg-ink-950" />
+      <div className="absolute inset-0 bg-page" />
       <div
         ref={greenRef}
         className="absolute -left-40 top-[-10%] h-[36rem] w-[36rem] rounded-full bg-neon-green/25 blur-[130px] animate-float"

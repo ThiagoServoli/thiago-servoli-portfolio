@@ -56,7 +56,7 @@ export default function MagneticButton({
         "group relative inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-base font-bold tracking-wide transition-all duration-300 ease-premium",
         variant === "primary"
           ? "bg-neon-green text-ink-950 shadow-[0_0_25px_rgba(57,255,136,0.45)] hover:shadow-[0_0_45px_rgba(57,255,136,0.85)]"
-          : "border-2 border-neon-green/50 text-white hover:bg-neon-green/10 hover:border-neon-green hover:shadow-[0_0_35px_rgba(57,255,136,0.5)]",
+          : "border-2 border-neon-green/50 text-fg hover:bg-neon-green/10 hover:border-neon-green hover:shadow-[0_0_35px_rgba(57,255,136,0.5)]",
         className
       )}
     >

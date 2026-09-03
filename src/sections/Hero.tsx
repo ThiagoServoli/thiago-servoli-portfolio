@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ArrowDown, Sparkles } from "lucide-react";
 import { profile } from "@/data/profile";
 import MagneticButton from "@/components/MagneticButton";
+import { useLanguage } from "@/context/LanguageContext";
 
 const orbitBadges = [
   { label: "React", style: "top-[6%] -left-6 md:-left-10", delay: "0s" },
@@ -13,6 +14,8 @@ const orbitBadges = [
 ];
 
 export default function Hero() {
+  const { t } = useLanguage();
+
   return (
     <section
       id="inicio"
@@ -23,24 +26,21 @@ export default function Hero() {
           <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-neon-green/40 bg-neon-green/10 px-4 py-2">
             <Sparkles size={16} className="text-neon-green" />
             <span className="font-mono text-sm font-semibold uppercase tracking-[0.25em] text-neon-green">
-              Full Stack Developer
+              {t.hero.badge}
             </span>
           </div>
 
-          <h1 className="font-display text-[3rem] font-bold leading-[1.05] tracking-tight text-white text-balance sm:text-6xl lg:text-[5rem]">
-            Transformando ideias em{" "}
-            <span className="text-neon-gradient">experiências digitais</span>
+          <h1 className="font-display text-[3rem] font-bold leading-[1.05] tracking-tight text-fg text-balance sm:text-6xl lg:text-[5rem]">
+            {t.hero.titleBefore}
+            <span className="text-neon-gradient">{t.hero.titleHighlight}</span>
           </h1>
 
-          
-
-          <p className="mt-7 max-w-xl text-balance text-lg leading-relaxed text-bone-300 sm:text-xl">
-            Desenvolvedor Full Stack especializado em criar aplicações web
-            modernas, performáticas e escaláveis.
+          <p className="mt-7 max-w-xl text-balance text-lg leading-relaxed text-fg2 sm:text-xl">
+            {t.hero.subtitle}
           </p>
 
-                    <div className="mt-6 flex flex-wrap items-center gap-3">
-            {profile.languages.map((lang) => (
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            {t.hero.languages.map((lang) => (
               <span
                 key={lang.name}
                 className="rounded-full border border-neon-green/30 bg-neon-green/5 px-4 py-1.5 font-mono text-sm font-semibold text-neon-green"
@@ -51,9 +51,9 @@ export default function Hero() {
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-5">
-            <MagneticButton href="#projetos">Ver projetos</MagneticButton>
+            <MagneticButton href="#projetos">{t.hero.ctaProjects}</MagneticButton>
             <MagneticButton href="#contato" variant="secondary">
-              Entre em contato
+              {t.hero.ctaContact}
             </MagneticButton>
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function Hero() {
           <div className="profile-ring relative aspect-[4/5] w-full overflow-hidden bg-ink-800">
             <Image
               src="/images/profile.jpg"
-              alt={`Foto de ${profile.displayName}`}
+              alt={t.hero.photoAlt.replace("{name}", profile.displayName)}
               fill
               priority
               sizes="(min-width: 1024px) 24rem, 20rem"
@@ -84,7 +84,7 @@ export default function Hero() {
               className={`card-glass absolute z-10 hidden rounded-2xl px-4 py-2.5 shadow-[0_0_20px_rgba(57,255,136,0.15)] animate-float sm:block ${badge.style}`}
               style={{ animationDelay: badge.delay }}
             >
-              <span className="font-mono text-sm font-bold text-white">{badge.label}</span>
+              <span className="font-mono text-sm font-bold text-fg">{badge.label}</span>
             </div>
           ))}
         </div>
@@ -93,10 +93,10 @@ export default function Hero() {
       <a
         href="#stack"
         data-cursor-hover
-        aria-label="Rolar para a seção Stack"
-        className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-neon-green transition-colors hover:text-white sm:flex"
+        aria-label={t.hero.scrollAria}
+        className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-neon-green transition-colors hover:text-fg sm:flex"
       >
-        <span className="font-mono text-xs uppercase tracking-widest">scroll</span>
+        <span className="font-mono text-xs uppercase tracking-widest">{t.hero.scroll}</span>
         <ArrowDown size={20} className="animate-bounce" />
       </a>
     </section>

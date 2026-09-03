@@ -8,9 +8,12 @@ import "@fontsource/manrope/700.css";
 import "@fontsource/manrope/800.css";
 import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/500.css";
+import "flag-icons/css/flag-icons.min.css";
 import "./globals.css";
 import { profile } from "@/data/profile";
 import CustomCursor from "@/components/CustomCursor";
+import SkipLink from "@/components/SkipLink";
+import Providers from "@/context/Providers";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://thiagoservoli.dev";
 
@@ -130,29 +133,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className="dark">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         <PersonJsonLd />
         {/* Marca o <html> assim que possível, antes de qualquer hidratação.
             Se o JS falhar depois disso por qualquer motivo, o conteúdo
-            permanece visível (ver regra ".js .reveal" em globals.css). */}
+            permanece visível (ver regra ".js .reveal" em globals.css).
+            Também aplica o tema salvo (claro/escuro) antes da primeira
+            pintura, evitando flash de conteúdo com o tema errado. */}
         <script
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js');",
+            __html:
+              "document.documentElement.classList.add('js');" +
+              "try{if(localStorage.getItem('theme')==='light'){document.documentElement.classList.add('light');}}catch(e){}",
           }}
         />
       </head>
       <body className="font-body antialiased selection:bg-neon-green selection:text-ink-950">
-        <a
-          href="#conteudo-principal"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded focus:bg-neon-green focus:px-4 focus:py-2 focus:text-ink-950 focus:font-bold"
-        >
-          Pular para o conteúdo
-        </a>
-        <div className="noise-overlay" aria-hidden="true" />
-        <CustomCursor />
-        {children}
+        <Providers>
+          <SkipLink />
+          <div className="noise-overlay" aria-hidden="true" />
+          <CustomCursor />
+          {children}
+        </Providers>
       </body>
     </html>
   );

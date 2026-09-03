@@ -16,6 +16,7 @@ import {
 } from "react-icons/si";
 import { Database, Webhook } from "lucide-react";
 import Reveal from "@/components/Reveal";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Tech {
   name: string;
@@ -81,22 +82,24 @@ function TechCard({ tech, index }: { tech: Tech; index: number }) {
         >
           {tech.icon}
         </div>
-        <span className="relative font-mono text-base font-bold text-white">{tech.name}</span>
+        <span className="relative font-mono text-base font-bold text-fg">{tech.name}</span>
       </div>
     </Reveal>
   );
 }
 
 export default function Stack() {
+  const { t } = useLanguage();
+
   return (
-    <section id="stack" className="relative border-t border-white/10 px-6 py-32 lg:px-10">
+    <section id="stack" className="relative border-t border-line/10 px-6 py-32 lg:px-10">
       <div className="mx-auto max-w-content">
         <Reveal className="mb-16 max-w-3xl">
           <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-neon-green">
-            Stack
+            {t.stack.eyebrow}
           </p>
-          <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
-            Ferramentas que uso para dar vida a um produto
+          <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-fg sm:text-5xl">
+            {t.stack.title}
           </h2>
         </Reveal>
 
