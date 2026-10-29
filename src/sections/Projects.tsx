@@ -3,127 +3,148 @@
 import { useRef, type MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Github } from "lucide-react";
 import { projects } from "@/data/projects";
 import Reveal from "@/components/Reveal";
+import SectionHeading from "@/components/SectionHeading";
 import { useLanguage } from "@/context/LanguageContext";
 import type { Dictionary } from "@/i18n/translations";
 
-function ProjectCard({
+/** Captura de tela dentro de uma moldura de navegador, na proporção real da imagem */
+function BrowserMockup({ project }: { project: (typeof projects)[number] }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Inclinação 3D no hover — só reage a mousemove, não roda nada parado
+  const onMove = (event: MouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    el.style.transform = `perspective(1200px) rotateX(${y * -6}deg) rotateY(${x * 8}deg) scale(1.02)`;
+  };
+  const onLeave = () => {
+    if (ref.current) ref.current.style.transform = "";
+  };
+
+  const host = project.liveUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+  return (
+    <div className="relative rounded-2xl bg-gradient-to-br from-navy via-[#22229e] to-[#3d5bd9] p-5 sm:p-8">
+      <div
+        className="pointer-events-none absolute inset-0 rounded-2xl"
+        style={{
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+        }}
+        aria-hidden="true"
+      />
+      <div
+        ref={ref}
+        onMouseMove={onMove}
+        onMouseLeave={onLeave}
+        className="relative overflow-hidden rounded-lg bg-white shadow-[0_30px_60px_-20px_rgba(0,0,0,0.55)] transition-transform duration-300 ease-out"
+      >
+        <div className="flex items-center gap-2 border-b border-black/10 bg-[#f1f3f8] px-3 py-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+          <span className="ml-3 truncate rounded bg-white px-2 py-0.5 text-[11px] text-[#5a5f7d]">
+            {host}
+          </span>
+        </div>
+        <Image
+          src={project.image}
+          alt=""
+          width={project.imageWidth}
+          height={project.imageHeight}
+          quality={90}
+          sizes="(min-width: 1200px) 600px, (min-width: 1024px) 50vw, 100vw"
+          className="block h-auto w-full"
+        />
+      </div>
+    </div>
+  );
+}
+
+function ProjectRow({
   project,
-  reversed,
+  index,
   t,
 }: {
   project: (typeof projects)[number];
-  reversed: boolean;
+  index: number;
   t: Dictionary;
 }) {
-  const imgRef = useRef<HTMLDivElement>(null);
   const copy = t.projects.items[project.slug];
-
-  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-    const el = imgRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const rotateX = ((y - rect.height / 2) / rect.height) * -8;
-    const rotateY = ((x - rect.width / 2) / rect.width) * 8;
-    el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-  };
-
-  const handleMouseLeave = () => {
-    if (imgRef.current)
-      imgRef.current.style.transform = "perspective(1000px) rotateX(0) rotateY(0) scale(1)";
-  };
+  const reversed = index % 2 === 1;
 
   return (
-    <article className="grid items-center gap-12 border-t border-line/10 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
+    <article className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
       <Reveal direction={reversed ? "right" : "left"} className={reversed ? "lg:order-2" : ""}>
-        <div
-          ref={imgRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          className="card-neon-border relative aspect-[16/11] w-full overflow-hidden rounded-3xl border border-line/10 bg-ink-900 transition-transform duration-200 ease-out"
-          style={{ boxShadow: `0 0 60px -15px ${project.accentColor}66` }}
-        >
-          <Image
-            src={project.image}
-            alt={t.projects.previewAlt.replace("{name}", project.name)}
-            fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
-          />
-        </div>
+        <BrowserMockup project={project} />
       </Reveal>
 
-      <Reveal direction={reversed ? "left" : "right"} className={reversed ? "lg:order-1" : ""}>
-        <p
-          className="font-mono text-sm font-bold uppercase tracking-[0.3em]"
-          style={{ color: project.accentColor }}
-        >
-          {project.code}
+      <Reveal direction={reversed ? "left" : "right"} delay={100}>
+        <p className="text-sm font-bold text-accent">
+          {String(index + 1).padStart(2, "0")}{" "}
+          <span className="text-fg4">/ {String(projects.length).padStart(2, "0")}</span>
         </p>
-
-        <div className="mt-5 h-14 w-auto max-w-[280px]">
-          <Image
-            src={project.logo}
-            alt={t.projects.logoAlt.replace("{name}", project.name)}
-            width={560}
-            height={140}
-            className="h-full w-auto object-contain object-left"
-          />
+        <div className="mt-4 flex items-center gap-3">
+          <Image src={project.icon} alt="" width={44} height={44} className="h-11 w-11 rounded-xl" />
+          <h3 className="text-3xl font-bold tracking-tight text-fg">{project.name}</h3>
         </div>
 
-        <p className="mt-6 max-w-md text-lg leading-relaxed text-fg2">{copy.description}</p>
+        <p className="mt-5 leading-relaxed text-fg2">{copy.description}</p>
 
-        <dl className="mt-7 grid grid-cols-2 gap-5 text-base">
-          <div>
-            <dt className="font-mono text-xs font-bold uppercase tracking-wider text-fg4">
-              {t.projects.problemLabel}
-            </dt>
-            <dd className="mt-1.5 text-fg2">{copy.problem}</dd>
+        <dl className="mt-6 grid gap-4 text-[15px] sm:grid-cols-2">
+          <div className="rounded-lg border border-line/10 bg-card p-4">
+            <dt className="font-semibold text-fg">{t.projects.problemLabel}</dt>
+            <dd className="mt-1 text-fg3">{copy.problem}</dd>
           </div>
-          <div>
-            <dt className="font-mono text-xs font-bold uppercase tracking-wider text-fg4">
-              {t.projects.contributionLabel}
-            </dt>
-            <dd className="mt-1.5 text-fg2">{copy.contribution}</dd>
+          <div className="rounded-lg border border-line/10 bg-card p-4">
+            <dt className="font-semibold text-fg">{t.projects.contributionLabel}</dt>
+            <dd className="mt-1 text-fg3">{copy.contribution}</dd>
           </div>
         </dl>
 
-        <div className="mt-7 flex flex-wrap gap-2">
+        <ul className="mt-6 flex flex-wrap gap-2">
           {project.technologies.map((tech) => (
-            <span
+            <li
               key={tech}
-              className="rounded-full border px-3.5 py-1.5 font-mono text-sm font-semibold"
-              style={{ borderColor: `${project.accentColor}66`, color: project.accentColor }}
+              className="rounded-md bg-accent/[0.08] px-2.5 py-1 text-sm font-medium text-accent"
             >
               {tech}
-            </span>
+            </li>
           ))}
-        </div>
+        </ul>
 
-        <div className="mt-9 flex flex-wrap items-center gap-6">
+        <div className="mt-8 flex flex-wrap items-center gap-5">
           <Link
             href={`/projects/${project.slug}`}
-            data-cursor-hover
-            className="group inline-flex items-center gap-2 text-lg font-bold text-fg transition-colors"
-            style={{ textShadow: `0 0 20px ${project.accentColor}55` }}
+            className="group inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 font-semibold text-white transition-colors hover:bg-primary/90"
           >
             {t.projects.viewProject}
-            <ArrowUpRight
-              size={19}
-              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-            />
+            <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
           </Link>
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-1.5 font-semibold text-fg2 transition-colors hover:text-accent"
+          >
+            {t.projectPage.visit}
+            <ArrowUpRight
+              size={17}
+              className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
+          </a>
           {project.repoUrl && (
             <a
               href={project.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              data-cursor-hover
-              className="inline-flex items-center gap-2 text-base text-fg3 transition-colors hover:text-fg"
+              className="inline-flex items-center gap-1.5 text-fg3 transition-colors hover:text-fg"
             >
               <Github size={17} />
               {t.projects.viewCode}
@@ -139,20 +160,17 @@ export default function Projects() {
   const { t } = useLanguage();
 
   return (
-    <section id="projetos" className="px-6 py-4 lg:px-10">
+    <section id="projetos" className="relative px-6 py-28 lg:px-10">
       <div className="mx-auto max-w-content">
-        <Reveal className="max-w-2xl border-t border-line/10 pt-28">
-          <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-neon-green">
-            {t.projects.eyebrow}
-          </p>
-          <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-fg sm:text-5xl">
-            {t.projects.title}
-          </h2>
+        <Reveal>
+          <SectionHeading eyebrow={t.projects.eyebrow} title={t.projects.title} />
         </Reveal>
 
-        {projects.map((project, index) => (
-          <ProjectCard key={project.slug} project={project} reversed={index % 2 === 1} t={t} />
-        ))}
+        <div className="mt-16 space-y-24">
+          {projects.map((project, index) => (
+            <ProjectRow key={project.slug} project={project} index={index} t={t} />
+          ))}
+        </div>
       </div>
     </section>
   );

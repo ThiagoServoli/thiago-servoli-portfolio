@@ -1,24 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource/space-grotesk/500.css";
-import "@fontsource/space-grotesk/600.css";
-import "@fontsource/space-grotesk/700.css";
-import "@fontsource/manrope/400.css";
-import "@fontsource/manrope/500.css";
-import "@fontsource/manrope/700.css";
-import "@fontsource/manrope/800.css";
-import "@fontsource/jetbrains-mono/400.css";
-import "@fontsource/jetbrains-mono/500.css";
-import "flag-icons/css/flag-icons.min.css";
+import "@fontsource/manrope/latin-400.css";
+import "@fontsource/manrope/latin-500.css";
+import "@fontsource/manrope/latin-600.css";
+import "@fontsource/manrope/latin-700.css";
 import "./globals.css";
 import { profile } from "@/data/profile";
-import CustomCursor from "@/components/CustomCursor";
 import SkipLink from "@/components/SkipLink";
 import Providers from "@/context/Providers";
+import { THEME_STORAGE_KEY } from "@/lib/theme";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://thiagoservoli.dev";
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0b",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#090b1e" },
+  ],
   width: "device-width",
   initialScale: 1,
 };
@@ -139,22 +136,20 @@ export default function RootLayout({
         {/* Marca o <html> assim que possível, antes de qualquer hidratação.
             Se o JS falhar depois disso por qualquer motivo, o conteúdo
             permanece visível (ver regra ".js .reveal" em globals.css).
-            Também aplica o tema salvo (claro/escuro) antes da primeira
-            pintura, evitando flash de conteúdo com o tema errado. */}
+            Também aplica o tema escuro salvo antes da primeira pintura,
+            evitando flash de conteúdo com o tema errado. */}
         <script
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html:
               "document.documentElement.classList.add('js');" +
-              "try{if(localStorage.getItem('theme')==='light'){document.documentElement.classList.add('light');}}catch(e){}",
+              `try{if(localStorage.getItem('${THEME_STORAGE_KEY}')==='dark'){document.documentElement.classList.add('dark');}}catch(e){}`,
           }}
         />
       </head>
-      <body className="font-body antialiased selection:bg-neon-green selection:text-ink-950">
+      <body className="font-body antialiased">
         <Providers>
           <SkipLink />
-          <div className="noise-overlay" aria-hidden="true" />
-          <CustomCursor />
           {children}
         </Providers>
       </body>

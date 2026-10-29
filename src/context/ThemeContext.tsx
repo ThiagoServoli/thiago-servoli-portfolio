@@ -1,8 +1,9 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { THEME_STORAGE_KEY } from "@/lib/theme";
 
-export type Theme = "dark" | "light";
+export type Theme = "light" | "dark";
 
 interface ThemeContextValue {
   theme: Theme;
@@ -11,26 +12,26 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-const STORAGE_KEY = "theme";
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
   const [hydrated, setHydrated] = useState(false);
 
   // Lê a preferência salva uma única vez. O gate "hydrated" evita que o efeito
-  // abaixo grave o valor padrão ("dark") de volta no localStorage antes dessa
-  // leitura terminar — sem ele, o StrictMode do React (que roda os efeitos em
-  // dobro em dev) corrompe a preferência salva ao montar a página.
+  // abaixo grave o valor padrão no localStorage antes dessa leitura terminar
+  // (o StrictMode do React roda os efeitos em dobro em dev).
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "light") setTheme("light");
+    try {
+      if (window.localStorage.getItem(THEME_STORAGE_KEY) === "dark") setTheme("dark");
+    } catch {}
     setHydrated(true);
   }, []);
 
   useEffect(() => {
     if (!hydrated) return;
-    document.documentElement.classList.toggle("light", theme === "light");
-    window.localStorage.setItem(STORAGE_KEY, theme);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {}
   }, [theme, hydrated]);
 
   const toggleTheme = useCallback(() => {

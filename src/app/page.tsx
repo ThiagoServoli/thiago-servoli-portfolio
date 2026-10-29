@@ -1,7 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AnimatedBackground from "@/components/AnimatedBackground";
-import ScrollProgressBar from "@/components/ScrollProgressBar";
+import ScrollProgress from "@/components/ScrollProgress";
+import SectionNav from "@/components/SectionNav";
+import TechMarquee from "@/components/TechMarquee";
 import Hero from "@/sections/Hero";
 import About from "@/sections/About";
 import Stack from "@/sections/Stack";
@@ -13,11 +14,12 @@ import Contact from "@/sections/Contact";
 export default function Home() {
   return (
     <>
-      <AnimatedBackground />
-      <ScrollProgressBar />
+      <ScrollProgress />
       <Navbar />
+      <SectionNav />
       <main id="conteudo-principal">
         <Hero />
+        <TechMarquee />
         <About />
         <Stack />
         <Projects />

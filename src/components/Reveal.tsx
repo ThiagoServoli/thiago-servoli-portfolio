@@ -8,14 +8,13 @@ interface RevealProps {
   className?: string;
   /** Atraso em ms antes de revelar, útil para escalonar elementos em sequência */
   delay?: number;
-  direction?: "up" | "left" | "right";
+  direction?: "up" | "left" | "right" | "scale";
   as?: "div" | "h2" | "h3" | "section" | "article" | "span" | "li";
 }
 
 /**
- * Revela o conteúdo quando ele entra na viewport. Usa IntersectionObserver puro
- * (sem depender de plugins externos), então funciona de forma previsível em
- * qualquer navegador assim que o usuário rola a página.
+ * Revela o conteúdo com fade + deslocamento quando ele entra na viewport.
+ * Usa IntersectionObserver puro, sem bibliotecas de animação.
  */
 export default function Reveal({
   children,
@@ -31,44 +30,39 @@ export default function Reveal({
     const el = ref.current;
     if (!el) return;
 
-    // Rede de segurança: se o navegador não suportar IntersectionObserver,
-    // ou se por qualquer motivo o observer nunca disparar, o conteúdo é
-    // revelado de qualquer forma após um pequeno atraso.
     if (typeof IntersectionObserver === "undefined") {
       setVisible(true);
       return;
     }
 
-    const fallback = window.setTimeout(() => setVisible(true), 2500);
-
+    let timer = 0;
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            window.clearTimeout(fallback);
-            window.setTimeout(() => setVisible(true), delay);
-            observer.unobserve(entry.target);
-          }
-        });
+        if (entries.some((entry) => entry.isIntersecting)) {
+          timer = window.setTimeout(() => setVisible(true), delay);
+          observer.disconnect();
+        }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -5% 0px" }
     );
 
     observer.observe(el);
     return () => {
-      window.clearTimeout(fallback);
+      window.clearTimeout(timer);
       observer.disconnect();
     };
   }, [delay]);
-
-  const directionClass =
-    direction === "left" ? "reveal-left" : direction === "right" ? "reveal-right" : "";
 
   return createElement(
     as,
     {
       ref,
-      className: cn("reveal", directionClass, visible && "reveal-visible", className),
+      className: cn(
+        "reveal",
+        direction !== "up" && `reveal-${direction}`,
+        visible && "reveal-visible",
+        className
+      ),
     },
     children
   );

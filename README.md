@@ -1,7 +1,8 @@
-# Portfólio — Thiago Servoli da Silva (v2 — Neon Edition)
+# Portfólio — Thiago Servoli da Silva (v3)
 
-Portfólio pessoal com identidade visual neon (verde + roxo), fortemente animada,
-construído com Next.js 14 (App Router), TypeScript, Tailwind CSS, GSAP e react-icons.
+Portfólio pessoal com identidade sóbria e profissional: fundo branco, azul
+institucional `#111184` e tema escuro opcional em azul-marinho. Construído com
+Next.js 14 (App Router), TypeScript e Tailwind CSS.
 
 ## Como rodar localmente
 
@@ -19,35 +20,34 @@ npm run build
 npm run start
 ```
 
-## O que mudou na v2
+## O que mudou na v3
 
-- **Identidade visual completamente nova**: fundo quase preto com "orbs" neon
-  (verde, roxo, ciano) que flutuam continuamente e reagem ao scroll (parallax).
-- **Barra de progresso neon** fixa no topo — feedback visual imediato de que a
-  rolagem está sendo respondida.
-- **Animações de entrada confiáveis**: todo o conteúdo usa o componente
-  `src/components/Reveal.tsx`, baseado em `IntersectionObserver` puro (sem
-  depender de configuração fina de scroll-trigger), garantindo que os elementos
-  sempre apareçam de forma visível ao rolar a página.
-- **Logos reais das tecnologias** (React, Next.js, TypeScript, Node.js, Python,
-  PostgreSQL, Docker, Git etc.) via `react-icons/si`, com efeito de inclinação 3D
-  ao passar o mouse.
-- **Identidade visual real dos dois projetos** (PugliSystems e Cogni) aplicada
-  nos cards e nas páginas de case study — logos em `public/images/brands/`.
-- **Tipografia maior e com mais contraste**: fonte base de 18px, textos em
-  branco/quase-branco em vez de cinzas apagados.
-- **Cursor customizado neon** (núcleo verde + anel roxo com glow).
+- **Identidade visual**: fundo branco-azulado com azul institucional `#111184`, tipografia
+  Manrope e tema escuro opcional em azul-marinho. Todas as cores vêm de variáveis CSS em
+  `src/app/globals.css`, então os dois temas ficam consistentes (preferência salva em `theme-v2`).
+- **Avatar 3D** (`src/components/Avatar3D.tsx`): a foto em camadas com profundidade real
+  (`preserve-3d`) que gira e se afasta conforme a rolagem e inclina seguindo o mouse; um
+  mini-avatar aparece na navbar quando o hero sai da tela.
+- **Navegação e rolagem**: barra de progresso, link ativo na navbar, navegação lateral por
+  seções (desktop), botão de voltar ao topo, faixa animada de tecnologias, contadores,
+  timeline que se preenche com a rolagem e reveals direcionais.
+- **Stack** com os logos nas cores oficiais (`src/components/TechIcon.tsx`) e **bandeiras**
+  reais no seletor de idioma (PNGs de 1–3 KB em `public/images/flags/`).
+- **Projetos** em moldura de navegador na proporção real da captura (sem recorte/ampliação).
+- **Performance**: todas as animações usam só `transform`/`opacity`; os loops de animação
+  rodam apenas enquanto há movimento, e os fundos decorativos são estáticos. Sem GSAP,
+  sem blur animado, sem overlay de ruído, sem cursor customizado.
 
 ## Estrutura
 
 ```
 src/
   app/            # Rotas (App Router), layout, metadata, sitemap, robots
-  components/     # Reveal, AnimatedBackground, ScrollProgressBar, Navbar, Footer, cursor...
+  components/     # Avatar3D, Reveal, ScrollProgress, SectionNav, TechMarquee, Navbar...
   sections/       # Seções da home (Hero, Stack, Projetos, Trajetória...)
   data/           # Fonte única de verdade: perfil, tecnologias, projetos, formação
-  hooks/          # Hooks customizados (prefers-reduced-motion)
-  lib/            # GSAP setup, utilitários
+  hooks/          # useActiveSection, useReducedMotion
+  lib/            # Utilitários e chave do tema
 public/
   images/
     profile.jpg            # Sua foto (já aplicada)

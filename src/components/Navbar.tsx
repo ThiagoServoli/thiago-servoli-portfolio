@@ -1,17 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
+import { useActiveSection } from "@/hooks/useActiveSection";
 import type { Locale } from "@/i18n/translations";
 
-const localeOptions: { locale: Locale; countryCode: string; label: string }[] = [
-  { locale: "pt", countryCode: "br", label: "Português" },
-  { locale: "en", countryCode: "us", label: "English" },
-  { locale: "es", countryCode: "es", label: "Español" },
+const localeOptions: { locale: Locale; flag: string; label: string }[] = [
+  { locale: "pt", flag: "/images/flags/br.png", label: "Português" },
+  { locale: "en", flag: "/images/flags/us.png", label: "English" },
+  { locale: "es", flag: "/images/flags/es.png", label: "Español" },
 ];
+
+const NAV_IDS = ["sobre", "stack", "projetos", "trajetoria", "contato"];
 
 function LanguageSwitcher({ className }: { className?: string }) {
   const { locale, setLocale, t } = useLanguage();
@@ -20,27 +24,30 @@ function LanguageSwitcher({ className }: { className?: string }) {
     <div
       role="group"
       aria-label={t.nav.languageLabel}
-      className={cn("flex items-center gap-1 rounded-full border border-line/15 p-1", className)}
+      className={cn("flex items-center gap-0.5 rounded-lg border border-line/15 p-1", className)}
     >
       {localeOptions.map((option) => (
         <button
           key={option.locale}
           type="button"
-          data-cursor-hover
           onClick={() => setLocale(option.locale)}
           aria-label={option.label}
           aria-pressed={locale === option.locale}
           title={option.label}
           className={cn(
-            "flex h-8 w-9 items-center justify-center rounded-md transition-all duration-300",
+            "flex h-7 w-9 items-center justify-center rounded-md transition-all duration-200",
             locale === option.locale
-              ? "bg-neon-green/15 shadow-[0_0_12px_rgba(57,255,136,0.5)] ring-1 ring-neon-green/60"
-              : "opacity-55 hover:opacity-100"
+              ? "bg-primary/10 ring-1 ring-primary/40"
+              : "opacity-50 grayscale-[40%] hover:opacity-100 hover:grayscale-0"
           )}
         >
-          <span
-            aria-hidden="true"
-            className={cn("fi", `fi-${option.countryCode}`, "h-4 w-6 rounded-[3px]")}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={option.flag}
+            alt=""
+            width={24}
+            height={18}
+            className="h-[18px] w-6 rounded-[3px] object-cover shadow-sm"
           />
         </button>
       ))}
@@ -51,39 +58,44 @@ function LanguageSwitcher({ className }: { className?: string }) {
 function ThemeToggle({ className }: { className?: string }) {
   const { theme, toggleTheme } = useTheme();
   const { t } = useLanguage();
+  const label = theme === "dark" ? t.nav.themeToLight : t.nav.themeToDark;
 
   return (
     <button
       type="button"
-      data-cursor-hover
       onClick={toggleTheme}
-      aria-label={theme === "dark" ? t.nav.themeToLight : t.nav.themeToDark}
-      title={theme === "dark" ? t.nav.themeToLight : t.nav.themeToDark}
+      aria-label={label}
+      title={label}
       className={cn(
-        "flex h-9 w-9 items-center justify-center rounded-full border border-line/15 text-fg transition-all duration-300 hover:border-neon-green/60 hover:text-neon-green",
+        "flex h-9 w-9 items-center justify-center rounded-lg border border-line/15 text-fg2 transition-colors hover:border-accent hover:text-accent",
         className
       )}
     >
-      {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+      {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
     </button>
   );
 }
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useLanguage();
+  const active = useActiveSection(NAV_IDS);
 
   const links = [
-    { href: "#sobre", label: t.nav.about },
-    { href: "#stack", label: t.nav.stack },
-    { href: "#projetos", label: t.nav.projects },
-    { href: "#trajetoria", label: t.nav.experience },
-    { href: "#contato", label: t.nav.contact },
+    { id: "sobre", label: t.nav.about },
+    { id: "stack", label: t.nav.stack },
+    { id: "projetos", label: t.nav.projects },
+    { id: "trajetoria", label: t.nav.experience },
+    { id: "contato", label: t.nav.contact },
   ];
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      setPastHero(window.scrollY > window.innerHeight * 0.6);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -99,48 +111,64 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-1 z-50 transition-all duration-500 ease-premium",
-        scrolled
-          ? "border-b border-line/10 bg-page/70 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
+        "fixed inset-x-0 top-0 z-50 border-b px-6 transition-colors duration-300 lg:px-10",
+        scrolled || menuOpen
+          ? "border-line/10 bg-page/85 backdrop-blur-md"
+          : "border-transparent bg-transparent"
       )}
     >
-      <div className="mx-auto flex max-w-content items-center justify-between px-6 py-5 lg:px-10">
-        <a
-          href="#inicio"
-          data-cursor-hover
-          className="font-display text-lg font-bold tracking-[0.15em] text-fg"
-        >
-          THIAGO<span className="text-neon-green">.</span>SERVOLI
+      <div className="mx-auto flex h-16 max-w-content items-center justify-between">
+        <a href="/#inicio" className="flex items-center text-[17px] font-bold tracking-tight text-fg">
+          {/* Mini-avatar: aparece quando a foto do hero sai da tela */}
+          <span
+            className={cn(
+              "relative block h-8 overflow-hidden rounded-full ring-2 ring-primary/30 transition-all duration-500 ease-premium",
+              pastHero ? "mr-3 w-8 opacity-100" : "mr-0 w-0 opacity-0"
+            )}
+            aria-hidden="true"
+          >
+            <Image src="/images/profile.jpg" alt="" fill sizes="32px" className="object-cover" />
+          </span>
+          Thiago Servoli
         </a>
 
-        <nav aria-label={t.nav.navMain} className="hidden items-center gap-8 md:flex">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              data-cursor-hover
-              className="group relative text-base font-medium text-fg2 transition-colors duration-300 hover:text-fg"
-            >
-              {link.label}
-              <span className="absolute -bottom-1.5 left-0 h-0.5 w-0 bg-neon-green shadow-[0_0_10px_rgba(57,255,136,0.9)] transition-all duration-300 ease-premium group-hover:w-full" />
-            </a>
-          ))}
+        <nav aria-label={t.nav.navMain} className="hidden items-center gap-1 lg:flex">
+          {links.map((link) => {
+            const isActive = active === link.id && pastHero;
+            return (
+              <a
+                key={link.id}
+                href={`/#${link.id}`}
+                aria-current={isActive ? "true" : undefined}
+                className={cn(
+                  "relative rounded-md px-3 py-2 text-[15px] font-medium transition-colors",
+                  isActive ? "text-accent" : "text-fg2 hover:text-fg"
+                )}
+              >
+                {link.label}
+                <span
+                  className={cn(
+                    "absolute inset-x-3 -bottom-0.5 h-0.5 origin-left rounded-full bg-primary transition-transform duration-300 ease-premium",
+                    isActive ? "scale-x-100" : "scale-x-0"
+                  )}
+                />
+              </a>
+            );
+          })}
         </nav>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <LanguageSwitcher />
           <ThemeToggle />
           <a
-            href="#contato"
-            data-cursor-hover
-            className="inline-flex rounded-full border-2 border-neon-green/60 px-6 py-2.5 text-base font-semibold text-neon-green transition-all duration-300 hover:bg-neon-green hover:text-ink-950 hover:shadow-[0_0_25px_rgba(57,255,136,0.6)]"
+            href="/#contato"
+            className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
           >
             {t.nav.talk}
           </a>
         </div>
 
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-3 lg:hidden">
           <ThemeToggle />
           <button
             type="button"
@@ -149,7 +177,7 @@ export default function Navbar() {
             aria-label={menuOpen ? t.nav.menuClose : t.nav.menuOpen}
             className="text-fg"
           >
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
@@ -157,30 +185,21 @@ export default function Navbar() {
       {menuOpen && (
         <nav
           aria-label={t.nav.navMobile}
-          className="flex flex-col gap-1 border-t border-line/10 bg-page px-6 py-6 md:hidden"
+          className="flex h-[calc(100svh-4rem)] flex-col gap-1 py-6 lg:hidden"
         >
-          {links.map((link) => (
+          {links.map((link, i) => (
             <a
-              key={link.href}
-              href={link.href}
+              key={link.id}
+              href={`/#${link.id}`}
               onClick={() => setMenuOpen(false)}
-              className="rounded-lg px-2 py-4 text-lg text-fg transition-colors hover:bg-line/5"
+              className="flex items-center justify-between border-b border-line/10 py-4 text-lg font-medium text-fg animate-enter"
+              style={{ animationDelay: `${i * 50}ms` }}
             >
               {link.label}
+              <span className="text-sm text-fg4">0{i + 1}</span>
             </a>
           ))}
-
-          <div className="mt-2 flex items-center justify-center py-2">
-            <LanguageSwitcher />
-          </div>
-
-          <a
-            href="#contato"
-            onClick={() => setMenuOpen(false)}
-            className="mt-3 rounded-full bg-neon-green px-5 py-3.5 text-center text-base font-semibold text-ink-950"
-          >
-            {t.nav.talk}
-          </a>
+          <LanguageSwitcher className="mt-6 self-start" />
         </nav>
       )}
     </header>

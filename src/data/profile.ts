@@ -20,10 +20,9 @@ export const profile = {
     instagram: null,
   },
   stats: [
-    { value: 6, suffix: "+", label: "Anos de experiência" },
+    { value: 6, suffix: "+", label: "Anos em tecnologia" },
     { value: 13, suffix: "+", label: "Tecnologias" },
     { value: 2, suffix: "", label: "Projetos em destaque" },
-    { value: 25, suffix: "", label: "Anos" },
   ],
   languages: [
     { name: "Português", level: "Nativo" },

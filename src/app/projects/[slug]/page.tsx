@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import { getProjectBySlug, projects } from "@/data/projects";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AnimatedBackground from "@/components/AnimatedBackground";
-import ScrollProgressBar from "@/components/ScrollProgressBar";
+import ScrollProgress from "@/components/ScrollProgress";
 import ProjectDetailContent from "@/components/ProjectDetailContent";
 
 interface ProjectPageProps {
@@ -43,8 +42,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <>
-      <AnimatedBackground />
-      <ScrollProgressBar />
+      <ScrollProgress />
       <Navbar />
       <ProjectDetailContent project={project} />
       <Footer />

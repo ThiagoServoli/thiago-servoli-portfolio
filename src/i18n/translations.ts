@@ -6,6 +6,10 @@ export interface Dictionary {
     htmlLang: string;
   };
   nav: {
+    home: string;
+    education: string;
+    backToTop: string;
+    sectionsLabel: string;
     about: string;
     stack: string;
     projects: string;
@@ -22,28 +26,24 @@ export interface Dictionary {
     languageLabel: string;
   };
   hero: {
-    badge: string;
-    titleBefore: string;
-    titleHighlight: string;
+    available: string;
+    scroll: string;
     subtitle: string;
     ctaProjects: string;
     ctaContact: string;
-    scroll: string;
-    scrollAria: string;
     photoAlt: string;
     languages: { name: string; level: string }[];
   };
   about: {
     eyebrow: string;
-    titleBefore: string;
-    titleHighlight: string;
-    titleAfter: string;
+    title: string;
     summary: string[];
     statsLabels: string[];
   };
   stack: {
     eyebrow: string;
     title: string;
+    categories: Record<"frontend" | "backend" | "tools", string>;
   };
   projects: {
     eyebrow: string;
@@ -73,9 +73,7 @@ export interface Dictionary {
   };
   contact: {
     eyebrow: string;
-    titleBefore: string;
-    titleHighlight: string;
-    titleAfter: string;
+    title: string;
     subtitle: string;
     cta: string;
     github: string;
@@ -107,6 +105,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
   pt: {
     meta: { localeName: "Português", htmlLang: "pt-BR" },
     nav: {
+      home: "Início",
+      education: "Formação",
+      backToTop: "Voltar ao topo",
+      sectionsLabel: "Seções da página",
       about: "Sobre",
       stack: "Stack",
       projects: "Projetos",
@@ -123,15 +125,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       languageLabel: "Idioma",
     },
     hero: {
-      badge: "Full Stack Developer",
-      titleBefore: "Transformando ideias em ",
-      titleHighlight: "experiências digitais",
+      available: "Disponível para novos projetos",
+      scroll: "Role para explorar",
       subtitle:
-        "Desenvolvedor Full Stack especializado em criar aplicações web modernas, performáticas e escaláveis.",
+        "Desenvolvo aplicações web com React, Next.js, TypeScript e Node.js, do front-end à integração com APIs e bancos de dados. Mais de 6 anos em tecnologia, com foco em código bem estruturado, performance e boa experiência de uso.",
       ctaProjects: "Ver projetos",
       ctaContact: "Entre em contato",
-      scroll: "scroll",
-      scrollAria: "Rolar para a seção Stack",
       photoAlt: "Foto de {name}",
       languages: [
         { name: "Português", level: "Nativo" },
@@ -140,24 +139,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     about: {
       eyebrow: "Sobre",
-      titleBefore: "Front-end no coração, ",
-      titleHighlight: "full stack",
-      titleAfter: " na prática",
+      title: "Front-end como base, full stack na prática",
       summary: [
         "Desenvolvedor Full Stack com mais de 6 anos de experiência em tecnologia, atuando no desenvolvimento de aplicações web modernas, responsivas e escaláveis, com foco em performance, usabilidade e experiência do usuário.",
         "Tenho experiência com HTML5, CSS3, JavaScript, TypeScript, React, Next.js, Python e SQL, além de Git para versionamento e boas práticas de desenvolvimento.",
         "Minha trajetória é fortemente voltada ao Front-End, mas venho ampliando minha atuação para o Back-End e arquitetura de aplicações, trabalhando com tecnologias como Node.js, Python, APIs, bancos de dados e Docker.",
         "Gosto de transformar problemas em soluções simples, eficientes e bem estruturadas, sempre buscando escrever código de qualidade e evoluir tecnicamente.",
       ],
-      statsLabels: ["Anos de experiência", "Tecnologias", "Projetos em destaque", "Anos"],
+      statsLabels: ["Anos em tecnologia", "Tecnologias", "Projetos em destaque"],
     },
     stack: {
       eyebrow: "Stack",
-      title: "Ferramentas que uso para dar vida a um produto",
+      title: "Tecnologias com que trabalho",
+      categories: { frontend: "Front-end", backend: "Back-end e dados", tools: "Ferramentas" },
     },
     projects: {
       eyebrow: "Projetos",
-      title: "Produtos reais, do problema à solução",
+      title: "Projetos selecionados",
       problemLabel: "Problema",
       contributionLabel: "Contribuição",
       viewProject: "Ver projeto",
@@ -183,7 +181,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     journey: {
       eyebrow: "Trajetória",
-      title: "Cada etapa, um novo commit",
+      title: "Trajetória profissional",
       items: [
         { title: "Formação Técnica em Tecnologia da Informação", place: "Senac Brasil" },
         { title: "Tecnologia em Análise e Desenvolvimento de Sistemas", place: "Impacta Tecnologia" },
@@ -222,11 +220,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     contact: {
       eyebrow: "Contato",
-      titleBefore: "Vamos construir algo ",
-      titleHighlight: "incrível",
-      titleAfter: "?",
+      title: "Vamos conversar sobre o seu projeto",
       subtitle: "Estou aberto a novos desafios, projetos e oportunidades.",
-      cta: "Entrar em contato",
+      cta: "Enviar e-mail",
       github: "GitHub",
       linkedin: "LinkedIn",
     },
@@ -254,6 +250,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
   en: {
     meta: { localeName: "English", htmlLang: "en" },
     nav: {
+      home: "Home",
+      education: "Education",
+      backToTop: "Back to top",
+      sectionsLabel: "Page sections",
       about: "About",
       stack: "Stack",
       projects: "Projects",
@@ -270,15 +270,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       languageLabel: "Language",
     },
     hero: {
-      badge: "Full Stack Developer",
-      titleBefore: "Turning ideas into ",
-      titleHighlight: "digital experiences",
+      available: "Available for new projects",
+      scroll: "Scroll to explore",
       subtitle:
-        "Full Stack Developer specialized in building modern, high-performance and scalable web applications.",
+        "I build web applications with React, Next.js, TypeScript and Node.js, from the front end to API and database integration. Over 6 years in technology, focused on well-structured code, performance and a good user experience.",
       ctaProjects: "View projects",
       ctaContact: "Get in touch",
-      scroll: "scroll",
-      scrollAria: "Scroll to the Stack section",
       photoAlt: "Photo of {name}",
       languages: [
         { name: "Portuguese", level: "Native" },
@@ -287,24 +284,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     about: {
       eyebrow: "About",
-      titleBefore: "Front-end at heart, ",
-      titleHighlight: "full stack",
-      titleAfter: " in practice",
+      title: "Front-end at the core, full stack in practice",
       summary: [
         "Full Stack Developer with over 6 years of experience in technology, building modern, responsive and scalable web applications with a focus on performance, usability and user experience.",
         "I have experience with HTML5, CSS3, JavaScript, TypeScript, React, Next.js, Python and SQL, as well as Git for version control and development best practices.",
         "My background is strongly Front-End focused, but I've been expanding into Back-End and application architecture, working with technologies like Node.js, Python, APIs, databases and Docker.",
         "I enjoy turning problems into simple, efficient and well-structured solutions, always striving to write quality code and grow technically.",
       ],
-      statsLabels: ["Years of experience", "Technologies", "Featured projects", "Years old"],
+      statsLabels: ["Years in technology", "Technologies", "Featured projects"],
     },
     stack: {
       eyebrow: "Stack",
-      title: "Tools I use to bring a product to life",
+      title: "Technologies I work with",
+      categories: { frontend: "Front-end", backend: "Back-end & data", tools: "Tools" },
     },
     projects: {
       eyebrow: "Projects",
-      title: "Real products, from problem to solution",
+      title: "Selected work",
       problemLabel: "Problem",
       contributionLabel: "Contribution",
       viewProject: "View project",
@@ -329,7 +325,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     journey: {
       eyebrow: "Journey",
-      title: "Every step, a new commit",
+      title: "Career path",
       items: [
         { title: "Technical Degree in Information Technology", place: "Senac Brasil" },
         { title: "Associate Degree in Systems Analysis and Development", place: "Impacta Tecnologia" },
@@ -368,11 +364,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     contact: {
       eyebrow: "Contact",
-      titleBefore: "Let's build something ",
-      titleHighlight: "amazing",
-      titleAfter: "?",
+      title: "Let's talk about your project",
       subtitle: "I'm open to new challenges, projects and opportunities.",
-      cta: "Get in touch",
+      cta: "Send an email",
       github: "GitHub",
       linkedin: "LinkedIn",
     },
@@ -400,6 +394,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
   es: {
     meta: { localeName: "Español", htmlLang: "es" },
     nav: {
+      home: "Inicio",
+      education: "Formación",
+      backToTop: "Volver arriba",
+      sectionsLabel: "Secciones de la página",
       about: "Acerca de",
       stack: "Stack",
       projects: "Proyectos",
@@ -416,15 +414,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       languageLabel: "Idioma",
     },
     hero: {
-      badge: "Desarrollador Full Stack",
-      titleBefore: "Transformando ideas en ",
-      titleHighlight: "experiencias digitales",
+      available: "Disponible para nuevos proyectos",
+      scroll: "Desplázate para explorar",
       subtitle:
-        "Desarrollador Full Stack especializado en crear aplicaciones web modernas, performantes y escalables.",
+        "Desarrollo aplicaciones web con React, Next.js, TypeScript y Node.js, desde el front-end hasta la integración con APIs y bases de datos. Más de 6 años en tecnología, con foco en código bien estructurado, rendimiento y una buena experiencia de uso.",
       ctaProjects: "Ver proyectos",
       ctaContact: "Ponte en contacto",
-      scroll: "scroll",
-      scrollAria: "Desplazarse a la sección Stack",
       photoAlt: "Foto de {name}",
       languages: [
         { name: "Portugués", level: "Nativo" },
@@ -433,24 +428,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     about: {
       eyebrow: "Acerca de",
-      titleBefore: "Front-end de corazón, ",
-      titleHighlight: "full stack",
-      titleAfter: " en la práctica",
+      title: "Front-end como base, full stack en la práctica",
       summary: [
         "Desarrollador Full Stack con más de 6 años de experiencia en tecnología, dedicado al desarrollo de aplicaciones web modernas, responsivas y escalables, con foco en rendimiento, usabilidad y experiencia de usuario.",
         "Tengo experiencia con HTML5, CSS3, JavaScript, TypeScript, React, Next.js, Python y SQL, además de Git para control de versiones y buenas prácticas de desarrollo.",
         "Mi trayectoria está fuertemente orientada al Front-End, pero he ido ampliando mi actuación hacia el Back-End y la arquitectura de aplicaciones, trabajando con tecnologías como Node.js, Python, APIs, bases de datos y Docker.",
         "Me gusta transformar problemas en soluciones simples, eficientes y bien estructuradas, siempre buscando escribir código de calidad y evolucionar técnicamente.",
       ],
-      statsLabels: ["Años de experiencia", "Tecnologías", "Proyectos destacados", "Años"],
+      statsLabels: ["Años en tecnología", "Tecnologías", "Proyectos destacados"],
     },
     stack: {
       eyebrow: "Stack",
-      title: "Herramientas que uso para darle vida a un producto",
+      title: "Tecnologías con las que trabajo",
+      categories: { frontend: "Front-end", backend: "Back-end y datos", tools: "Herramientas" },
     },
     projects: {
       eyebrow: "Proyectos",
-      title: "Productos reales, del problema a la solución",
+      title: "Proyectos seleccionados",
       problemLabel: "Problema",
       contributionLabel: "Contribución",
       viewProject: "Ver proyecto",
@@ -475,7 +469,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     journey: {
       eyebrow: "Trayectoria",
-      title: "Cada etapa, un nuevo commit",
+      title: "Trayectoria profesional",
       items: [
         { title: "Formación Técnica en Tecnología de la Información", place: "Senac Brasil" },
         { title: "Tecnología en Análisis y Desarrollo de Sistemas", place: "Impacta Tecnologia" },
@@ -514,11 +508,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     contact: {
       eyebrow: "Contacto",
-      titleBefore: "¿Construimos algo ",
-      titleHighlight: "increíble",
-      titleAfter: "?",
+      title: "Hablemos de tu proyecto",
       subtitle: "Estoy abierto a nuevos desafíos, proyectos y oportunidades.",
-      cta: "Ponte en contacto",
+      cta: "Enviar un correo",
       github: "GitHub",
       linkedin: "LinkedIn",
     },

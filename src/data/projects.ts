@@ -1,6 +1,5 @@
 export interface Project {
   slug: string;
-  code: string;
   name: string;
   description: string;
   problem: string;
@@ -9,15 +8,17 @@ export interface Project {
   liveUrl: string;
   repoUrl: string | null;
   image: string;
-  logo: string;
-  accentColor: string;
+  /** Dimensões reais da captura — usadas para exibir sem recorte nem ampliação */
+  imageWidth: number;
+  imageHeight: number;
+  /** Ícone quadrado com fundo próprio — legível em tema claro e escuro */
+  icon: string;
   featured: boolean;
 }
 
 export const projects: Project[] = [
   {
     slug: "puglisystems",
-    code: "PROJECT 01",
     name: "PugliSystems",
     description:
       "Site institucional estático da Pugli Systems, apresentando o ecossistema da marca e sua primeira solução, a Cogni. Construído inteiramente em HTML, CSS e JavaScript puros, sem necessidade de build, bundler ou backend.",
@@ -28,13 +29,13 @@ export const projects: Project[] = [
     liveUrl: "https://thiagoservoli.github.io/puglisystems/",
     repoUrl: "https://github.com/ThiagoServoli",
     image: "/images/projects/screenpugli.png",
-    logo: "/images/brands/pugli-systems-logo-full-transparente.png",
-    accentColor: "#146ef5",
+    imageWidth: 1902,
+    imageHeight: 909,
+    icon: "/images/brands/pugli-icon.png",
     featured: true,
   },
   {
     slug: "cogni",
-    code: "PROJECT 02",
     name: "Cogni",
     description:
       "Landing page da Cogni, a primeira solução da Pugli Systems: uma plataforma de automação que identifica problemas a partir de eventos e decide com autonomia ajustável se apenas observa, sugere ou executa uma ação corretiva, sempre com trilha de auditoria completa.",
@@ -45,8 +46,9 @@ export const projects: Project[] = [
     liveUrl: "https://thiagoservoli.github.io/puglisystems/cogni.html",
     repoUrl: "https://github.com/ThiagoServoli",
     image: "/images/projects/screencogni.png",
-    logo: "/images/brands/cogni-logo-full-transparente.png",
-    accentColor: "#39ff88",
+    imageWidth: 1900,
+    imageHeight: 907,
+    icon: "/images/brands/cogni-icon.png",
     featured: true,
   },
 ];
