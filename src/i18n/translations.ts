@@ -26,8 +26,14 @@ export interface Dictionary {
     languageLabel: string;
   };
   hero: {
-    available: string;
-    scroll: string;
+    titleBlock: {
+      availability: string;
+      availabilityValue: string;
+      base: string;
+      languages: string;
+      focus: string;
+      focusValue: string;
+    };
     subtitle: string;
     ctaProjects: string;
     ctaContact: string;
@@ -39,6 +45,9 @@ export interface Dictionary {
     title: string;
     summary: string[];
     statsLabels: string[];
+    specTitle: string;
+    specs: { label: string; value: string }[];
+    pillars: string[];
   };
   stack: {
     eyebrow: string;
@@ -59,7 +68,7 @@ export interface Dictionary {
   journey: {
     eyebrow: string;
     title: string;
-    items: { title: string; place: string | null }[];
+    items: { title: string; place: string | null; focus: string; tags: string[] }[];
   };
   education: {
     eyebrowEducation: string;
@@ -99,6 +108,8 @@ export interface Dictionary {
     role: string;
     location: string;
   };
+  /** Falas do avatar, uma por seção da página */
+  avatar: Record<"inicio" | "sobre" | "stack" | "projetos" | "trajetoria" | "formacao" | "contato", string>;
 }
 
 export const dictionaries: Record<Locale, Dictionary> = {
@@ -125,8 +136,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       languageLabel: "Idioma",
     },
     hero: {
-      available: "Disponível para novos projetos",
-      scroll: "Role para explorar",
+      titleBlock: {
+        availability: "Disponibilidade",
+        availabilityValue: "Aberto a novos projetos",
+        base: "Base",
+        languages: "Idiomas",
+        focus: "Foco",
+        focusValue: "React · Next.js · Node.js",
+      },
       subtitle:
         "Desenvolvo aplicações web com React, Next.js, TypeScript e Node.js, do front-end à integração com APIs e bancos de dados. Mais de 6 anos em tecnologia, com foco em código bem estruturado, performance e boa experiência de uso.",
       ctaProjects: "Ver projetos",
@@ -147,6 +164,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "Gosto de transformar problemas em soluções simples, eficientes e bem estruturadas, sempre buscando escrever código de qualidade e evoluir tecnicamente.",
       ],
       statsLabels: ["Anos em tecnologia", "Tecnologias", "Projetos em destaque"],
+      specTitle: "Ficha técnica",
+      specs: [
+        { label: "Nome", value: "Thiago Servoli da Silva" },
+        { label: "Função", value: "Desenvolvedor Full Stack" },
+        { label: "Base", value: "São Paulo — SP, Brasil" },
+        { label: "Experiência", value: "6+ anos em tecnologia" },
+        { label: "Idiomas", value: "Português (nativo) · Inglês (fluente)" },
+        { label: "Especialidade", value: "Front-end — React, Next.js, TypeScript" },
+        { label: "Em expansão", value: "Back-end — Node.js, Python, APIs, Docker" },
+      ],
+      pillars: ["Stack", "Trajetória", "Abordagem"],
     },
     stack: {
       eyebrow: "Stack",
@@ -183,10 +211,30 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: "Trajetória",
       title: "Trajetória profissional",
       items: [
-        { title: "Formação Técnica em Tecnologia da Informação", place: "Senac Brasil" },
-        { title: "Tecnologia em Análise e Desenvolvimento de Sistemas", place: "Impacta Tecnologia" },
-        { title: "Desenvolvimento Web", place: "Experiência profissional" },
-        { title: "Atuação como Desenvolvedor Full Stack", place: null },
+        {
+          title: "Formação Técnica em Tecnologia da Informação",
+          place: "Senac Brasil",
+          focus: "Base técnica em Tecnologia da Informação — o ponto de partida na área.",
+          tags: ["Tecnologia da Informação", "Lógica de programação"],
+        },
+        {
+          title: "Tecnologia em Análise e Desenvolvimento de Sistemas",
+          place: "Impacta Tecnologia",
+          focus: "Graduação tecnológica com foco em engenharia de software, banco de dados e desenvolvimento de sistemas.",
+          tags: ["Engenharia de Software", "SQL", "POO"],
+        },
+        {
+          title: "Desenvolvimento Web",
+          place: "Experiência profissional",
+          focus: "Atuação profissional em desenvolvimento web, com foco em front-end: interfaces responsivas, performance e experiência do usuário.",
+          tags: ["HTML5", "CSS3", "JavaScript", "React"],
+        },
+        {
+          title: "Atuação como Desenvolvedor Full Stack",
+          place: null,
+          focus: "Ampliando a atuação para back-end e arquitetura de aplicações.",
+          tags: ["Next.js", "Node.js", "Python", "Docker"],
+        },
       ],
     },
     education: {
@@ -246,6 +294,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       role: "Desenvolvedor Full Stack",
       location: "São Paulo - SP, Brasil",
     },
+    avatar: {
+      inicio: "Oi! Esse sou eu, em versão ilustrada.",
+      sobre: "Um pouco sobre mim.",
+      stack: "Minhas ferramentas do dia a dia.",
+      projetos: "Dá uma olhada nesses projetos!",
+      trajetoria: "Vem comigo pela minha trajetória.",
+      formacao: "Estudar faz parte do trabalho.",
+      contato: "Bora conversar?",
+    },
   },
   en: {
     meta: { localeName: "English", htmlLang: "en" },
@@ -270,8 +327,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       languageLabel: "Language",
     },
     hero: {
-      available: "Available for new projects",
-      scroll: "Scroll to explore",
+      titleBlock: {
+        availability: "Availability",
+        availabilityValue: "Open to new projects",
+        base: "Based in",
+        languages: "Languages",
+        focus: "Focus",
+        focusValue: "React · Next.js · Node.js",
+      },
       subtitle:
         "I build web applications with React, Next.js, TypeScript and Node.js, from the front end to API and database integration. Over 6 years in technology, focused on well-structured code, performance and a good user experience.",
       ctaProjects: "View projects",
@@ -292,6 +355,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "I enjoy turning problems into simple, efficient and well-structured solutions, always striving to write quality code and grow technically.",
       ],
       statsLabels: ["Years in technology", "Technologies", "Featured projects"],
+      specTitle: "Spec sheet",
+      specs: [
+        { label: "Name", value: "Thiago Servoli da Silva" },
+        { label: "Role", value: "Full Stack Developer" },
+        { label: "Based in", value: "São Paulo — SP, Brazil" },
+        { label: "Experience", value: "6+ years in technology" },
+        { label: "Languages", value: "Portuguese (native) · English (fluent)" },
+        { label: "Specialty", value: "Front-end — React, Next.js, TypeScript" },
+        { label: "Expanding into", value: "Back-end — Node.js, Python, APIs, Docker" },
+      ],
+      pillars: ["Stack", "Path", "Approach"],
     },
     stack: {
       eyebrow: "Stack",
@@ -327,10 +401,30 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: "Journey",
       title: "Career path",
       items: [
-        { title: "Technical Degree in Information Technology", place: "Senac Brasil" },
-        { title: "Associate Degree in Systems Analysis and Development", place: "Impacta Tecnologia" },
-        { title: "Web Development", place: "Professional experience" },
-        { title: "Working as a Full Stack Developer", place: null },
+        {
+          title: "Technical Degree in Information Technology",
+          place: "Senac Brasil",
+          focus: "Technical foundation in Information Technology — where it all started.",
+          tags: ["Information Technology", "Programming logic"],
+        },
+        {
+          title: "Associate Degree in Systems Analysis and Development",
+          place: "Impacta Tecnologia",
+          focus: "Technology degree focused on software engineering, databases and systems development.",
+          tags: ["Software Engineering", "SQL", "OOP"],
+        },
+        {
+          title: "Web Development",
+          place: "Professional experience",
+          focus: "Professional web development work, focused on the front end: responsive interfaces, performance and user experience.",
+          tags: ["HTML5", "CSS3", "JavaScript", "React"],
+        },
+        {
+          title: "Working as a Full Stack Developer",
+          place: null,
+          focus: "Expanding into back-end and application architecture.",
+          tags: ["Next.js", "Node.js", "Python", "Docker"],
+        },
       ],
     },
     education: {
@@ -390,6 +484,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       role: "Full Stack Developer",
       location: "São Paulo - SP, Brazil",
     },
+    avatar: {
+      inicio: "Hi! That's me, illustrated.",
+      sobre: "A little about me.",
+      stack: "My everyday tools.",
+      projetos: "Take a look at these projects!",
+      trajetoria: "Walk with me through my path.",
+      formacao: "Learning is part of the job.",
+      contato: "Shall we talk?",
+    },
   },
   es: {
     meta: { localeName: "Español", htmlLang: "es" },
@@ -414,8 +517,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       languageLabel: "Idioma",
     },
     hero: {
-      available: "Disponible para nuevos proyectos",
-      scroll: "Desplázate para explorar",
+      titleBlock: {
+        availability: "Disponibilidad",
+        availabilityValue: "Abierto a nuevos proyectos",
+        base: "Base",
+        languages: "Idiomas",
+        focus: "Enfoque",
+        focusValue: "React · Next.js · Node.js",
+      },
       subtitle:
         "Desarrollo aplicaciones web con React, Next.js, TypeScript y Node.js, desde el front-end hasta la integración con APIs y bases de datos. Más de 6 años en tecnología, con foco en código bien estructurado, rendimiento y una buena experiencia de uso.",
       ctaProjects: "Ver proyectos",
@@ -436,6 +545,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "Me gusta transformar problemas en soluciones simples, eficientes y bien estructuradas, siempre buscando escribir código de calidad y evolucionar técnicamente.",
       ],
       statsLabels: ["Años en tecnología", "Tecnologías", "Proyectos destacados"],
+      specTitle: "Ficha técnica",
+      specs: [
+        { label: "Nombre", value: "Thiago Servoli da Silva" },
+        { label: "Rol", value: "Desarrollador Full Stack" },
+        { label: "Base", value: "São Paulo — SP, Brasil" },
+        { label: "Experiencia", value: "6+ años en tecnología" },
+        { label: "Idiomas", value: "Portugués (nativo) · Inglés (fluido)" },
+        { label: "Especialidad", value: "Front-end — React, Next.js, TypeScript" },
+        { label: "En expansión", value: "Back-end — Node.js, Python, APIs, Docker" },
+      ],
+      pillars: ["Stack", "Trayectoria", "Enfoque"],
     },
     stack: {
       eyebrow: "Stack",
@@ -471,10 +591,30 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: "Trayectoria",
       title: "Trayectoria profesional",
       items: [
-        { title: "Formación Técnica en Tecnología de la Información", place: "Senac Brasil" },
-        { title: "Tecnología en Análisis y Desarrollo de Sistemas", place: "Impacta Tecnologia" },
-        { title: "Desarrollo Web", place: "Experiencia profesional" },
-        { title: "Actuación como Desarrollador Full Stack", place: null },
+        {
+          title: "Formación Técnica en Tecnología de la Información",
+          place: "Senac Brasil",
+          focus: "Base técnica en Tecnología de la Información — el punto de partida.",
+          tags: ["Tecnología de la Información", "Lógica de programación"],
+        },
+        {
+          title: "Tecnología en Análisis y Desarrollo de Sistemas",
+          place: "Impacta Tecnologia",
+          focus: "Carrera tecnológica enfocada en ingeniería de software, bases de datos y desarrollo de sistemas.",
+          tags: ["Ingeniería de Software", "SQL", "POO"],
+        },
+        {
+          title: "Desarrollo Web",
+          place: "Experiencia profesional",
+          focus: "Trabajo profesional en desarrollo web, con foco en front-end: interfaces responsivas, rendimiento y experiencia de usuario.",
+          tags: ["HTML5", "CSS3", "JavaScript", "React"],
+        },
+        {
+          title: "Actuación como Desarrollador Full Stack",
+          place: null,
+          focus: "Ampliando mi actuación hacia el back-end y la arquitectura de aplicaciones.",
+          tags: ["Next.js", "Node.js", "Python", "Docker"],
+        },
       ],
     },
     education: {
@@ -533,6 +673,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
     common: {
       role: "Desarrollador Full Stack",
       location: "São Paulo - SP, Brasil",
+    },
+    avatar: {
+      inicio: "¡Hola! Ese soy yo, en versión ilustrada.",
+      sobre: "Un poco sobre mí.",
+      stack: "Mis herramientas del día a día.",
+      projetos: "¡Échale un vistazo a estos proyectos!",
+      trajetoria: "Acompáñame por mi trayectoria.",
+      formacao: "Estudiar es parte del trabajo.",
+      contato: "¿Hablamos?",
     },
   },
 };

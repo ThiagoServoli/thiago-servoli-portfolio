@@ -1,9 +1,10 @@
 "use client";
 
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { profile } from "@/data/profile";
 import ButtonLink from "@/components/ButtonLink";
-import Avatar3D from "@/components/Avatar3D";
+import PhotoCard from "@/components/PhotoCard";
+import { DimensionLine, RegistrationMark, SectionCallout } from "@/components/Blueprint";
 import { useLanguage } from "@/context/LanguageContext";
 
 /** Atraso escalonado da animação de entrada (CSS puro, roda já na primeira pintura) */
@@ -11,80 +12,105 @@ const stagger = (i: number) => ({ animationDelay: `${120 + i * 110}ms` });
 
 export default function Hero() {
   const { t } = useLanguage();
+  const tb = t.hero.titleBlock;
+
+  const cells = [
+    {
+      label: tb.availability,
+      value: (
+        <span className="flex items-center gap-2">
+          <span className="relative flex h-2 w-2" aria-hidden="true">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+          </span>
+          {tb.availabilityValue}
+        </span>
+      ),
+    },
+    { label: tb.base, value: t.common.location },
+    { label: tb.languages, value: t.hero.languages.map((l) => `${l.name} · ${l.level}`).join(" / ") },
+    { label: tb.focus, value: tb.focusValue },
+  ];
 
   return (
-    <section id="inicio" className="relative overflow-hidden px-6 pb-24 pt-32 lg:px-10 lg:pb-32 lg:pt-36">
+    <section id="inicio" className="relative overflow-hidden px-6 pb-16 pt-28 lg:px-10 lg:pt-32">
       <div className="bg-glow pointer-events-none absolute inset-0" aria-hidden="true" />
-      <div className="bg-dots pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative mx-auto grid max-w-content items-center gap-20 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
-        <div>
-          <p
-            className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-card/70 px-3.5 py-1.5 text-sm font-semibold text-accent animate-enter"
-            style={stagger(0)}
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-            {t.common.role}
-          </p>
+      <div className="relative mx-auto max-w-content">
+        {/* Marcas de registro e coordenadas — detalhes de prancha técnica */}
+        <RegistrationMark className="absolute -left-3 -top-3 hidden lg:block" />
+        <RegistrationMark className="absolute -right-3 -top-3 hidden lg:block" />
+        <p className="absolute right-6 top-0 hidden text-[11px] font-semibold tracking-[0.2em] text-fg4 lg:block">
+          23°33′S · 46°38′W
+        </p>
 
-          <h1
-            className="mt-6 text-5xl font-bold leading-[1.02] tracking-tight text-fg animate-enter sm:text-6xl lg:text-[5.25rem]"
-            style={stagger(1)}
-          >
-            Thiago
-            <br />
-            <span className="bg-gradient-to-r from-navy via-[#2f2fc4] to-[#4f7dff] bg-clip-text text-transparent dark:from-[#a3a5ff] dark:via-[#8c9bff] dark:to-[#7fb0ff]">
-              Servoli
-            </span>
-          </h1>
+        <div className="grid items-center gap-20 pt-6 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+          <div>
+            <p
+              className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-accent animate-enter"
+              style={stagger(0)}
+            >
+              <SectionCallout index="01" />
+              {t.common.role}
+            </p>
 
-          <p className="mt-7 max-w-xl text-lg leading-relaxed text-fg2 animate-enter" style={stagger(2)}>
-            {t.hero.subtitle}
-          </p>
+            <div className="mt-7 w-fit animate-enter" style={stagger(1)}>
+              <h1 className="text-5xl font-bold leading-[1.02] tracking-tight text-fg sm:text-6xl lg:text-[5.25rem]">
+                Thiago
+                <br />
+                <span className="text-accent">Servoli</span>
+              </h1>
+              <DimensionLine className="mt-4">
+                {profile.stats[0].value}
+                {profile.stats[0].suffix} {t.about.statsLabels[0]}
+              </DimensionLine>
+            </div>
 
-          <ul
-            className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[15px] text-fg3 animate-enter"
-            style={stagger(3)}
-          >
-            <li className="flex items-center gap-1.5">
-              <MapPin size={16} aria-hidden="true" />
-              {t.common.location}
-            </li>
-            {t.hero.languages.map((lang) => (
-              <li key={lang.name}>
-                {lang.name} <span className="text-fg4">· {lang.level}</span>
-              </li>
-            ))}
-          </ul>
+            <p className="mt-7 max-w-xl text-lg leading-relaxed text-fg2 animate-enter" style={stagger(2)}>
+              {t.hero.subtitle}
+            </p>
 
-          <div className="mt-10 flex flex-wrap gap-3 animate-enter" style={stagger(4)}>
-            <ButtonLink href="#projetos" className="group">
-              {t.hero.ctaProjects}
-              <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
-            </ButtonLink>
-            <ButtonLink href="#contato" variant="secondary">
-              {t.hero.ctaContact}
-            </ButtonLink>
+            <div className="mt-10 flex flex-wrap gap-3 animate-enter" style={stagger(3)}>
+              <ButtonLink href="#projetos" className="group">
+                {t.hero.ctaProjects}
+                <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
+              </ButtonLink>
+              <ButtonLink href="#contato" variant="secondary">
+                {t.hero.ctaContact}
+              </ButtonLink>
+            </div>
+          </div>
+
+          <div className="relative animate-enter" style={stagger(2)}>
+            <PhotoCard alt={t.hero.photoAlt.replace("{name}", profile.displayName)} />
+            {/* Ponto de pouso do avatar: em frente ao canto da foto */}
+            <div
+              data-avatar-slot="inicio"
+              className="absolute -bottom-10 right-0 hidden h-[140px] w-[112px] lg:block xl:-right-6"
+              aria-hidden="true"
+            />
           </div>
         </div>
 
-        <div className="animate-enter" style={stagger(2)}>
-          <Avatar3D
-            alt={t.hero.photoAlt.replace("{name}", profile.displayName)}
-            availableLabel={t.hero.available}
-          />
-        </div>
+        {/* Legenda técnica (carimbo de prancha) */}
+        <dl
+          className="mt-24 grid grid-cols-1 gap-px border border-line/15 bg-line/15 animate-enter sm:grid-cols-2 lg:grid-cols-4"
+          style={stagger(5)}
+        >
+          {cells.map((cell, i) => (
+            <div
+              key={cell.label}
+              className="flex flex-col-reverse gap-1 bg-card px-5 py-4"
+            >
+              <dd className="text-[15px] font-semibold text-fg">{cell.value}</dd>
+              <dt className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-fg4">
+                {cell.label}
+                <span className="tabular-nums">A{i + 1}</span>
+              </dt>
+            </div>
+          ))}
+        </dl>
       </div>
-
-      <a
-        href="#sobre"
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-fg3 transition-colors hover:text-accent lg:flex"
-      >
-        <span className="flex h-9 w-5 justify-center rounded-full border-2 border-current pt-1.5" aria-hidden="true">
-          <span className="h-2 w-1 rounded-full bg-current animate-scroll-dot" />
-        </span>
-        {t.hero.scroll}
-      </a>
     </section>
   );
 }

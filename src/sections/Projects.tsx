@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Github } from "lucide-react";
 import { projects } from "@/data/projects";
 import Reveal from "@/components/Reveal";
+import { DimensionLine } from "@/components/Blueprint";
 import SectionHeading from "@/components/SectionHeading";
 import { useLanguage } from "@/context/LanguageContext";
 import type { Dictionary } from "@/i18n/translations";
@@ -30,15 +31,13 @@ function BrowserMockup({ project }: { project: (typeof projects)[number] }) {
   const host = project.liveUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
   return (
-    <div className="relative rounded-2xl bg-gradient-to-br from-navy via-[#22229e] to-[#3d5bd9] p-5 sm:p-8">
-      <div
-        className="pointer-events-none absolute inset-0 rounded-2xl"
-        style={{
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-        }}
-        aria-hidden="true"
-      />
+    <div className="relative rounded-2xl bg-gradient-to-br from-navy via-[#22229e] to-[#3d5bd9] p-5 pb-4 sm:p-8 sm:pb-5">
+      {/* Linhas de construção no painel */}
+      <svg className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
+        <line x1="0" y1="50%" x2="100%" y2="50%" stroke="rgba(255,255,255,0.14)" strokeDasharray="14 4 2 4" />
+        <line x1="50%" y1="0" x2="50%" y2="100%" stroke="rgba(255,255,255,0.14)" strokeDasharray="14 4 2 4" />
+        <circle cx="50%" cy="50%" r="42%" fill="none" stroke="rgba(255,255,255,0.1)" />
+      </svg>
       <div
         ref={ref}
         onMouseMove={onMove}
@@ -63,6 +62,9 @@ function BrowserMockup({ project }: { project: (typeof projects)[number] }) {
           className="block h-auto w-full"
         />
       </div>
+      <DimensionLine tone="light" className="relative mt-4">
+        {project.imageWidth} × {project.imageHeight} px
+      </DimensionLine>
     </div>
   );
 }
@@ -162,9 +164,12 @@ export default function Projects() {
   return (
     <section id="projetos" className="relative px-6 py-28 lg:px-10">
       <div className="mx-auto max-w-content">
-        <Reveal>
-          <SectionHeading eyebrow={t.projects.eyebrow} title={t.projects.title} />
-        </Reveal>
+        <div className="flex items-end justify-between gap-8">
+          <Reveal>
+            <SectionHeading index="04" eyebrow={t.projects.eyebrow} title={t.projects.title} />
+          </Reveal>
+          <div data-avatar-slot="projetos" className="hidden h-[140px] w-[112px] shrink-0 lg:block" aria-hidden="true" />
+        </div>
 
         <div className="mt-16 space-y-24">
           {projects.map((project, index) => (

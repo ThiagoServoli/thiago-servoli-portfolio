@@ -15,9 +15,12 @@ export default function Stack() {
   return (
     <section id="stack" className="relative bg-surface px-6 py-28 lg:px-10">
       <div className="mx-auto max-w-content">
-        <Reveal>
-          <SectionHeading eyebrow={t.stack.eyebrow} title={t.stack.title} />
-        </Reveal>
+        <div className="flex items-end justify-between gap-8">
+          <Reveal>
+            <SectionHeading index="03" eyebrow={t.stack.eyebrow} title={t.stack.title} />
+          </Reveal>
+          <div data-avatar-slot="stack" className="hidden h-[140px] w-[112px] shrink-0 lg:block" aria-hidden="true" />
+        </div>
 
         <div className="mt-14 space-y-12">
           {categories.map((category) => {

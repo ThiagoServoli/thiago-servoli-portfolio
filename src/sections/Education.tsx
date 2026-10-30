@@ -13,7 +13,7 @@ export default function Education() {
     <section id="formacao" className="px-6 py-28 lg:px-10">
       <div className="mx-auto grid max-w-content gap-16 lg:grid-cols-2 lg:gap-16">
         <Reveal direction="left">
-          <SectionHeading eyebrow={t.education.eyebrowEducation} title={t.education.titleEducation} />
+          <SectionHeading index="06" eyebrow={t.education.eyebrowEducation} title={t.education.titleEducation} />
 
           <div className="mt-10 space-y-4">
             {education.map((item, i) => {
@@ -46,7 +46,7 @@ export default function Education() {
         </Reveal>
 
         <Reveal direction="right" delay={80}>
-          <SectionHeading eyebrow={t.education.eyebrowCerts} title={t.education.titleCerts} />
+          <SectionHeading index="06" eyebrow={t.education.eyebrowCerts} title={t.education.titleCerts} />
 
           <div className="mt-10 space-y-4">
             {certifications.map((cert, i) => {
@@ -65,6 +65,7 @@ export default function Education() {
               );
             })}
           </div>
+          <div data-avatar-slot="formacao" className="mt-10 hidden h-[140px] w-[112px] lg:block" aria-hidden="true" />
         </Reveal>
       </div>
     </section>

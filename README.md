@@ -22,28 +22,32 @@ npm run start
 
 ## O que mudou na v3
 
-- **Identidade visual**: fundo branco-azulado com azul institucional `#111184`, tipografia
-  Manrope e tema escuro opcional em azul-marinho. Todas as cores vêm de variáveis CSS em
-  `src/app/globals.css`, então os dois temas ficam consistentes (preferência salva em `theme-v2`).
-- **Avatar 3D** (`src/components/Avatar3D.tsx`): a foto em camadas com profundidade real
-  (`preserve-3d`) que gira e se afasta conforme a rolagem e inclina seguindo o mouse; um
-  mini-avatar aparece na navbar quando o hero sai da tela.
-- **Navegação e rolagem**: barra de progresso, link ativo na navbar, navegação lateral por
-  seções (desktop), botão de voltar ao topo, faixa animada de tecnologias, contadores,
-  timeline que se preenche com a rolagem e reveals direcionais.
-- **Stack** com os logos nas cores oficiais (`src/components/TechIcon.tsx`) e **bandeiras**
-  reais no seletor de idioma (PNGs de 1–3 KB em `public/images/flags/`).
-- **Projetos** em moldura de navegador na proporção real da captura (sem recorte/ampliação).
-- **Performance**: todas as animações usam só `transform`/`opacity`; os loops de animação
-  rodam apenas enquanto há movimento, e os fundos decorativos são estáticos. Sem GSAP,
-  sem blur animado, sem overlay de ruído, sem cursor customizado.
+- **Conceito "blueprint"**: o azul `#111184` é a cor de planta técnica, então a interface usa a
+  linguagem do desenho técnico — cotas (`DimensionLine`), linhas de centro traço-ponto, marcas de
+  registro e de corte, chamadas de seção numeradas (círculo dividido, como nas pranchas) e um
+  carimbo de prancha no hero. Primitivas em `src/components/Blueprint.tsx`.
+- **Avatar ilustrado** (`src/components/AvatarFigure.tsx`): SVG vetorial desenhado a partir da
+  foto, com giro de cabeça por paralaxe, olhar que segue o cursor, piscada, respiração e aceno.
+  O `AvatarCompanion` voa até o ponto de pouso de cada seção (`data-avatar-slot`, escala opcional
+  em `data-avatar-scale`), fala uma frase por seção (`avatar` em `translations.ts`), caminha
+  sobre a linha da Trajetória e estaciona no canto quando o ponto sai da tela. No mobile vira um
+  selo no canto; as falas aparecem ao tocar.
+- **Foto 3D** (`src/components/PhotoCard.tsx`) em camadas sobre linhas de construção.
+- **Navegação**: régua técnica lateral (telas ≥ 1440px) com uma cota por seção, link ativo na
+  navbar, mini-avatar na navbar, barra de progresso e botão de voltar ao topo.
+- **Sobre**: ficha técnica, pilares numerados e números com cotas. **Trajetória**: linha do tempo
+  horizontal fixada (desktop), com a linha de base preenchendo conforme a rolagem.
+- **Favicon** novo (monograma TS): `src/app/icon.svg`, `favicon.ico` e `apple-icon.png`.
+- **Performance**: tudo em SVG/CSS, animações só com `transform`/`opacity`, loops de
+  `requestAnimationFrame` que rodam apenas enquanto algo se move. Sem bibliotecas 3D ou de
+  animação.
 
 ## Estrutura
 
 ```
 src/
   app/            # Rotas (App Router), layout, metadata, sitemap, robots
-  components/     # Avatar3D, Reveal, ScrollProgress, SectionNav, TechMarquee, Navbar...
+  components/     # AvatarFigure, AvatarCompanion, PhotoCard, Blueprint, BlueprintRuler, Reveal...
   sections/       # Seções da home (Hero, Stack, Projetos, Trajetória...)
   data/           # Fonte única de verdade: perfil, tecnologias, projetos, formação
   hooks/          # useActiveSection, useReducedMotion

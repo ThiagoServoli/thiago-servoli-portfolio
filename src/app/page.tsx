@@ -1,7 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
-import SectionNav from "@/components/SectionNav";
+import BlueprintRuler from "@/components/BlueprintRuler";
+import AvatarCompanion from "@/components/AvatarCompanion";
 import TechMarquee from "@/components/TechMarquee";
 import Hero from "@/sections/Hero";
 import About from "@/sections/About";
@@ -16,7 +17,8 @@ export default function Home() {
     <>
       <ScrollProgress />
       <Navbar />
-      <SectionNav />
+      <BlueprintRuler />
+      <AvatarCompanion />
       <main id="conteudo-principal">
         <Hero />
         <TechMarquee />

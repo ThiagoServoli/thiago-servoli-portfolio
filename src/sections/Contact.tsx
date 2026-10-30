@@ -4,6 +4,7 @@ import { Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "@/data/profile";
 import { buildMailto } from "@/lib/utils";
 import Reveal from "@/components/Reveal";
+import { CropMarks, SectionCallout } from "@/components/Blueprint";
 import ButtonLink from "@/components/ButtonLink";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -17,26 +18,26 @@ export default function Contact() {
         className="relative mx-auto max-w-content overflow-hidden rounded-3xl bg-gradient-to-br from-navy via-[#191999] to-[#2b3fc0] px-8 py-16 text-white sm:px-14 sm:py-20"
       >
         {/* Elementos decorativos estáticos */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage: "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
-            backgroundSize: "22px 22px",
-            maskImage: "linear-gradient(90deg, transparent 30%, #000)",
-          }}
+        <svg
+          viewBox="0 0 600 600"
+          className="pointer-events-none absolute -right-40 top-1/2 aspect-square h-[150%] -translate-y-1/2 overflow-visible"
           aria-hidden="true"
-        />
+        >
+          <circle cx="300" cy="300" r="140" fill="none" stroke="rgba(255,255,255,0.12)" />
+          <circle cx="300" cy="300" r="210" fill="none" stroke="rgba(255,255,255,0.09)" />
+          <circle cx="300" cy="300" r="280" fill="none" stroke="rgba(255,255,255,0.12)" strokeDasharray="14 4 2 4" />
+          <path d="M-400 300 H600 M300 0 V600" stroke="rgba(255,255,255,0.12)" strokeDasharray="14 4 2 4" />
+        </svg>
+        <CropMarks className="text-white/40" inset={16} />
         <div
-          className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full border-[40px] border-white/[0.06]"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -bottom-32 right-40 h-64 w-64 rounded-full border border-white/10 animate-spin-slow"
+          data-avatar-slot="contato"
+          className="absolute bottom-0 right-16 hidden h-[140px] w-[112px] lg:block"
           aria-hidden="true"
         />
 
         <div className="relative">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-white/70">
+          <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-white/80">
+            <SectionCallout index="07" tone="light" />
             {t.contact.eyebrow}
           </p>
           <h2 className="mt-4 max-w-2xl text-4xl font-bold leading-tight tracking-tight text-balance sm:text-5xl">
