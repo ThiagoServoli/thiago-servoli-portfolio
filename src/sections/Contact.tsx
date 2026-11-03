@@ -14,7 +14,7 @@ import { useLanguage } from "@/context/LanguageContext";
 // hidratação inicial (menos trabalho no celular ao abrir o site)
 const ContactForm = dynamic(() => import("@/components/ContactForm"), {
   ssr: false,
-  loading: () => <div className="h-[46rem] rounded-2xl border border-white/15 bg-white/[0.06]" aria-hidden="true" />,
+  loading: () => <div className="h-[46rem] rounded-2xl bg-white" aria-hidden="true" />,
 });
 
 export default function Contact() {
@@ -74,6 +74,31 @@ export default function Contact() {
                     {t.contact.github}
                   </ButtonLink>
                 )}
+              </div>
+
+              {/* Como funciona: o que acontece depois do contato */}
+              <div className="mt-14">
+                <p className="flex items-center gap-3 text-sm font-semibold text-white/85">
+                  <span className="relative flex h-2 w-2" aria-hidden="true">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                  </span>
+                  {t.contact.availability}
+                </p>
+                <p className="mt-10 text-xs font-bold uppercase tracking-[0.22em] text-white/70">{t.contact.stepsTitle}</p>
+                <ol className="mt-2">
+                  {t.contact.steps.map((step, i) => (
+                    <li key={step.title} className="grid grid-cols-[2.5rem_1fr] gap-x-2 border-b border-white/15 py-5 last:border-b-0">
+                      <span className="text-xs font-bold tabular-nums text-white/60">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span>
+                        <span className="block text-[17px] font-bold">{step.title}</span>
+                        <span className="mt-1 block text-[15px] leading-relaxed text-white/75">{step.text}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
               </div>
             </div>
 

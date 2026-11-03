@@ -104,6 +104,9 @@ export interface Dictionary {
     clickNote: string;
     clickCta: string;
     cv: string;
+    availability: string;
+    stepsTitle: string;
+    steps: { title: string; text: string }[];
     form: ContactLabels & {
       title: string;
       optional: string;
@@ -410,6 +413,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clickNote: "Precisa de software para a sua empresa?",
       clickCta: "Fale com a Click.",
       cv: "Baixar currículo",
+      availability: "Aberto a vagas, projetos freelance e parcerias",
+      stepsTitle: "Como funciona",
+      steps: [
+        { title: "Você envia a mensagem", text: "Pelo formulário, por e-mail ou pelo WhatsApp. Ela chega direto para mim." },
+        { title: "Eu respondo em até um dia útil", text: "Pelo canal que você preferir, com as perguntas certas para entender o contexto." },
+        { title: "Definimos o próximo passo", text: "Uma conversa rápida, uma proposta ou uma indicação, se outro caminho fizer mais sentido." },
+      ],
       form: {
         title: "Mande uma mensagem",
         optional: "opcional",
@@ -732,6 +742,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clickNote: "Need software for your company?",
       clickCta: "Talk to Click.",
       cv: "Download resume",
+      availability: "Open to jobs, freelance projects and partnerships",
+      stepsTitle: "How it works",
+      steps: [
+        { title: "You send a message", text: "Through the form, by email or on WhatsApp. It comes straight to me." },
+        { title: "I reply within one business day", text: "On the channel you prefer, with the right questions to understand the context." },
+        { title: "We agree on the next step", text: "A quick call, a proposal or a referral, if another path makes more sense." },
+      ],
       form: {
         title: "Send a message",
         optional: "optional",
@@ -1054,6 +1071,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clickNote: "¿Necesitas software para tu empresa?",
       clickCta: "Habla con Click.",
       cv: "Descargar currículum",
+      availability: "Abierto a vacantes, proyectos freelance y alianzas",
+      stepsTitle: "Cómo funciona",
+      steps: [
+        { title: "Envías el mensaje", text: "Por el formulario, por correo o por WhatsApp. Me llega directamente." },
+        { title: "Respondo en un día hábil", text: "Por el canal que prefieras, con las preguntas correctas para entender el contexto." },
+        { title: "Definimos el siguiente paso", text: "Una conversación rápida, una propuesta o una recomendación, si otro camino tiene más sentido." },
+      ],
       form: {
         title: "Envía un mensaje",
         optional: "opcional",

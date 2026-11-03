@@ -46,8 +46,9 @@ const EMPTY: Values = {
   message: "",
 };
 
+// Cartão branco fixo (não muda com o tema): tons de azul-marinho sobre branco
 const control =
-  "w-full rounded-lg border bg-white/[0.07] px-4 py-3 text-[15px] text-white placeholder:text-white/40 transition-colors focus:bg-white/[0.1] focus:outline-none";
+  "w-full rounded-lg border bg-[#f4f6fc] px-4 py-3 text-[15px] text-[#0e102e] placeholder:text-[#7a7f9e] transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#111184]/15";
 
 function Field({
   id,
@@ -66,13 +67,13 @@ function Field({
 }) {
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 flex items-baseline gap-2 text-[13px] font-semibold text-white/85">
+      <label htmlFor={id} className="mb-1.5 flex items-baseline gap-2 text-[13px] font-semibold text-[#343858]">
         {label}
-        {optional && <span className="text-[11px] font-medium text-white/50">({optional})</span>}
+        {optional && <span className="text-[11px] font-medium text-[#646988]">({optional})</span>}
       </label>
       {children}
       {error && (
-        <p id={`${id}-error`} className="mt-1.5 text-[13px] text-rose-200">
+        <p id={`${id}-error`} className="mt-1.5 text-[13px] text-rose-700">
           {error}
         </p>
       )}
@@ -129,7 +130,7 @@ export default function ContactForm() {
       ? { "aria-invalid": true as const, "aria-describedby": `contato-${field}-error` }
       : {};
   const border = (field: ContactField) =>
-    errors.has(field) ? "border-rose-300/80 focus:border-rose-200" : "border-white/20 focus:border-white/60";
+    errors.has(field) ? "border-rose-500 focus:border-rose-600" : "border-[#dfe3f2] focus:border-[#111184]";
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -171,10 +172,10 @@ export default function ContactForm() {
   if (status === "success") {
     return (
       <div
-        className="flex h-full flex-col items-start justify-center gap-4 rounded-2xl border border-white/15 bg-white/[0.06] p-8"
+        className="flex h-full min-h-[20rem] flex-col items-start justify-center gap-4 rounded-2xl bg-white p-8 text-[#0e102e] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.6)]"
         role="status"
       >
-        <CheckCircle2 size={28} className="text-emerald-300" aria-hidden="true" />
+        <CheckCircle2 size={28} className="text-emerald-600" aria-hidden="true" />
         <p className="text-lg font-semibold">{f.success}</p>
       </div>
     );
@@ -193,10 +194,10 @@ export default function ContactForm() {
       ref={formRef}
       onSubmit={onSubmit}
       noValidate
-      className="rounded-2xl border border-white/15 bg-white/[0.06] p-6 sm:p-8"
+      className="rounded-2xl bg-white p-6 text-[#0e102e] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.6)] sm:p-8"
       aria-label={f.title}
     >
-      <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/70">{f.title}</p>
+      <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#111184]">{f.title}</p>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
         <Field id="contato-name" label={f.name} error={errorText("name")}>
@@ -275,7 +276,7 @@ export default function ContactForm() {
                 control,
                 border("subject"),
                 "appearance-none pr-10 [&_option]:text-[#0e102e]",
-                values.subject === "" && "text-white/50"
+                values.subject === "" && "text-[#7a7f9e]"
               )}
               {...invalid("subject")}
             >
@@ -290,7 +291,7 @@ export default function ContactForm() {
             </select>
             <ChevronDown
               size={16}
-              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-white/60"
+              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#646988]"
               aria-hidden="true"
             />
           </div>
@@ -308,7 +309,7 @@ export default function ContactForm() {
                   control,
                   border("budget"),
                   "appearance-none pr-10 [&_option]:text-[#0e102e]",
-                  values.budget === "" && "text-white/50"
+                  values.budget === "" && "text-[#7a7f9e]"
                 )}
               >
                 <option value="">{f.budgetPlaceholder}</option>
@@ -320,7 +321,7 @@ export default function ContactForm() {
               </select>
               <ChevronDown
                 size={16}
-                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-white/60"
+                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#646988]"
                 aria-hidden="true"
               />
             </div>
@@ -328,16 +329,16 @@ export default function ContactForm() {
         )}
 
         <fieldset className="sm:col-span-2">
-          <legend className="mb-1.5 text-[13px] font-semibold text-white/85">{f.preference}</legend>
+          <legend className="mb-1.5 text-[13px] font-semibold text-[#343858]">{f.preference}</legend>
           <div className="flex flex-wrap gap-2">
             {PREFERENCES.map((preference) => (
               <label
                 key={preference}
                 className={cn(
-                  "cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-white",
+                  "cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[#111184]",
                   values.preference === preference
-                    ? "border-white bg-white text-navy"
-                    : "border-white/25 text-white/80 hover:border-white/60"
+                    ? "border-[#111184] bg-[#111184] text-white"
+                    : "border-[#dfe3f2] text-[#343858] hover:border-[#111184]/50"
                 )}
               >
                 <input
@@ -368,12 +369,12 @@ export default function ContactForm() {
             aria-invalid={errors.has("message") || undefined}
             className={cn(control, border("message"), "resize-y")}
           />
-          <p id="contato-message-counter" className="mt-1.5 flex justify-between gap-4 text-[12px] text-white/60">
+          <p id="contato-message-counter" className="mt-1.5 flex justify-between gap-4 text-[12px] text-[#646988]">
             <span>{length < MESSAGE_MIN ? f.minHint.replace("{min}", String(MESSAGE_MIN)) : ""}</span>
             <span
               className={cn(
                 "tabular-nums",
-                length >= CONTACT_LIMITS.message * 0.9 && "text-amber-200",
+                length >= CONTACT_LIMITS.message * 0.9 && "text-amber-700",
                 length >= CONTACT_LIMITS.message && "font-bold"
               )}
             >
@@ -398,7 +399,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex items-center gap-2 rounded-md bg-white px-6 py-3 text-[15px] font-semibold text-navy transition-colors hover:bg-white/90 disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-md bg-[#111184] px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[#0d0d66] disabled:opacity-60"
         >
           <Send size={16} aria-hidden="true" />
           {status === "sending" ? f.sending : f.send}
@@ -415,14 +416,14 @@ export default function ContactForm() {
           </a>
         )}
       </div>
-      <p className="mt-3 text-sm text-white/85" role="status" aria-live="polite">
+      <p className="mt-3 text-sm text-[#343858]" role="status" aria-live="polite">
         {status === "error" && f.error}
         {status === "unavailable" && f.unavailable}
         {status === "captcha" && f.captcha}
       </p>
 
       {recaptchaEnabled && (
-        <p className="mt-4 text-[12px] leading-relaxed text-white/55">
+        <p className="mt-4 text-[12px] leading-relaxed text-[#646988]">
           {privacyText}
           <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">
             {f.privacy}
