@@ -4,6 +4,7 @@ import { education } from "@/data/education";
 import { certifications } from "@/data/certifications";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import { chapterNumber } from "@/data/chapters";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Education() {
@@ -13,7 +14,7 @@ export default function Education() {
     <section id="formacao" className="px-6 py-28 lg:px-10">
       <div className="mx-auto grid max-w-content gap-16 lg:grid-cols-2 lg:gap-16">
         <Reveal direction="left">
-          <SectionHeading index="06" eyebrow={t.education.eyebrowEducation} title={t.education.titleEducation} />
+          <SectionHeading index={`${chapterNumber("formacao")}.1`} eyebrow={t.education.eyebrowEducation} title={t.education.titleEducation} />
 
           <div className="mt-10 space-y-4">
             {education.map((item, i) => {
@@ -32,21 +33,10 @@ export default function Education() {
               );
             })}
           </div>
-
-          <ul className="mt-8 flex flex-wrap gap-2">
-            {t.education.knowledgeAreas.map((area) => (
-              <li
-                key={area}
-                className="rounded-md border border-line/10 bg-card px-3 py-1 text-sm text-fg2"
-              >
-                {area}
-              </li>
-            ))}
-          </ul>
         </Reveal>
 
         <Reveal direction="right" delay={80}>
-          <SectionHeading index="06" eyebrow={t.education.eyebrowCerts} title={t.education.titleCerts} />
+          <SectionHeading index={`${chapterNumber("formacao")}.2`} eyebrow={t.education.eyebrowCerts} title={t.education.titleCerts} />
 
           <div className="mt-10 space-y-4">
             {certifications.map((cert, i) => {
@@ -65,7 +55,6 @@ export default function Education() {
               );
             })}
           </div>
-          <div data-avatar-slot="formacao" className="mt-10 hidden h-[140px] w-[112px] lg:block" aria-hidden="true" />
         </Reveal>
       </div>
     </section>

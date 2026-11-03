@@ -11,6 +11,8 @@ import {
   SiPostgresql,
   SiGit,
   SiDocker,
+  SiFastapi,
+  SiGithub,
 } from "react-icons/si";
 import { Database, Webhook } from "lucide-react";
 
@@ -29,10 +31,12 @@ export const techBrands: Record<string, TechBrand> = {
   "Next.js": { icon: <SiNextdotjs />, color: "currentColor" },
   "Node.js": { icon: <SiNodedotjs />, color: "#5FA04E" },
   Python: { icon: <SiPython />, color: "#3776AB" },
+  FastAPI: { icon: <SiFastapi />, color: "#009688" },
   SQL: { icon: <Database size="1em" />, color: "#00758F" },
   PostgreSQL: { icon: <SiPostgresql />, color: "#4169E1" },
   "APIs REST": { icon: <Webhook size="1em" />, color: "#FF6C37" },
   Git: { icon: <SiGit />, color: "#F05032" },
+  GitHub: { icon: <SiGithub />, color: "currentColor" },
   Docker: { icon: <SiDocker />, color: "#2496ED" },
 };
 

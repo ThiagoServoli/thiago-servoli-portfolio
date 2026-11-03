@@ -1,6 +1,3 @@
-import { cn } from "@/lib/utils";
-import { SectionCallout } from "@/components/Blueprint";
-
 interface SectionHeadingProps {
   index: string;
   eyebrow: string;
@@ -8,18 +5,19 @@ interface SectionHeadingProps {
   className?: string;
 }
 
+/**
+ * Abertura de capítulo no estilo editorial: número, nome do capítulo e um fio
+ * que se desenha quando o bloco é revelado (.rule-draw, ver globals.css).
+ */
 export default function SectionHeading({ index, eyebrow, title, className }: SectionHeadingProps) {
   return (
-    <div className={cn("max-w-2xl", className)}>
-      <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-accent">
-        <SectionCallout index={index} />
-        {eyebrow}
-        <span className="flex items-center" aria-hidden="true">
-          <span className="h-px w-10 bg-accent/40" />
-          <span className="h-2 w-px bg-accent/40" />
-        </span>
+    <div className={className}>
+      <p className="flex items-center gap-4 text-xs font-bold uppercase tracking-[0.22em]">
+        <span className="tabular-nums text-accent">{index}</span>
+        <span className="text-fg3">{eyebrow}</span>
+        <span className="rule-draw h-px flex-1 bg-line/15" aria-hidden="true" />
       </p>
-      <h2 className="mt-5 text-3xl font-bold leading-tight tracking-tight text-fg sm:text-[2.6rem]">
+      <h2 className="mt-6 max-w-3xl text-[2.1rem] font-bold leading-[1.08] tracking-[-0.025em] text-fg text-balance sm:text-[2.9rem]">
         {title}
       </h2>
     </div>

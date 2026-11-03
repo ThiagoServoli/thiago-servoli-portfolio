@@ -1,46 +1,37 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { dictionaries, type Dictionary, type Locale } from "@/i18n/translations";
+import { localePath, stripLocale } from "@/i18n/routing";
 
 interface LanguageContextValue {
   locale: Locale;
   setLocale: (locale: Locale) => void;
+  /** Caminho no idioma atual ("/#sobre" → "/en#sobre") */
+  href: (path?: string) => string;
   t: Dictionary;
 }
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
-const STORAGE_KEY = "locale";
-const LOCALES: Locale[] = ["pt", "en", "es"];
+/**
+ * O idioma vem da URL ("/", "/en", "/es"), então cada versão é uma página
+ * própria, indexável. Trocar de idioma navega para a mesma página no outro idioma.
+ */
+export function LanguageProvider({ locale, children }: { locale: Locale; children: ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
 
-function isLocale(value: string | null): value is Locale {
-  return !!value && (LOCALES as string[]).includes(value);
-}
+  const setLocale = (next: Locale) => {
+    if (next === locale) return;
+    router.push(localePath(next, stripLocale(pathname ?? "/")), { scroll: false });
+  };
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("pt");
-  const [hydrated, setHydrated] = useState(false);
-
-  // Mesma lógica de gate do ThemeProvider: sem "hydrated", o efeito de
-  // escrita abaixo grava o idioma padrão no localStorage antes da leitura
-  // terminar, corrompendo a preferência salva (agravado pelo StrictMode).
-  useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (isLocale(stored)) setLocaleState(stored);
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hydrated) return;
-    document.documentElement.lang = dictionaries[locale].meta.htmlLang;
-    window.localStorage.setItem(STORAGE_KEY, locale);
-  }, [locale, hydrated]);
-
-  const setLocale = (next: Locale) => setLocaleState(next);
+  const href = (path = "/") => localePath(locale, path);
 
   return (
-    <LanguageContext.Provider value={{ locale, setLocale, t: dictionaries[locale] }}>
+    <LanguageContext.Provider value={{ locale, setLocale, href, t: dictionaries[locale] }}>
       {children}
     </LanguageContext.Provider>
   );

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { profile } from "@/data/profile";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
-import { CropMarks } from "@/components/Blueprint";
+import { chapterNumber } from "@/data/chapters";
 import { useLanguage } from "@/context/LanguageContext";
 
 const DESKTOP = "(min-width: 1024px)";
@@ -15,8 +15,8 @@ export default function Journey() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
-  const slotRef = useRef<HTMLDivElement>(null);
   const total = profile.timeline.length;
+  const chapter = chapterNumber("trajetoria");
 
   /*
    * Desktop: a seção fica fixada (sticky) e a rolagem vertical desloca a trilha
@@ -28,8 +28,7 @@ export default function Journey() {
     const viewport = viewportRef.current;
     const track = trackRef.current;
     const fill = fillRef.current;
-    const slot = slotRef.current;
-    if (!section || !viewport || !track || !fill || !slot) return;
+    if (!section || !viewport || !track || !fill) return;
 
     const desktop = window.matchMedia(DESKTOP);
     let shift = 0;
@@ -57,8 +56,6 @@ export default function Journey() {
       const p = range > 0 ? Math.min(Math.max(-rect.top / range, 0), 1) : 0;
       track.style.transform = `translate3d(${-p * shift}px, 0, 0)`;
       fill.style.transform = `scaleX(${p})`;
-      // Ponto de pouso do avatar: caminha sobre a linha de base
-      slot.style.transform = `translateX(${p * track.scrollWidth}px)`;
     };
 
     const onScroll = () => {
@@ -90,26 +87,25 @@ export default function Journey() {
       <div className="px-6 py-28 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:overflow-hidden lg:px-10 lg:py-0">
         <div className="mx-auto w-full max-w-content">
           <Reveal className="flex items-end justify-between gap-8">
-            <SectionHeading index="05" eyebrow={t.journey.eyebrow} title={t.journey.title} />
+            <SectionHeading className="flex-1" index={chapter} eyebrow={t.journey.eyebrow} title={t.journey.title} />
             <p className="hidden shrink-0 text-xs font-bold uppercase tracking-[0.2em] text-fg4 lg:block">
               {profile.timeline[0].year} — {profile.timeline[total - 1].year}
             </p>
           </Reveal>
 
           {/* Janela da trilha: recorta na largura do conteúdo (o respiro lateral
-              mantém visíveis as marcas de corte dos cards) */}
+              evita cortar a borda dos cards) */}
           <div ref={viewportRef} className="mt-12 lg:-mx-4 lg:overflow-hidden lg:px-4 lg:pt-3">
             <div ref={trackRef} className="relative will-change-transform lg:w-max">
-              <ol className="flex flex-col gap-6 lg:flex-row lg:gap-8 lg:pb-[9.5rem]">
+              <ol className="flex flex-col gap-6 lg:flex-row lg:gap-8 lg:pb-20">
                 {profile.timeline.map((item, i) => {
                   const copy = t.journey.items[i];
                   return (
                     <li key={item.year} className="relative lg:w-[27rem]">
-                      <article className="relative h-full border border-line/15 bg-card p-7">
-                        <CropMarks className="text-accent/50" inset={-8} />
+                      <article className="relative h-full rounded-2xl border border-line/10 bg-card p-7 transition-colors duration-300 hover:border-accent/30">
                         <div className="flex items-center justify-between border-b border-line/10 pb-4">
                           <span className="text-xs font-bold tabular-nums tracking-[0.2em] text-accent">
-                            05.{i + 1}
+                            {chapter}.{i + 1}
                           </span>
                           <span className="text-xs font-bold tabular-nums text-fg4">
                             {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
@@ -125,7 +121,7 @@ export default function Journey() {
                           {copy.tags.map((tag) => (
                             <li
                               key={tag}
-                              className="border border-accent/20 px-2.5 py-1 text-xs font-semibold text-accent"
+                              className="rounded-md bg-accent/[0.08] px-2.5 py-1 text-xs font-semibold text-accent"
                             >
                               {tag}
                             </li>
@@ -134,7 +130,7 @@ export default function Journey() {
                       </article>
                       {/* Marco sobre a linha de base (desktop) */}
                       <span
-                        className="absolute left-7 top-[calc(100%+99px)] hidden h-4 w-4 rounded-full border-2 border-accent bg-surface lg:block"
+                        className="absolute left-7 top-[calc(100%+27px)] hidden h-4 w-4 rounded-full border-2 border-accent bg-surface lg:block"
                         aria-hidden="true"
                       />
                     </li>
@@ -146,13 +142,6 @@ export default function Journey() {
               <div className="absolute bottom-[2.75rem] left-0 right-0 hidden h-[2px] bg-line/15 lg:block" aria-hidden="true">
                 <div ref={fillRef} className="h-full origin-left bg-accent" style={{ transform: "scaleX(0)" }} />
               </div>
-              <div
-                ref={slotRef}
-                data-avatar-slot="trajetoria"
-                data-avatar-scale="0.62"
-                className="absolute bottom-[2.875rem] left-0 hidden h-[140px] w-0 lg:block"
-                aria-hidden="true"
-              />
             </div>
           </div>
         </div>

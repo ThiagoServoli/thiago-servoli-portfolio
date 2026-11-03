@@ -1,54 +1,34 @@
+import { technologies } from "@/data/technologies";
+
 export const profile = {
   name: "Thiago Servoli da Silva",
   displayName: "Thiago Servoli",
-  role: "Desenvolvedor Full Stack",
-  headline:
-    "Full Stack Developer | JavaScript | TypeScript | React | Next.js | Python | SQL | Node.js",
-  location: "São Paulo - SP, Brasil",
   email: "contatothisz@gmail.com",
-  yearsOfExperience: 6,
-  age: 25,
-  summary: [
-    "Desenvolvedor Full Stack com mais de 6 anos de experiência em tecnologia, atuando no desenvolvimento de aplicações web modernas, responsivas e escaláveis, com foco em performance, usabilidade e experiência do usuário.",
-    "Tenho experiência com HTML5, CSS3, JavaScript, TypeScript, React, Next.js, Python e SQL, além de Git para versionamento e boas práticas de desenvolvimento.",
-    "Minha trajetória é fortemente voltada ao Front-End, mas venho ampliando minha atuação para o Back-End e arquitetura de aplicações, trabalhando com tecnologias como Node.js, Python, APIs, bancos de dados e Docker.",
-    "Gosto de transformar problemas em soluções simples, eficientes e bem estruturadas, sempre buscando escrever código de qualidade e evoluir tecnicamente.",
-  ],
+  /** WhatsApp pessoal (só dígitos, com DDI): recebe as mensagens do formulário */
+  whatsapp: "5511981118056",
   socials: {
     github: "https://github.com/ThiagoServoli",
-    linkedin: "https://www.linkedin.com/in/thiagoservoli/", 
+    linkedin: "https://www.linkedin.com/in/thiagoservoli/",
     instagram: null,
   },
+  /*
+   * Valores fixos (não calculados pela data) para o HTML estático e o JS do
+   * navegador mostrarem sempre o mesmo número. Atualize a cada aniversário:
+   * tecnologia desde jul/2019, Grupo In Press desde ago/2021.
+   */
   stats: [
-    { value: 6, suffix: "+", label: "Anos em tecnologia" },
-    { value: 13, suffix: "+", label: "Tecnologias" },
-    { value: 2, suffix: "", label: "Projetos em destaque" },
+    { value: 7, suffix: "+" },
+    { value: 5, suffix: "+" },
+    { value: technologies.filter((tech) => !tech.learning).length, suffix: "" },
   ],
-  languages: [
-    { name: "Português", level: "Nativo" },
-    { name: "Inglês", level: "Fluente" },
-  ],
+  /** Marcos da trajetória; os textos de cada um ficam em translations.ts (journey.items) */
   timeline: [
-    {
-      year: "2018",
-      title: "Formação Técnica em Tecnologia da Informação",
-      place: "Senac Brasil",
-    },
-    {
-      year: "2020–2021",
-      title: "Tecnologia em Análise e Desenvolvimento de Sistemas",
-      place: "Impacta Tecnologia",
-    },
-    {
-      year: "2021+",
-      title: "Desenvolvimento Web",
-      place: "Experiência profissional",
-    },
-    {
-      year: "2026",
-      title: "Atuação como Desenvolvedor Full Stack",
-      place: null,
-    },
+    { year: "2018" },
+    { year: "2019–2020" },
+    { year: "2020–2021" },
+    { year: "2021–2026" },
+    { year: "2025" },
+    { year: "2026" },
   ],
 };
 

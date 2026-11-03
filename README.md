@@ -1,4 +1,4 @@
-# Portfólio — Thiago Servoli da Silva (v3)
+# Portfólio — Thiago Servoli da Silva (v5)
 
 Portfólio pessoal com identidade sóbria e profissional: fundo branco, azul
 institucional `#111184` e tema escuro opcional em azul-marinho. Construído com
@@ -20,55 +20,98 @@ npm run build
 npm run start
 ```
 
-## O que mudou na v3
+## O que mudou na v5
 
-- **Conceito "blueprint"**: o azul `#111184` é a cor de planta técnica, então a interface usa a
-  linguagem do desenho técnico — cotas (`DimensionLine`), linhas de centro traço-ponto, marcas de
-  registro e de corte, chamadas de seção numeradas (círculo dividido, como nas pranchas) e um
-  carimbo de prancha no hero. Primitivas em `src/components/Blueprint.tsx`.
-- **Avatar ilustrado** (`src/components/AvatarFigure.tsx`): SVG vetorial desenhado a partir da
-  foto, com giro de cabeça por paralaxe, olhar que segue o cursor, piscada, respiração e aceno.
-  O `AvatarCompanion` voa até o ponto de pouso de cada seção (`data-avatar-slot`, escala opcional
-  em `data-avatar-scale`), fala uma frase por seção (`avatar` em `translations.ts`), caminha
-  sobre a linha da Trajetória e estaciona no canto quando o ponto sai da tela. No mobile vira um
-  selo no canto; as falas aparecem ao tocar.
-- **Foto 3D** (`src/components/PhotoCard.tsx`) em camadas sobre linhas de construção.
-- **Navegação**: régua técnica lateral (telas ≥ 1440px) com uma cota por seção, link ativo na
-  navbar, mini-avatar na navbar, barra de progresso e botão de voltar ao topo.
-- **Sobre**: ficha técnica, pilares numerados e números com cotas. **Trajetória**: linha do tempo
-  horizontal fixada (desktop), com a linha de base preenchendo conforme a rolagem.
-- **Favicon** novo (monograma TS): `src/app/icon.svg`, `favicon.ico` e `apple-icon.png`.
-- **Performance**: tudo em SVG/CSS, animações só com `transform`/`opacity`, loops de
-  `requestAnimationFrame` que rodam apenas enquanto algo se move. Sem bibliotecas 3D ou de
-  animação.
+- **Idiomas com URL própria**: português na raiz (`/`, `/projects/x`), inglês em `/en` e espanhol
+  em `/es`, cada versão gerada de forma estática e com `hreflang`, canonical e sitemap por idioma.
+  As rotas ficam em `src/app/[locale]`; o `src/middleware.ts` reescreve a raiz para `pt` e
+  redireciona `/pt/...` para a versão sem prefixo. Utilitários em `src/i18n/routing.ts`.
+- **Estudos de caso**: cada projeto tem contexto, desafio, solução, resultado e galeria com
+  capturas reais (`public/images/projects/gallery`). O próprio portfólio entrou como projeto
+  full stack. Textos em `translations.ts` (`projects.items`), dados em `src/data/projects.ts`.
+- **Conteúdo**: Sobre, Hero e Trajetória reescritos a partir do currículo (inclui Araujo Abreu e
+  as duas funções no Grupo In Press); números e stack atualizados (FastAPI, GitHub, Docker como
+  "em estudo").
+- **Formulário de contato** com back-end próprio (`src/app/api/contact/route.ts`): assunto,
+  faixa de investimento (quando faz sentido), preferência de retorno, limites por campo,
+  contador na mensagem, reCAPTCHA v3, honeypot e limite por IP. Regras compartilhadas entre
+  navegador e servidor em `src/lib/contact.ts`. A mensagem chega no WhatsApp pessoal (CallMeBot)
+  e, opcionalmente, por e-mail (Resend). Configure as variáveis abaixo.
+- **Projetos**: a Click. (site feito do zero, sozinho) abre a lista, com estudo de caso e galeria.
+- **Currículo em PDF** para baixar no Hero e no Contato (`public/cv`): português na versão `pt`,
+  inglês nas versões `en` e `es`.
+- **Página 404** traduzida (`src/app/[locale]/not-found.tsx`).
+- **Imagens de compartilhamento** novas: uma por idioma e uma por projeto (`public/images/og`).
+- **Fontes via `next/font/local`** (`src/lib/fonts.ts`): Manrope pré-carregada, fontes da Click.
+  sob demanda. Contraste dos textos de apoio ajustado para o padrão AA.
+- **Lighthouse** (build de produção local): acessibilidade, boas práticas e SEO em 100 em todas
+  as páginas testadas; performance 99 no desktop e 85–87 no mobile (medido com throttling real).
+
+## Formulário de contato
+
+Defina na Vercel (Settings → Environment Variables) ou no `.env.local` (modelo em `.env.example`):
+
+1. **reCAPTCHA v3**: em https://www.google.com/recaptcha/admin crie um site do tipo **v3** com os
+   domínios `thiagoservoli.vercel.app` e `localhost`, e preencha `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`
+   e `RECAPTCHA_SECRET_KEY`. O script só carrega quando o formulário se aproxima da tela; o
+   servidor confere ação e pontuação (mínimo 0,5).
+2. **WhatsApp pessoal** (CallMeBot, gratuito): siga
+   https://www.callmebot.com/blog/free-api-whatsapp-messages/ — adicione o número do bot aos
+   contatos, envie "I allow callmebot to send me messages" e preencha `CALLMEBOT_APIKEY` com a
+   chave recebida. O número que recebe vem de `WHATSAPP_PHONE` (padrão: `profile.whatsapp`).
+3. **E-mail (opcional)**: `RESEND_API_KEY` e `CONTACT_TO` (e `CONTACT_FROM`, se tiver domínio
+   verificado no Resend).
+
+Sem nenhum canal configurado, o formulário avisa o visitante e oferece um botão que abre o
+WhatsApp com a mensagem já preenchida.
+
+## O que mudou na v4
+
+- **Conceito editorial**: o portfólio é lido como um relatório executivo. Capítulos numerados
+  (`src/data/chapters.ts` é a fonte da numeração), aberturas com fio que se desenha ao entrar na
+  tela (`.rule-draw`), nome no hero revelado linha a linha (`.line-mask` + `animate-line-up`),
+  sumário clicável no hero, legendas de figura nos projetos e um cabeço corrido com o capítulo
+  atual (`ChapterIndicator`, telas ≥ 1440px). Substitui a linguagem de régua/cotas/coordenadas.
+- **Click.** (`src/sections/ClickVenture.tsx`): seção da consultoria da qual sou Fundador e CEO,
+  seguindo o manual de identidade v1.0 — carvão/creme/areia/laranja (`click.*` no Tailwind),
+  Unbounded nos títulos, Geist no texto, ponto final laranja e a onda do clique (anéis em CSS,
+  pausados fora da tela). O logo é a arte oficial convertida em máscara alfa
+  (`public/images/brands/click-wordmark.png`, classe `.click-wordmark`): um arquivo para todas
+  as versões de cor. Links e dados em `src/data/click.ts`.
+- **Removidos**: foto, avatar ilustrado/flutuante, foto 3D, régua lateral e primitivas de
+  desenho técnico.
+- **Favicon**: monograma TS sem a cota (`icon.svg`, `favicon.ico`, `apple-icon.png`).
+- **Performance**: animações só com `transform`/`opacity`, sem bibliotecas de animação. As fontes
+  da Click. são self-hosted (`@fontsource`), compatíveis com o CSP.
 
 ## Estrutura
 
 ```
 src/
-  app/            # Rotas (App Router), layout, metadata, sitemap, robots
-  components/     # AvatarFigure, AvatarCompanion, PhotoCard, Blueprint, BlueprintRuler, Reveal...
-  sections/       # Seções da home (Hero, Stack, Projetos, Trajetória...)
-  data/           # Fonte única de verdade: perfil, tecnologias, projetos, formação
+  app/            # [locale]/ (páginas por idioma), api/contact, sitemap, robots, ícones
+  middleware.ts   # Português na raiz, /en e /es com prefixo
+  components/     # ChapterIndicator, SectionHeading, Reveal, TechMarquee...
+  sections/       # Seções da home (Hero, Sobre, Click., Stack, Projetos, Trajetória...)
+  data/           # Fonte única de verdade: perfil, capítulos, Click., tecnologias, projetos
+  i18n/           # translations.ts (textos nos 3 idiomas) e routing.ts (URLs por idioma)
   hooks/          # useActiveSection, useReducedMotion
   lib/            # Utilitários e chave do tema
 public/
   images/
-    profile.jpg            # Sua foto (já aplicada)
-    brands/                 # Logos reais do PugliSystems e do Cogni (fornecidos por você)
-    projects/                # Screenshots dos projetos (placeholders — substitua)
+    brands/       # Logos do PugliSystems, Cogni, Click. e Grupo In Press
+    projects/     # Screenshots e galerias dos projetos
+    og/           # Imagens de compartilhamento (por idioma e por projeto)
+  cv/             # Currículo em PDF (pt e en)
 ```
 
 ## Próximos passos / pendências
 
-1. **Conteúdo dos projetos**: `src/data/projects.ts` tem placeholders (`[DESCRIÇÃO...]`) para
-   descrição, problema, contribuição e tecnologias do PugliSystems e do Cogni — os links e
-   os logos já estão corretos, mas os detalhes textuais precisam ser preenchidos por você.
-2. **Screenshots reais**: substitua `public/images/projects/project-01.webp` e `project-02.webp`
-   pelas capturas de tela reais dos projetos.
-3. **Domínio**: defina `NEXT_PUBLIC_SITE_URL` no `.env` (copie de `.env.example`) com o
-   domínio final antes de gerar o sitemap/OG de produção.
-4. **Deploy**: pronto para Vercel, Netlify ou qualquer host Node.js — ver seção "Deploy" abaixo.
+1. **Formulário**: configurar reCAPTCHA e CallMeBot (ver acima).
+2. **Recomendações**: falta o texto de 2–3 recomendações (LinkedIn) para criar a seção.
+3. **Números do Sobre**: `profile.stats` em `src/data/profile.ts` é fixo; atualize "anos em
+   tecnologia" (desde jul/2019) e "anos no Grupo In Press" (desde ago/2021) a cada aniversário.
+4. **Domínio**: o padrão é `https://thiagoservoli.vercel.app`; se mudar, defina
+   `NEXT_PUBLIC_SITE_URL`.
 
 ## Deploy rápido na Vercel
 

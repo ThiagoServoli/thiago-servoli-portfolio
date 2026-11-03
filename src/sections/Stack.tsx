@@ -5,6 +5,7 @@ import { technologies, type TechCategory } from "@/data/technologies";
 import Reveal from "@/components/Reveal";
 import TechIcon, { techBrands } from "@/components/TechIcon";
 import SectionHeading from "@/components/SectionHeading";
+import { chapterNumber } from "@/data/chapters";
 import { useLanguage } from "@/context/LanguageContext";
 
 const categories: TechCategory[] = ["frontend", "backend", "tools"];
@@ -15,12 +16,9 @@ export default function Stack() {
   return (
     <section id="stack" className="relative bg-surface px-6 py-28 lg:px-10">
       <div className="mx-auto max-w-content">
-        <div className="flex items-end justify-between gap-8">
-          <Reveal>
-            <SectionHeading index="03" eyebrow={t.stack.eyebrow} title={t.stack.title} />
-          </Reveal>
-          <div data-avatar-slot="stack" className="hidden h-[140px] w-[112px] shrink-0 lg:block" aria-hidden="true" />
-        </div>
+        <Reveal>
+          <SectionHeading index={chapterNumber("stack")} eyebrow={t.stack.eyebrow} title={t.stack.title} />
+        </Reveal>
 
         <div className="mt-14 space-y-12">
           {categories.map((category) => {
@@ -54,6 +52,11 @@ export default function Stack() {
                             className="text-4xl transition-transform duration-300 ease-premium group-hover:scale-110"
                           />
                           <span className="text-[15px] font-semibold text-fg">{tech.name}</span>
+                          {tech.learning && (
+                            <span className="-mt-1 rounded-full border border-line/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-fg3">
+                              {t.stack.learning}
+                            </span>
+                          )}
                           <span
                             className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-[color:var(--brand)] transition-transform duration-300 ease-premium group-hover:scale-x-100"
                             aria-hidden="true"

@@ -2,6 +2,7 @@
 
 import { Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "@/data/profile";
+import { click } from "@/data/click";
 import { buildMailto } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -19,6 +20,17 @@ export default function Footer() {
           <p className="font-bold text-fg">{profile.displayName}</p>
           <p className="text-sm text-fg3">
             {t.common.role} · {t.common.location}
+          </p>
+          <p className="text-sm text-fg3">
+            {t.footer.founder}{" "}
+            <a
+              href={click.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-fg2 transition-colors hover:text-accent"
+            >
+              {click.name}
+            </a>
           </p>
           <p className="mt-2 text-sm text-fg4">
             © {year} {profile.displayName}. {t.footer.rights}

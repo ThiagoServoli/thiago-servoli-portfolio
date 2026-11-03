@@ -8,11 +8,13 @@ const securityHeaders = [
       "default-src 'self'",
       // 'unsafe-eval' é necessário apenas em desenvolvimento: o Fast Refresh /
       // HMR do Next.js embrulha módulos em eval(). Em produção isso não é usado.
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+      // google.com / gstatic.com: somente para o reCAPTCHA v3 do formulário de contato
+      `script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com${isDev ? " 'unsafe-eval'" : ""}`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self' data:",
-      `connect-src 'self'${isDev ? " ws:" : ""}`,
+      `connect-src 'self' https://www.google.com https://www.gstatic.com${isDev ? " ws:" : ""}`,
+      "frame-src https://www.google.com https://www.gstatic.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

@@ -21,9 +21,19 @@ const config: Config = {
         line: "rgb(var(--c-line) / <alpha-value>)",
         accent: "rgb(var(--c-accent) / <alpha-value>)",
         primary: "rgb(var(--c-primary) / <alpha-value>)",
+        // Paleta oficial da Click. (manual de identidade v1.0) — usada só na seção da Click.
+        click: {
+          orange: "#FB4F14",
+          cream: "#EEECD5",
+          coal: "#12110E",
+          panel: "#1C1B17",
+          sand: "#9E9B86",
+        },
       },
       fontFamily: {
         body: ["var(--font-body)", "sans-serif"],
+        unbounded: ["var(--font-unbounded)", "system-ui", "sans-serif"],
+        geist: ["var(--font-geist)", "system-ui", "sans-serif"],
       },
       maxWidth: {
         content: "1200px",
@@ -36,26 +46,20 @@ const config: Config = {
           from: { opacity: "0", transform: "translateY(24px)" },
           to: { opacity: "1", transform: "none" },
         },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
         marquee: {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-50%)" },
         },
-        "scroll-dot": {
-          "0%": { opacity: "0", transform: "translateY(0)" },
-          "30%": { opacity: "1" },
-          "100%": { opacity: "0", transform: "translateY(12px)" },
+        // Revelação de título linha a linha (a linha sobe de dentro de uma máscara)
+        "line-up": {
+          from: { transform: "translateY(130%)" },
+          to: { transform: "none" },
         },
       },
       animation: {
         enter: "enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both",
-        float: "float 6s ease-in-out infinite",
         marquee: "marquee 40s linear infinite",
-        "spin-slow": "spin 30s linear infinite",
-        "scroll-dot": "scroll-dot 1.8s ease-out infinite",
+        "line-up": "line-up 1.1s cubic-bezier(0.16, 1, 0.3, 1) both",
       },
     },
   },

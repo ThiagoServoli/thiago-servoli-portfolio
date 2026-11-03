@@ -5,9 +5,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import ProjectDetailContent from "@/components/ProjectDetailContent";
+import { dictionaries } from "@/i18n/translations";
+import { alternatesFor, isLocale, ogLocale } from "@/i18n/routing";
 
 interface ProjectPageProps {
-  params: { slug: string };
+  params: { locale: string; slug: string };
 }
 
 export function generateStaticParams() {
@@ -16,26 +18,25 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: ProjectPageProps): Metadata {
   const project = getProjectBySlug(params.slug);
-  if (!project) return {};
+  if (!project || !isLocale(params.locale)) return {};
+  const copy = dictionaries[params.locale].projects.items[project.slug];
+  const image = `/images/og/project-${project.slug}.png`;
 
   return {
     title: project.name,
-    description: project.description,
-    alternates: { canonical: `/projects/${project.slug}` },
+    description: copy.summary,
+    alternates: alternatesFor(params.locale, `/projects/${project.slug}`),
     openGraph: {
       title: project.name,
-      description: project.description,
-      images: [{ url: project.image }],
+      description: copy.summary,
+      locale: ogLocale[params.locale],
+      images: [{ url: image, width: 1200, height: 630, alt: project.name }],
     },
+    twitter: { card: "summary_large_image", title: project.name, description: copy.summary, images: [image] },
   };
 }
 
-/**
- * Estrutura preparada para case studies completos (contexto, problema,
- * solução, arquitetura, desafios, resultados). Os campos de conteúdo
- * detalhado usam placeholders até que as informações reais de cada
- * projeto sejam fornecidas — ver src/data/projects.ts.
- */
+/** Estudo de caso de cada projeto: contexto, desafio, solução, resultado e galeria */
 export default function ProjectPage({ params }: ProjectPageProps) {
   const project = getProjectBySlug(params.slug);
   if (!project) notFound();

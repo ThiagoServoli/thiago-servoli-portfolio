@@ -1,9 +1,13 @@
+import type { ContactLabels } from "@/lib/contact";
+
 export type Locale = "pt" | "en" | "es";
 
 export interface Dictionary {
   meta: {
     localeName: string;
     htmlLang: string;
+    siteName: string;
+    description: string;
   };
   nav: {
     home: string;
@@ -15,6 +19,7 @@ export interface Dictionary {
     projects: string;
     experience: string;
     contact: string;
+    click: string;
     talk: string;
     skip: string;
     menuOpen: string;
@@ -37,7 +42,16 @@ export interface Dictionary {
     subtitle: string;
     ctaProjects: string;
     ctaContact: string;
-    photoAlt: string;
+    cv: string;
+    /** Cargos que alternam no topo do hero */
+    roles: string[];
+    currently: string;
+    currentlyRole: string;
+    currentlyText: string;
+    currentlyJob: string;
+    currentlyJobText: string;
+    indexTitle: string;
+    indexCount: string;
     languages: { name: string; level: string }[];
   };
   about: {
@@ -52,18 +66,19 @@ export interface Dictionary {
   stack: {
     eyebrow: string;
     title: string;
+    learning: string;
     categories: Record<"frontend" | "backend" | "tools", string>;
   };
   projects: {
     eyebrow: string;
     title: string;
-    problemLabel: string;
-    contributionLabel: string;
+    challengeLabel: string;
+    roleLabel: string;
     viewProject: string;
     viewCode: string;
     previewAlt: string;
     logoAlt: string;
-    items: Record<string, { description: string; problem: string; contribution: string }>;
+    items: Record<string, ProjectCopy>;
   };
   journey: {
     eyebrow: string;
@@ -77,7 +92,6 @@ export interface Dictionary {
     titleCerts: string;
     issuedAt: string;
     items: { level: string; course: string }[];
-    knowledgeAreas: string[];
     certifications: { title: string; issuedAt: string }[];
   };
   contact: {
@@ -87,8 +101,37 @@ export interface Dictionary {
     cta: string;
     github: string;
     linkedin: string;
+    clickNote: string;
+    clickCta: string;
+    cv: string;
+    form: ContactLabels & {
+      title: string;
+      optional: string;
+      subjectPlaceholder: string;
+      budgetPlaceholder: string;
+      messagePlaceholder: string;
+      /** "{n}/{max}" */
+      counter: string;
+      /** "{min}" */
+      minHint: string;
+      errors: { name: string; email: string; phone: string; subject: string; message: string };
+      send: string;
+      sending: string;
+      success: string;
+      error: string;
+      unavailable: string;
+      captcha: string;
+      whatsapp: string;
+      /** Primeira linha da mensagem enviada pelo WhatsApp */
+      whatsappHeading: string;
+      /** "{privacy}" e "{terms}" viram links */
+      recaptcha: string;
+      privacy: string;
+      terms: string;
+    };
   };
   footer: {
+    founder: string;
     rights: string;
     githubAria: string;
     linkedinAria: string;
@@ -98,23 +141,67 @@ export interface Dictionary {
     back: string;
     visit: string;
     viewCode: string;
-    problemLabel: string;
-    contributionLabel: string;
+    caseStudy: string;
+    roleLabel: string;
     technologiesLabel: string;
+    linksLabel: string;
+    contextLabel: string;
+    challengeLabel: string;
+    solutionLabel: string;
+    resultLabel: string;
+    galleryLabel: string;
+    desktop: string;
+    mobile: string;
+    next: string;
     logoAlt: string;
     screenshotAlt: string;
   };
   common: {
     role: string;
     location: string;
+    chapter: string;
+    /** Currículo em PDF no idioma (inglês para en/es) */
+    cvHref: string;
   };
-  /** Falas do avatar, uma por seção da página */
-  avatar: Record<"inicio" | "sobre" | "stack" | "projetos" | "trajetoria" | "formacao" | "contato", string>;
+  notFound: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    home: string;
+  };
+  click: {
+    eyebrow: string;
+    role: string;
+    /** Sem ponto final: o ponto laranja da marca é adicionado no componente */
+    title: string;
+    intro: string;
+    roleTitle: string;
+    roleText: string;
+    facts: { label: string; value: string }[];
+    ctaSite: string;
+    ctaLinkedin: string;
+  };
+}
+
+/** Estudo de caso de um projeto: contexto → desafio → solução → resultado */
+export interface ProjectCopy {
+  summary: string;
+  role: string;
+  context: string;
+  challenge: string;
+  solution: string;
+  result: string;
 }
 
 export const dictionaries: Record<Locale, Dictionary> = {
   pt: {
-    meta: { localeName: "Português", htmlLang: "pt-BR" },
+    meta: {
+      localeName: "Português",
+      htmlLang: "pt-BR",
+      siteName: "Portfólio",
+      description:
+        "Portfólio de Thiago Servoli: desenvolvedor front-end no Grupo In Press, atuando em projetos full stack, e fundador e CEO da Click. Consultoria Digital. React, Next.js, TypeScript, Node.js e Python.",
+    },
     nav: {
       home: "Início",
       education: "Formação",
@@ -125,6 +212,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       projects: "Projetos",
       experience: "Experiência",
       contact: "Contato",
+      click: "Click.",
       talk: "Vamos conversar",
       skip: "Pular para o conteúdo",
       menuOpen: "Abrir menu",
@@ -142,68 +230,116 @@ export const dictionaries: Record<Locale, Dictionary> = {
         base: "Base",
         languages: "Idiomas",
         focus: "Foco",
-        focusValue: "React · Next.js · Node.js",
+        focusValue: "React · Next.js · TypeScript",
       },
       subtitle:
-        "Desenvolvo aplicações web com React, Next.js, TypeScript e Node.js, do front-end à integração com APIs e bancos de dados. Mais de 6 anos em tecnologia, com foco em código bem estruturado, performance e boa experiência de uso.",
+        "Construo interfaces rápidas, responsivas e acessíveis com React, Next.js e TypeScript, integradas a APIs, e venho ampliando para o full stack com Node.js e Python. Na tecnologia desde 2019: comecei no suporte e hoje estou no código.",
       ctaProjects: "Ver projetos",
       ctaContact: "Entre em contato",
-      photoAlt: "Foto de {name}",
+      cv: "Baixar currículo",
+      roles: ["Desenvolvedor Full Stack", "Front-End no Grupo In Press", "Fundador e CEO da Click."],
+      currently: "Atualmente",
+      currentlyRole: "Fundador e CEO da Click. Consultoria Digital",
+      currentlyText: "Sites, sistemas, aplicativos e automações sob medida.",
+      currentlyJob: "Desenvolvedor Front-End Jr no Grupo In Press",
+      currentlyJobText: "Interfaces web com React, Next.js e TypeScript, integradas a APIs.",
+      indexTitle: "Sumário",
+      indexCount: "{n} capítulos",
       languages: [
         { name: "Português", level: "Nativo" },
-        { name: "Inglês", level: "Fluente" },
+        { name: "Inglês", level: "Wizard by Pearson" },
       ],
     },
     about: {
       eyebrow: "Sobre",
       title: "Front-end como base, full stack na prática",
       summary: [
-        "Desenvolvedor Full Stack com mais de 6 anos de experiência em tecnologia, atuando no desenvolvimento de aplicações web modernas, responsivas e escaláveis, com foco em performance, usabilidade e experiência do usuário.",
-        "Tenho experiência com HTML5, CSS3, JavaScript, TypeScript, React, Next.js, Python e SQL, além de Git para versionamento e boas práticas de desenvolvimento.",
-        "Minha trajetória é fortemente voltada ao Front-End, mas venho ampliando minha atuação para o Back-End e arquitetura de aplicações, trabalhando com tecnologias como Node.js, Python, APIs, bancos de dados e Docker.",
-        "Gosto de transformar problemas em soluções simples, eficientes e bem estruturadas, sempre buscando escrever código de qualidade e evoluir tecnicamente.",
+        "Atuo em tecnologia desde 2019. Comecei no suporte técnico e migrei para o desenvolvimento web: hoje construo interfaces rápidas, responsivas e acessíveis com React, Next.js e TypeScript.",
+        "No Grupo In Press, integro o front-end a APIs como FastAPI e trabalho com os times de design e produto em layouts, protótipos e testes de usabilidade.",
+        "Venho ampliando a atuação para o full stack com Node.js, Python, APIs REST e SQL. Na Click., que fundei em 2026, projeto e construo soluções do diagnóstico ao lançamento.",
+        "Os anos de suporte me deram contato direto com os problemas reais dos usuários. É isso que levo para o código: soluções simples, bem estruturadas e pensadas para quem vai usar.",
       ],
-      statsLabels: ["Anos em tecnologia", "Tecnologias", "Projetos em destaque"],
+      statsLabels: ["Anos em tecnologia", "Anos no Grupo In Press", "Tecnologias na stack"],
       specTitle: "Ficha técnica",
       specs: [
-        { label: "Nome", value: "Thiago Servoli da Silva" },
         { label: "Função", value: "Desenvolvedor Full Stack" },
-        { label: "Base", value: "São Paulo — SP, Brasil" },
-        { label: "Experiência", value: "6+ anos em tecnologia" },
-        { label: "Idiomas", value: "Português (nativo) · Inglês (fluente)" },
+        { label: "Atuação", value: "Desenvolvedor Front-End Jr — Grupo In Press" },
+        { label: "Empresa", value: "Click. Consultoria Digital — Fundador e CEO" },
+        { label: "Experiência", value: "Em tecnologia desde 2019" },
+        { label: "Idiomas", value: "Português (nativo) · Inglês (certificação Wizard by Pearson)" },
         { label: "Especialidade", value: "Front-end — React, Next.js, TypeScript" },
-        { label: "Em expansão", value: "Back-end — Node.js, Python, APIs, Docker" },
+        { label: "Em expansão", value: "Full stack — Node.js, Python, FastAPI, SQL" },
+        { label: "Em estudo", value: "Docker · NoSQL" },
       ],
-      pillars: ["Stack", "Trajetória", "Abordagem"],
+      pillars: ["No dia a dia", "Em expansão", "Abordagem"],
     },
     stack: {
       eyebrow: "Stack",
       title: "Tecnologias com que trabalho",
+      learning: "Em estudo",
       categories: { frontend: "Front-end", backend: "Back-end e dados", tools: "Ferramentas" },
     },
     projects: {
       eyebrow: "Projetos",
       title: "Projetos selecionados",
-      problemLabel: "Problema",
-      contributionLabel: "Contribuição",
-      viewProject: "Ver projeto",
+      challengeLabel: "Desafio",
+      roleLabel: "Meu papel",
+      viewProject: "Ver estudo de caso",
       viewCode: "Ver código",
       previewAlt: "Prévia do projeto {name}",
       logoAlt: "Logo {name}",
       items: {
+        click: {
+          summary:
+            "Site da minha consultoria, criado por mim do zero: serviços, processo, casos e contato, em Next.js e publicado na Vercel.",
+          role: "Projeto solo: conteúdo, design e desenvolvimento",
+          context:
+            "Ao fundar a Click., eu precisava de um site que explicasse com clareza o que a consultoria entrega, para empresas de todo o Brasil, e que fosse a porta de entrada para novos clientes.",
+          challenge:
+            "Apresentar cinco frentes de serviço, um processo em cinco etapas e casos reais sem perder a objetividade, com identidade própria, carregamento rápido e segurança, mantido por uma pessoa só.",
+          solution:
+            "Desenvolvi o site sozinho em Next.js, publicado na Vercel: home com serviços, processo, diferenciais, casos e perguntas frequentes, uma página para cada serviço, formulário de contato protegido por reCAPTCHA, atalho para o WhatsApp, cabeçalhos de segurança com CSP e métricas com Google Analytics, ativadas só com o consentimento de cookies.",
+          result:
+            "Site no ar em clickconsultoriabr.com.br, com páginas pré-renderizadas servidas pela Vercel, funcionando como a porta de entrada de novos clientes da Click.",
+        },
+        portfolio: {
+          summary:
+            "Este portfólio: aplicação Next.js com rotas por idioma, formulário de contato com back-end próprio e animações sem bibliotecas.",
+          role: "Design e desenvolvimento full stack",
+          context:
+            "Eu precisava de um portfólio que mostrasse, na prática, o que eu entrego: um produto real, rápido, acessível e pronto para recrutadores e clientes em três idiomas.",
+          challenge:
+            "Unir uma identidade editorial com bastante movimento a uma página leve, segura e indexável em português, inglês e espanhol.",
+          solution:
+            "Next.js (App Router) com TypeScript e Tailwind CSS. Cada idioma tem a sua rota e as suas tags hreflang, o formulário de contato é uma rota de API em Node.js com validação e proteção contra spam, e os cabeçalhos de segurança incluem CSP. As animações usam só CSS e requestAnimationFrame, sem bibliotecas.",
+          result:
+            "Páginas geradas de forma estática nos três idiomas, prontas para o Google, e o conteúdo inteiro centralizado em arquivos de dados e traduções, fácil de manter.",
+        },
         puglisystems: {
-          description:
-            "Site institucional estático da Pugli Systems, apresentando o ecossistema da marca e sua primeira solução, a Cogni. Construído inteiramente em HTML, CSS e JavaScript puros, sem necessidade de build, bundler ou backend.",
-          problem:
-            "Projeto de página pessoal para apresentar habilidades e projetos de desenvolvimento web.",
-          contribution: "Dev Front-End",
+          summary:
+            "Site institucional da Pugli Systems, que apresenta o ecossistema da marca e a sua primeira solução, a Cogni.",
+          role: "Desenvolvimento front-end",
+          context:
+            "A Pugli Systems precisava de um site institucional para apresentar a marca e o ecossistema de soluções, começando pela Cogni.",
+          challenge:
+            "Comunicar uma proposta técnica com clareza e presença visual, num site leve e simples de publicar, sem depender de servidor.",
+          solution:
+            "Desenvolvi o front-end em HTML, CSS e JavaScript puros, com animações em GSAP. Sem build, bundler nem backend: o site é estático e publicado no GitHub Pages.",
+          result:
+            "Site no ar, servido como arquivos estáticos e fácil de manter, servindo de porta de entrada para a Cogni.",
         },
         cogni: {
-          description:
-            "Landing page da Cogni, a primeira solução da Pugli Systems: uma plataforma de automação que identifica problemas a partir de eventos e decide com autonomia ajustável se apenas observa, sugere ou executa uma ação corretiva, sempre com trilha de auditoria completa.",
-          problem:
-            "Empresas recebem sinais operacionais (como um pagamento em atraso) que exigem reação rápida, mas hoje dependem de processos manuais lentos e sujeitos a falha humana.",
-          contribution: "Dev Front-End",
+          summary:
+            "Landing page da Cogni, plataforma de automação que identifica problemas a partir de eventos e decide se observa, sugere ou executa uma ação corretiva.",
+          role: "Desenvolvimento front-end",
+          context:
+            "Empresas recebem sinais operacionais, como um pagamento em atraso, que exigem reação rápida, mas ainda dependem de processos manuais lentos e sujeitos a falha humana. A Cogni foi criada para isso.",
+          challenge:
+            "Explicar um produto de automação com autonomia ajustável e trilha de auditoria de um jeito que um gestor entenda em poucos segundos.",
+          solution:
+            "Landing page em HTML, CSS e JavaScript com animações em GSAP, organizada em torno do problema, dos níveis de autonomia (observar, sugerir, executar) e da trilha de auditoria.",
+          result:
+            "Página publicada junto ao site da Pugli Systems, apresentando a primeira solução do ecossistema.",
         },
       },
     },
@@ -214,8 +350,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         {
           title: "Formação Técnica em Tecnologia da Informação",
           place: "Senac Brasil",
-          focus: "Base técnica em Tecnologia da Informação — o ponto de partida na área.",
+          focus: "Base técnica em TI. No curso, idealizei e desenvolvi um aplicativo de interações internas para o engajamento e a comunicação entre alunos.",
           tags: ["Tecnologia da Informação", "Lógica de programação"],
+        },
+        {
+          title: "Jovem Aprendiz de TI",
+          place: "Araujo Abreu Engenharia",
+          focus: "Programa de aprendizagem em tecnologia da informação, com o primeiro contato profissional com suporte e infraestrutura de TI.",
+          tags: ["Suporte", "Infraestrutura de TI"],
         },
         {
           title: "Tecnologia em Análise e Desenvolvimento de Sistemas",
@@ -224,16 +366,22 @@ export const dictionaries: Record<Locale, Dictionary> = {
           tags: ["Engenharia de Software", "SQL", "POO"],
         },
         {
-          title: "Desenvolvimento Web",
-          place: "Experiência profissional",
-          focus: "Atuação profissional em desenvolvimento web, com foco em front-end: interfaces responsivas, performance e experiência do usuário.",
-          tags: ["HTML5", "CSS3", "JavaScript", "React"],
+          title: "Analista de Suporte",
+          place: "Grupo In Press",
+          focus: "Resolução de problemas técnicos e orientação de usuários no uso de sistemas e ferramentas. O contato direto com as dificuldades reais dos usuários hoje orienta minhas decisões de usabilidade no front-end.",
+          tags: ["Suporte técnico", "Atendimento ao usuário"],
         },
         {
-          title: "Atuação como Desenvolvedor Full Stack",
-          place: null,
-          focus: "Ampliando a atuação para back-end e arquitetura de aplicações.",
-          tags: ["Next.js", "Node.js", "Python", "Docker"],
+          title: "Desenvolvedor Front-End Jr",
+          place: "Grupo In Press",
+          focus: "Interfaces responsivas com React, Next.js e TypeScript, integração com APIs como FastAPI e testes de usabilidade junto aos times de design e produto.",
+          tags: ["React", "Next.js", "TypeScript", "FastAPI"],
+        },
+        {
+          title: "Fundador e CEO da Click.",
+          place: "Click. Consultoria Digital",
+          focus: "Fundei a Click. para ajudar empresas a tirar a operação das planilhas e dos processos manuais, com sites, sistemas, aplicativos e automações sob medida.",
+          tags: ["Desenvolvimento web", "Arquitetura", "Gestão"],
         },
       ],
     },
@@ -247,20 +395,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
         { level: "Curso Superior de Tecnologia (CST)", course: "Análise e Desenvolvimento de Sistemas" },
         { level: "Curso Técnico Integrado", course: "Tecnologia da Informação" },
       ],
-      knowledgeAreas: [
-        "Desenvolvimento Web",
-        "Programação Orientada a Objetos",
-        "Engenharia de Software",
-        "Python",
-        "Banco de Dados",
-        "SQL",
-        "Estruturas de Dados",
-        "Segurança da Informação",
-        "Testes de Software",
-        "Análise de Sistemas",
-        "Redes",
-        "Sistemas Operacionais",
-      ],
       certifications: [
         { title: "User Experience", issuedAt: "Fevereiro de 2022" },
         { title: "Programação para Internet com JavaScript", issuedAt: "Maio de 2021" },
@@ -269,12 +403,66 @@ export const dictionaries: Record<Locale, Dictionary> = {
     contact: {
       eyebrow: "Contato",
       title: "Vamos conversar sobre o seu projeto",
-      subtitle: "Estou aberto a novos desafios, projetos e oportunidades.",
+      subtitle: "Estou aberto a novos desafios, projetos e oportunidades. Respondo em até um dia útil.",
       cta: "Enviar e-mail",
       github: "GitHub",
       linkedin: "LinkedIn",
+      clickNote: "Precisa de software para a sua empresa?",
+      clickCta: "Fale com a Click.",
+      cv: "Baixar currículo",
+      form: {
+        title: "Mande uma mensagem",
+        optional: "opcional",
+        name: "Nome",
+        email: "E-mail",
+        phone: "WhatsApp",
+        company: "Empresa",
+        subject: "Assunto",
+        budget: "Faixa de investimento",
+        preference: "Prefiro retorno por",
+        message: "Mensagem",
+        subjectPlaceholder: "Selecione o assunto",
+        budgetPlaceholder: "Selecione uma faixa",
+        messagePlaceholder: "Conte o contexto, o objetivo e o prazo que você tem em mente.",
+        subjects: {
+          job: "Vaga ou oportunidade de trabalho",
+          freelance: "Projeto freelance",
+          click: "Projeto para a minha empresa (Click.)",
+          partnership: "Parceria",
+          other: "Outro assunto",
+        },
+        budgets: {
+          upTo15: "Até R$ 15 mil",
+          from15to50: "R$ 15 mil a R$ 50 mil",
+          from50to150: "R$ 50 mil a R$ 150 mil",
+          over150: "Acima de R$ 150 mil",
+          talk: "Prefiro conversar antes",
+        },
+        preferences: { email: "E-mail", whatsapp: "WhatsApp" },
+        counter: "{n}/{max}",
+        minHint: "Mínimo de {min} caracteres",
+        errors: {
+          name: "Informe seu nome.",
+          email: "Informe um e-mail válido.",
+          phone: "Informe um WhatsApp válido, com DDD.",
+          subject: "Selecione um assunto.",
+          message: "Escreva pelo menos {min} caracteres.",
+        },
+        send: "Enviar mensagem",
+        sending: "Enviando…",
+        success: "Mensagem enviada. Respondo em até um dia útil.",
+        error: "Não foi possível enviar agora. Tente de novo ou fale comigo pelo WhatsApp.",
+        unavailable: "O envio automático está indisponível no momento. Fale comigo pelo WhatsApp.",
+        captcha: "Não foi possível confirmar que você não é um robô. Tente de novo ou fale comigo pelo WhatsApp.",
+        whatsapp: "Enviar pelo WhatsApp",
+        whatsappHeading: "Olá, Thiago! Vim pelo seu portfólio.",
+        recaptcha: "Protegido pelo reCAPTCHA: valem a {privacy} e os {terms} do Google.",
+        privacy: "Política de Privacidade",
+        terms: "Termos de Serviço",
+      },
     },
     footer: {
+      founder: "Fundador e CEO da",
       rights: "Todos os direitos reservados.",
       githubAria: "GitHub de Thiago Servoli",
       linkedinAria: "LinkedIn de Thiago Servoli",
@@ -284,28 +472,58 @@ export const dictionaries: Record<Locale, Dictionary> = {
       back: "Voltar aos projetos",
       visit: "Visitar projeto",
       viewCode: "Ver código",
-      problemLabel: "Problema",
-      contributionLabel: "Contribuição",
+      caseStudy: "Estudo de caso",
+      roleLabel: "Papel",
       technologiesLabel: "Tecnologias",
+      linksLabel: "Links",
+      contextLabel: "Contexto",
+      challengeLabel: "Desafio",
+      solutionLabel: "Solução",
+      resultLabel: "Resultado",
+      galleryLabel: "Galeria",
+      desktop: "Desktop",
+      mobile: "Mobile",
+      next: "Próximo projeto",
       logoAlt: "Logo {name}",
-      screenshotAlt: "Screenshot do projeto {name}",
+      screenshotAlt: "Captura de tela do projeto {name}",
     },
     common: {
       role: "Desenvolvedor Full Stack",
       location: "São Paulo - SP, Brasil",
+      chapter: "Capítulo",
+      cvHref: "/cv/thiago-servoli-cv.pdf",
     },
-    avatar: {
-      inicio: "Oi! Esse sou eu, em versão ilustrada.",
-      sobre: "Um pouco sobre mim.",
-      stack: "Minhas ferramentas do dia a dia.",
-      projetos: "Dá uma olhada nesses projetos!",
-      trajetoria: "Vem comigo pela minha trajetória.",
-      formacao: "Estudar faz parte do trabalho.",
-      contato: "Bora conversar?",
+    click: {
+      eyebrow: "Empreendimento",
+      role: "Fundador e CEO",
+      title: "Software sob medida para quem não cabe em template",
+      intro:
+        "A Click. projeta e constrói sites, sistemas, aplicativos e automações para empresas que querem operar melhor. Engenharia sênior, design cuidadoso e prazos que se cumprem.",
+      roleTitle: "Meu papel",
+      roleText:
+        "Fundei a Click. em 2026 para ajudar empresas a tirar a operação das planilhas e dos processos manuais. Projeto e construo sites, sistemas web, aplicativos e automações sob medida, do diagnóstico ao lançamento. Como fundador, lidero o atendimento aos clientes, a arquitetura das soluções e o desenvolvimento.",
+      facts: [
+        { label: "Proposta", value: "Escopo, prazo e valor fechados após o diagnóstico" },
+        { label: "Atendimento", value: "Remoto, para todo o Brasil" },
+      ],
+      ctaSite: "Conhecer a Click.",
+      ctaLinkedin: "LinkedIn da Click.",
+    },
+    notFound: {
+      eyebrow: "Página não encontrada",
+      title: "Esta página não está no sumário.",
+      text: "O endereço pode ter mudado ou nunca ter existido. O conteúdo continua a um clique.",
+      home: "Voltar ao início",
     },
   },
   en: {
-    meta: { localeName: "English", htmlLang: "en" },
+    meta: {
+      localeName: "English",
+      htmlLang: "en",
+      siteName: "Portfolio",
+      description:
+        "Portfolio of Thiago Servoli: front-end developer at Grupo In Press working on full stack projects, and founder and CEO of Click. Consultoria Digital. React, Next.js, TypeScript, Node.js and Python.",
+    },
     nav: {
       home: "Home",
       education: "Education",
@@ -316,6 +534,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       projects: "Projects",
       experience: "Experience",
       contact: "Contact",
+      click: "Click.",
       talk: "Let's talk",
       skip: "Skip to main content",
       menuOpen: "Open menu",
@@ -333,67 +552,116 @@ export const dictionaries: Record<Locale, Dictionary> = {
         base: "Based in",
         languages: "Languages",
         focus: "Focus",
-        focusValue: "React · Next.js · Node.js",
+        focusValue: "React · Next.js · TypeScript",
       },
       subtitle:
-        "I build web applications with React, Next.js, TypeScript and Node.js, from the front end to API and database integration. Over 6 years in technology, focused on well-structured code, performance and a good user experience.",
+        "I build fast, responsive and accessible interfaces with React, Next.js and TypeScript, integrated with APIs, and I'm expanding into full stack with Node.js and Python. In tech since 2019: I started in support and now I write the code.",
       ctaProjects: "View projects",
       ctaContact: "Get in touch",
-      photoAlt: "Photo of {name}",
+      cv: "Download resume",
+      roles: ["Full Stack Developer", "Front-End at Grupo In Press", "Founder and CEO of Click."],
+      currently: "Currently",
+      currentlyRole: "Founder and CEO of Click. Consultoria Digital",
+      currentlyText: "Custom websites, systems, apps and automations.",
+      currentlyJob: "Junior Front-End Developer at Grupo In Press",
+      currentlyJobText: "Web interfaces with React, Next.js and TypeScript, integrated with APIs.",
+      indexTitle: "Contents",
+      indexCount: "{n} chapters",
       languages: [
         { name: "Portuguese", level: "Native" },
-        { name: "English", level: "Fluent" },
+        { name: "English", level: "Wizard by Pearson" },
       ],
     },
     about: {
       eyebrow: "About",
       title: "Front-end at the core, full stack in practice",
       summary: [
-        "Full Stack Developer with over 6 years of experience in technology, building modern, responsive and scalable web applications with a focus on performance, usability and user experience.",
-        "I have experience with HTML5, CSS3, JavaScript, TypeScript, React, Next.js, Python and SQL, as well as Git for version control and development best practices.",
-        "My background is strongly Front-End focused, but I've been expanding into Back-End and application architecture, working with technologies like Node.js, Python, APIs, databases and Docker.",
-        "I enjoy turning problems into simple, efficient and well-structured solutions, always striving to write quality code and grow technically.",
+        "I've worked in tech since 2019. I started in technical support and moved into web development: today I build fast, responsive and accessible interfaces with React, Next.js and TypeScript.",
+        "At Grupo In Press, I integrate the front end with APIs such as FastAPI and work with the design and product teams on layouts, prototypes and usability tests.",
+        "I'm expanding into full stack work with Node.js, Python, REST APIs and SQL. At Click., which I founded in 2026, I design and build solutions from diagnosis to launch.",
+        "My years in support put me in direct contact with real user problems. That's what I bring to the code: simple, well-structured solutions designed for the people who use them.",
       ],
-      statsLabels: ["Years in technology", "Technologies", "Featured projects"],
+      statsLabels: ["Years in tech", "Years at Grupo In Press", "Technologies in the stack"],
       specTitle: "Spec sheet",
       specs: [
-        { label: "Name", value: "Thiago Servoli da Silva" },
         { label: "Role", value: "Full Stack Developer" },
-        { label: "Based in", value: "São Paulo — SP, Brazil" },
-        { label: "Experience", value: "6+ years in technology" },
-        { label: "Languages", value: "Portuguese (native) · English (fluent)" },
+        { label: "Position", value: "Junior Front-End Developer — Grupo In Press" },
+        { label: "Company", value: "Click. Consultoria Digital — Founder and CEO" },
+        { label: "Experience", value: "In tech since 2019" },
+        { label: "Languages", value: "Portuguese (native) · English (Wizard by Pearson certification)" },
         { label: "Specialty", value: "Front-end — React, Next.js, TypeScript" },
-        { label: "Expanding into", value: "Back-end — Node.js, Python, APIs, Docker" },
+        { label: "Expanding into", value: "Full stack — Node.js, Python, FastAPI, SQL" },
+        { label: "Learning", value: "Docker · NoSQL" },
       ],
-      pillars: ["Stack", "Path", "Approach"],
+      pillars: ["Day to day", "Expanding", "Approach"],
     },
     stack: {
       eyebrow: "Stack",
       title: "Technologies I work with",
+      learning: "Learning",
       categories: { frontend: "Front-end", backend: "Back-end & data", tools: "Tools" },
     },
     projects: {
       eyebrow: "Projects",
       title: "Selected work",
-      problemLabel: "Problem",
-      contributionLabel: "Contribution",
-      viewProject: "View project",
+      challengeLabel: "Challenge",
+      roleLabel: "My role",
+      viewProject: "View case study",
       viewCode: "View code",
       previewAlt: "Preview of the {name} project",
       logoAlt: "{name} logo",
       items: {
+        click: {
+          summary:
+            "Website for my consultancy, built by me from scratch: services, process, cases and contact, in Next.js and deployed on Vercel.",
+          role: "Solo project: content, design and development",
+          context:
+            "When I founded Click., I needed a website that clearly explains what the consultancy delivers to companies across Brazil and works as the entry point for new clients.",
+          challenge:
+            "Present five service areas, a five-stage process and real cases without losing clarity, with its own identity, fast loading and security, maintained by a single person.",
+          solution:
+            "I built the site on my own in Next.js, deployed on Vercel: a home page with services, process, differentiators, cases and FAQ, one page per service, a contact form protected by reCAPTCHA, a WhatsApp shortcut, security headers with CSP and Google Analytics metrics enabled only with cookie consent.",
+          result:
+            "Site live at clickconsultoriabr.com.br, with pre-rendered pages served by Vercel, working as the entry point for Click.'s new clients.",
+        },
+        portfolio: {
+          summary:
+            "This portfolio: a Next.js application with per-language routes, a contact form with its own back end and animations without libraries.",
+          role: "Design and full stack development",
+          context:
+            "I needed a portfolio that shows what I deliver in practice: a real product, fast, accessible and ready for recruiters and clients in three languages.",
+          challenge:
+            "Combine an editorial identity with plenty of motion and a page that stays light, secure and indexable in Portuguese, English and Spanish.",
+          solution:
+            "Next.js (App Router) with TypeScript and Tailwind CSS. Each language has its own route and hreflang tags, the contact form is a Node.js API route with validation and spam protection, and the security headers include a CSP. Animations use only CSS and requestAnimationFrame, with no libraries.",
+          result:
+            "Statically generated pages in all three languages, ready for search engines, and all content centralized in data and translation files that are easy to maintain.",
+        },
         puglisystems: {
-          description:
-            "Static institutional website for Pugli Systems, showcasing the brand's ecosystem and its first solution, Cogni. Built entirely with plain HTML, CSS and JavaScript, with no build step, bundler or backend required.",
-          problem: "Personal page project to showcase web development skills and projects.",
-          contribution: "Front-End Developer",
+          summary:
+            "Institutional website for Pugli Systems, presenting the brand's ecosystem and its first solution, Cogni.",
+          role: "Front-end development",
+          context:
+            "Pugli Systems needed an institutional website to present the brand and its ecosystem of solutions, starting with Cogni.",
+          challenge:
+            "Communicate a technical offering clearly and with visual presence, in a site that is light, simple to publish and doesn't depend on a server.",
+          solution:
+            "I built the front end in plain HTML, CSS and JavaScript, with GSAP animations. No build step, bundler or back end: the site is static and published on GitHub Pages.",
+          result:
+            "Site live, served as static files and easy to maintain, acting as the entry point to Cogni.",
         },
         cogni: {
-          description:
-            "Landing page for Cogni, Pugli Systems' first solution: an automation platform that identifies problems from events and, with adjustable autonomy, decides whether to simply observe, suggest, or execute a corrective action — always with a complete audit trail.",
-          problem:
-            "Companies receive operational signals (such as a late payment) that require a fast reaction, but today rely on slow manual processes prone to human error.",
-          contribution: "Front-End Developer",
+          summary:
+            "Landing page for Cogni, an automation platform that identifies problems from events and decides whether to observe, suggest or execute a corrective action.",
+          role: "Front-end development",
+          context:
+            "Companies receive operational signals, such as a late payment, that require a fast reaction, yet still rely on slow manual processes prone to human error. Cogni was built for that.",
+          challenge:
+            "Explain an automation product with adjustable autonomy and an audit trail in a way a manager understands in seconds.",
+          solution:
+            "Landing page in HTML, CSS and JavaScript with GSAP animations, organized around the problem, the autonomy levels (observe, suggest, execute) and the audit trail.",
+          result:
+            "Page published alongside the Pugli Systems website, presenting the ecosystem's first solution.",
         },
       },
     },
@@ -404,8 +672,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         {
           title: "Technical Degree in Information Technology",
           place: "Senac Brasil",
-          focus: "Technical foundation in Information Technology — where it all started.",
+          focus: "Technical foundation in IT. During the course, I conceived and built an internal interactions app for student engagement and communication.",
           tags: ["Information Technology", "Programming logic"],
+        },
+        {
+          title: "IT Apprentice",
+          place: "Araujo Abreu Engenharia",
+          focus: "Apprenticeship program in information technology, with my first professional exposure to IT support and infrastructure.",
+          tags: ["Support", "IT infrastructure"],
         },
         {
           title: "Associate Degree in Systems Analysis and Development",
@@ -414,16 +688,22 @@ export const dictionaries: Record<Locale, Dictionary> = {
           tags: ["Software Engineering", "SQL", "OOP"],
         },
         {
-          title: "Web Development",
-          place: "Professional experience",
-          focus: "Professional web development work, focused on the front end: responsive interfaces, performance and user experience.",
-          tags: ["HTML5", "CSS3", "JavaScript", "React"],
+          title: "Support Analyst",
+          place: "Grupo In Press",
+          focus: "Resolved technical issues and guided users in the use of systems and tools. Working directly with real user pain points now informs my usability decisions on the front end.",
+          tags: ["Technical support", "User support"],
         },
         {
-          title: "Working as a Full Stack Developer",
-          place: null,
-          focus: "Expanding into back-end and application architecture.",
-          tags: ["Next.js", "Node.js", "Python", "Docker"],
+          title: "Junior Front-End Developer",
+          place: "Grupo In Press",
+          focus: "Responsive interfaces with React, Next.js and TypeScript, API integrations such as FastAPI and usability tests with the design and product teams.",
+          tags: ["React", "Next.js", "TypeScript", "FastAPI"],
+        },
+        {
+          title: "Founder and CEO of Click.",
+          place: "Click. Consultoria Digital",
+          focus: "I founded Click. to help companies move their operations off spreadsheets and manual processes, with custom websites, systems, apps and automations.",
+          tags: ["Web development", "Architecture", "Management"],
         },
       ],
     },
@@ -437,20 +717,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
         { level: "Technology Degree (Associate)", course: "Systems Analysis and Development" },
         { level: "Integrated Technical Course", course: "Information Technology" },
       ],
-      knowledgeAreas: [
-        "Web Development",
-        "Object-Oriented Programming",
-        "Software Engineering",
-        "Python",
-        "Databases",
-        "SQL",
-        "Data Structures",
-        "Information Security",
-        "Software Testing",
-        "Systems Analysis",
-        "Networking",
-        "Operating Systems",
-      ],
       certifications: [
         { title: "User Experience", issuedAt: "February 2022" },
         { title: "Internet Programming with JavaScript", issuedAt: "May 2021" },
@@ -459,12 +725,66 @@ export const dictionaries: Record<Locale, Dictionary> = {
     contact: {
       eyebrow: "Contact",
       title: "Let's talk about your project",
-      subtitle: "I'm open to new challenges, projects and opportunities.",
+      subtitle: "I'm open to new challenges, projects and opportunities. I reply within one business day.",
       cta: "Send an email",
       github: "GitHub",
       linkedin: "LinkedIn",
+      clickNote: "Need software for your company?",
+      clickCta: "Talk to Click.",
+      cv: "Download resume",
+      form: {
+        title: "Send a message",
+        optional: "optional",
+        name: "Name",
+        email: "Email",
+        phone: "WhatsApp",
+        company: "Company",
+        subject: "Subject",
+        budget: "Budget range",
+        preference: "I'd rather hear back by",
+        message: "Message",
+        subjectPlaceholder: "Select a subject",
+        budgetPlaceholder: "Select a range",
+        messagePlaceholder: "Share the context, the goal and the timeline you have in mind.",
+        subjects: {
+          job: "Job or work opportunity",
+          freelance: "Freelance project",
+          click: "Project for my company (Click.)",
+          partnership: "Partnership",
+          other: "Something else",
+        },
+        budgets: {
+          upTo15: "Up to R$ 15k",
+          from15to50: "R$ 15k to R$ 50k",
+          from50to150: "R$ 50k to R$ 150k",
+          over150: "Over R$ 150k",
+          talk: "I'd rather talk first",
+        },
+        preferences: { email: "Email", whatsapp: "WhatsApp" },
+        counter: "{n}/{max}",
+        minHint: "At least {min} characters",
+        errors: {
+          name: "Please enter your name.",
+          email: "Please enter a valid email.",
+          phone: "Please enter a valid WhatsApp number, with area code.",
+          subject: "Please select a subject.",
+          message: "Please write at least {min} characters.",
+        },
+        send: "Send message",
+        sending: "Sending…",
+        success: "Message sent. I'll reply within one business day.",
+        error: "The message couldn't be sent right now. Try again or reach me on WhatsApp.",
+        unavailable: "Automatic sending is unavailable right now. Please reach me on WhatsApp.",
+        captcha: "We couldn't confirm you're not a robot. Try again or reach me on WhatsApp.",
+        whatsapp: "Send via WhatsApp",
+        whatsappHeading: "Hi, Thiago! I found you through your portfolio.",
+        recaptcha: "Protected by reCAPTCHA: Google's {privacy} and {terms} apply.",
+        privacy: "Privacy Policy",
+        terms: "Terms of Service",
+      },
     },
     footer: {
+      founder: "Founder and CEO of",
       rights: "All rights reserved.",
       githubAria: "Thiago Servoli's GitHub",
       linkedinAria: "Thiago Servoli's LinkedIn",
@@ -474,28 +794,58 @@ export const dictionaries: Record<Locale, Dictionary> = {
       back: "Back to projects",
       visit: "Visit project",
       viewCode: "View code",
-      problemLabel: "Problem",
-      contributionLabel: "Contribution",
+      caseStudy: "Case study",
+      roleLabel: "Role",
       technologiesLabel: "Technologies",
+      linksLabel: "Links",
+      contextLabel: "Context",
+      challengeLabel: "Challenge",
+      solutionLabel: "Solution",
+      resultLabel: "Result",
+      galleryLabel: "Gallery",
+      desktop: "Desktop",
+      mobile: "Mobile",
+      next: "Next project",
       logoAlt: "{name} logo",
       screenshotAlt: "Screenshot of the {name} project",
     },
     common: {
       role: "Full Stack Developer",
       location: "São Paulo - SP, Brazil",
+      chapter: "Chapter",
+      cvHref: "/cv/thiago-servoli-resume.pdf",
     },
-    avatar: {
-      inicio: "Hi! That's me, illustrated.",
-      sobre: "A little about me.",
-      stack: "My everyday tools.",
-      projetos: "Take a look at these projects!",
-      trajetoria: "Walk with me through my path.",
-      formacao: "Learning is part of the job.",
-      contato: "Shall we talk?",
+    click: {
+      eyebrow: "Venture",
+      role: "Founder and CEO",
+      title: "Custom software for businesses that don't fit a template",
+      intro:
+        "Click. designs and builds websites, systems, apps and automations for companies that want to run better. Senior engineering, careful design and deadlines that are met.",
+      roleTitle: "My role",
+      roleText:
+        "I founded Click. in 2026 to help companies move their operations off spreadsheets and manual processes. I design and build custom websites, web systems, apps and automations, from diagnosis to launch. As founder, I lead client relationships, solution architecture and development.",
+      facts: [
+        { label: "Proposal", value: "Fixed scope, timeline and price after the diagnosis" },
+        { label: "Service", value: "Remote, across Brazil" },
+      ],
+      ctaSite: "Visit Click.",
+      ctaLinkedin: "Click. on LinkedIn",
+    },
+    notFound: {
+      eyebrow: "Page not found",
+      title: "This page isn't in the contents.",
+      text: "The address may have changed or never existed. Everything else is one click away.",
+      home: "Back to home",
     },
   },
   es: {
-    meta: { localeName: "Español", htmlLang: "es" },
+    meta: {
+      localeName: "Español",
+      htmlLang: "es",
+      siteName: "Portafolio",
+      description:
+        "Portafolio de Thiago Servoli: desarrollador front-end en Grupo In Press, con proyectos full stack, y fundador y CEO de Click. Consultoria Digital. React, Next.js, TypeScript, Node.js y Python.",
+    },
     nav: {
       home: "Inicio",
       education: "Formación",
@@ -506,6 +856,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       projects: "Proyectos",
       experience: "Experiencia",
       contact: "Contacto",
+      click: "Click.",
       talk: "Hablemos",
       skip: "Saltar al contenido principal",
       menuOpen: "Abrir menú",
@@ -523,67 +874,116 @@ export const dictionaries: Record<Locale, Dictionary> = {
         base: "Base",
         languages: "Idiomas",
         focus: "Enfoque",
-        focusValue: "React · Next.js · Node.js",
+        focusValue: "React · Next.js · TypeScript",
       },
       subtitle:
-        "Desarrollo aplicaciones web con React, Next.js, TypeScript y Node.js, desde el front-end hasta la integración con APIs y bases de datos. Más de 6 años en tecnología, con foco en código bien estructurado, rendimiento y una buena experiencia de uso.",
+        "Construyo interfaces rápidas, responsivas y accesibles con React, Next.js y TypeScript, integradas con APIs, y estoy ampliando hacia el full stack con Node.js y Python. En tecnología desde 2019: empecé en soporte y hoy estoy en el código.",
       ctaProjects: "Ver proyectos",
       ctaContact: "Ponte en contacto",
-      photoAlt: "Foto de {name}",
+      cv: "Descargar currículum",
+      roles: ["Desarrollador Full Stack", "Front-End en Grupo In Press", "Fundador y CEO de Click."],
+      currently: "Actualmente",
+      currentlyRole: "Fundador y CEO de Click. Consultoria Digital",
+      currentlyText: "Sitios, sistemas, aplicaciones y automatizaciones a medida.",
+      currentlyJob: "Desarrollador Front-End Jr en Grupo In Press",
+      currentlyJobText: "Interfaces web con React, Next.js y TypeScript, integradas con APIs.",
+      indexTitle: "Índice",
+      indexCount: "{n} capítulos",
       languages: [
         { name: "Portugués", level: "Nativo" },
-        { name: "Inglés", level: "Fluido" },
+        { name: "Inglés", level: "Wizard by Pearson" },
       ],
     },
     about: {
       eyebrow: "Acerca de",
       title: "Front-end como base, full stack en la práctica",
       summary: [
-        "Desarrollador Full Stack con más de 6 años de experiencia en tecnología, dedicado al desarrollo de aplicaciones web modernas, responsivas y escalables, con foco en rendimiento, usabilidad y experiencia de usuario.",
-        "Tengo experiencia con HTML5, CSS3, JavaScript, TypeScript, React, Next.js, Python y SQL, además de Git para control de versiones y buenas prácticas de desarrollo.",
-        "Mi trayectoria está fuertemente orientada al Front-End, pero he ido ampliando mi actuación hacia el Back-End y la arquitectura de aplicaciones, trabajando con tecnologías como Node.js, Python, APIs, bases de datos y Docker.",
-        "Me gusta transformar problemas en soluciones simples, eficientes y bien estructuradas, siempre buscando escribir código de calidad y evolucionar técnicamente.",
+        "Trabajo en tecnología desde 2019. Empecé en soporte técnico y pasé al desarrollo web: hoy construyo interfaces rápidas, responsivas y accesibles con React, Next.js y TypeScript.",
+        "En Grupo In Press, integro el front-end con APIs como FastAPI y trabajo con los equipos de diseño y producto en layouts, prototipos y pruebas de usabilidad.",
+        "Estoy ampliando mi actuación hacia el full stack con Node.js, Python, APIs REST y SQL. En Click., que fundé en 2026, diseño y construyo soluciones del diagnóstico al lanzamiento.",
+        "Los años en soporte me pusieron en contacto directo con los problemas reales de los usuarios. Eso es lo que llevo al código: soluciones simples, bien estructuradas y pensadas para quien las usa.",
       ],
-      statsLabels: ["Años en tecnología", "Tecnologías", "Proyectos destacados"],
+      statsLabels: ["Años en tecnología", "Años en Grupo In Press", "Tecnologías en el stack"],
       specTitle: "Ficha técnica",
       specs: [
-        { label: "Nombre", value: "Thiago Servoli da Silva" },
         { label: "Rol", value: "Desarrollador Full Stack" },
-        { label: "Base", value: "São Paulo — SP, Brasil" },
-        { label: "Experiencia", value: "6+ años en tecnología" },
-        { label: "Idiomas", value: "Portugués (nativo) · Inglés (fluido)" },
+        { label: "Puesto", value: "Desarrollador Front-End Jr — Grupo In Press" },
+        { label: "Empresa", value: "Click. Consultoria Digital — Fundador y CEO" },
+        { label: "Experiencia", value: "En tecnología desde 2019" },
+        { label: "Idiomas", value: "Portugués (nativo) · Inglés (certificación Wizard by Pearson)" },
         { label: "Especialidad", value: "Front-end — React, Next.js, TypeScript" },
-        { label: "En expansión", value: "Back-end — Node.js, Python, APIs, Docker" },
+        { label: "En expansión", value: "Full stack — Node.js, Python, FastAPI, SQL" },
+        { label: "Estudiando", value: "Docker · NoSQL" },
       ],
-      pillars: ["Stack", "Trayectoria", "Enfoque"],
+      pillars: ["Día a día", "En expansión", "Enfoque"],
     },
     stack: {
       eyebrow: "Stack",
       title: "Tecnologías con las que trabajo",
+      learning: "Estudiando",
       categories: { frontend: "Front-end", backend: "Back-end y datos", tools: "Herramientas" },
     },
     projects: {
       eyebrow: "Proyectos",
       title: "Proyectos seleccionados",
-      problemLabel: "Problema",
-      contributionLabel: "Contribución",
-      viewProject: "Ver proyecto",
+      challengeLabel: "Desafío",
+      roleLabel: "Mi rol",
+      viewProject: "Ver caso de estudio",
       viewCode: "Ver código",
       previewAlt: "Vista previa del proyecto {name}",
       logoAlt: "Logo de {name}",
       items: {
+        click: {
+          summary:
+            "Sitio de mi consultoría, creado por mí desde cero: servicios, proceso, casos y contacto, en Next.js y publicado en Vercel.",
+          role: "Proyecto individual: contenido, diseño y desarrollo",
+          context:
+            "Al fundar Click., necesitaba un sitio que explicara con claridad lo que entrega la consultoría a empresas de todo Brasil y que fuera la puerta de entrada de nuevos clientes.",
+          challenge:
+            "Presentar cinco frentes de servicio, un proceso en cinco etapas y casos reales sin perder claridad, con identidad propia, carga rápida y seguridad, mantenido por una sola persona.",
+          solution:
+            "Desarrollé el sitio solo en Next.js, publicado en Vercel: home con servicios, proceso, diferenciales, casos y preguntas frecuentes, una página por servicio, formulario de contacto protegido con reCAPTCHA, acceso directo a WhatsApp, encabezados de seguridad con CSP y métricas con Google Analytics, activadas solo con el consentimiento de cookies.",
+          result:
+            "Sitio en línea en clickconsultoriabr.com.br, con páginas prerrenderizadas servidas por Vercel, funcionando como la puerta de entrada de nuevos clientes de Click.",
+        },
+        portfolio: {
+          summary:
+            "Este portafolio: una aplicación Next.js con rutas por idioma, formulario de contacto con back-end propio y animaciones sin librerías.",
+          role: "Diseño y desarrollo full stack",
+          context:
+            "Necesitaba un portafolio que mostrara en la práctica lo que entrego: un producto real, rápido, accesible y listo para reclutadores y clientes en tres idiomas.",
+          challenge:
+            "Unir una identidad editorial con bastante movimiento a una página ligera, segura e indexable en portugués, inglés y español.",
+          solution:
+            "Next.js (App Router) con TypeScript y Tailwind CSS. Cada idioma tiene su ruta y sus etiquetas hreflang, el formulario de contacto es una ruta de API en Node.js con validación y protección contra spam, y los encabezados de seguridad incluyen CSP. Las animaciones usan solo CSS y requestAnimationFrame, sin librerías.",
+          result:
+            "Páginas generadas de forma estática en los tres idiomas, listas para los buscadores, y todo el contenido centralizado en archivos de datos y traducciones, fácil de mantener.",
+        },
         puglisystems: {
-          description:
-            "Sitio institucional estático de Pugli Systems, que presenta el ecosistema de la marca y su primera solución, Cogni. Construido íntegramente en HTML, CSS y JavaScript puros, sin necesidad de build, bundler ni backend.",
-          problem: "Proyecto de página personal para presentar habilidades y proyectos de desarrollo web.",
-          contribution: "Dev Front-End",
+          summary:
+            "Sitio institucional de Pugli Systems, que presenta el ecosistema de la marca y su primera solución, Cogni.",
+          role: "Desarrollo front-end",
+          context:
+            "Pugli Systems necesitaba un sitio institucional para presentar la marca y su ecosistema de soluciones, empezando por Cogni.",
+          challenge:
+            "Comunicar una propuesta técnica con claridad y presencia visual, en un sitio ligero, simple de publicar y sin depender de un servidor.",
+          solution:
+            "Desarrollé el front-end en HTML, CSS y JavaScript puros, con animaciones en GSAP. Sin build, bundler ni back-end: el sitio es estático y está publicado en GitHub Pages.",
+          result:
+            "Sitio en línea, servido como archivos estáticos y fácil de mantener, como puerta de entrada a Cogni.",
         },
         cogni: {
-          description:
-            "Landing page de Cogni, la primera solución de Pugli Systems: una plataforma de automatización que identifica problemas a partir de eventos y decide, con autonomía ajustable, si solo observa, sugiere o ejecuta una acción correctiva, siempre con un registro de auditoría completo.",
-          problem:
-            "Las empresas reciben señales operativas (como un pago atrasado) que exigen una reacción rápida, pero hoy dependen de procesos manuales lentos y propensos a fallos humanos.",
-          contribution: "Dev Front-End",
+          summary:
+            "Landing page de Cogni, una plataforma de automatización que identifica problemas a partir de eventos y decide si observa, sugiere o ejecuta una acción correctiva.",
+          role: "Desarrollo front-end",
+          context:
+            "Las empresas reciben señales operativas, como un pago atrasado, que exigen una reacción rápida, pero aún dependen de procesos manuales lentos y propensos a fallos humanos. Cogni nació para eso.",
+          challenge:
+            "Explicar un producto de automatización con autonomía ajustable y registro de auditoría de forma que un gestor lo entienda en segundos.",
+          solution:
+            "Landing page en HTML, CSS y JavaScript con animaciones en GSAP, organizada en torno al problema, los niveles de autonomía (observar, sugerir, ejecutar) y el registro de auditoría.",
+          result:
+            "Página publicada junto al sitio de Pugli Systems, presentando la primera solución del ecosistema.",
         },
       },
     },
@@ -594,8 +994,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         {
           title: "Formación Técnica en Tecnología de la Información",
           place: "Senac Brasil",
-          focus: "Base técnica en Tecnología de la Información — el punto de partida.",
+          focus: "Base técnica en TI. En el curso, ideé y desarrollé una aplicación de interacciones internas para el compromiso y la comunicación entre alumnos.",
           tags: ["Tecnología de la Información", "Lógica de programación"],
+        },
+        {
+          title: "Aprendiz de TI",
+          place: "Araujo Abreu Engenharia",
+          focus: "Programa de aprendizaje en tecnología de la información, con el primer contacto profesional con soporte e infraestructura de TI.",
+          tags: ["Soporte", "Infraestructura de TI"],
         },
         {
           title: "Tecnología en Análisis y Desarrollo de Sistemas",
@@ -604,16 +1010,22 @@ export const dictionaries: Record<Locale, Dictionary> = {
           tags: ["Ingeniería de Software", "SQL", "POO"],
         },
         {
-          title: "Desarrollo Web",
-          place: "Experiencia profesional",
-          focus: "Trabajo profesional en desarrollo web, con foco en front-end: interfaces responsivas, rendimiento y experiencia de usuario.",
-          tags: ["HTML5", "CSS3", "JavaScript", "React"],
+          title: "Analista de Soporte",
+          place: "Grupo In Press",
+          focus: "Resolución de problemas técnicos y orientación de usuarios en el uso de sistemas y herramientas. El contacto directo con las dificultades reales de los usuarios hoy guía mis decisiones de usabilidad en el front-end.",
+          tags: ["Soporte técnico", "Atención al usuario"],
         },
         {
-          title: "Actuación como Desarrollador Full Stack",
-          place: null,
-          focus: "Ampliando mi actuación hacia el back-end y la arquitectura de aplicaciones.",
-          tags: ["Next.js", "Node.js", "Python", "Docker"],
+          title: "Desarrollador Front-End Jr",
+          place: "Grupo In Press",
+          focus: "Interfaces responsivas con React, Next.js y TypeScript, integración con APIs como FastAPI y pruebas de usabilidad junto a los equipos de diseño y producto.",
+          tags: ["React", "Next.js", "TypeScript", "FastAPI"],
+        },
+        {
+          title: "Fundador y CEO de Click.",
+          place: "Click. Consultoria Digital",
+          focus: "Fundé Click. para ayudar a las empresas a sacar su operación de las hojas de cálculo y de los procesos manuales, con sitios, sistemas, aplicaciones y automatizaciones a medida.",
+          tags: ["Desarrollo web", "Arquitectura", "Gestión"],
         },
       ],
     },
@@ -627,20 +1039,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
         { level: "Curso Superior de Tecnología (CST)", course: "Análisis y Desarrollo de Sistemas" },
         { level: "Curso Técnico Integrado", course: "Tecnología de la Información" },
       ],
-      knowledgeAreas: [
-        "Desarrollo Web",
-        "Programación Orientada a Objetos",
-        "Ingeniería de Software",
-        "Python",
-        "Bases de Datos",
-        "SQL",
-        "Estructuras de Datos",
-        "Seguridad de la Información",
-        "Pruebas de Software",
-        "Análisis de Sistemas",
-        "Redes",
-        "Sistemas Operativos",
-      ],
       certifications: [
         { title: "Experiencia de Usuario", issuedAt: "Febrero de 2022" },
         { title: "Programación para Internet con JavaScript", issuedAt: "Mayo de 2021" },
@@ -649,12 +1047,66 @@ export const dictionaries: Record<Locale, Dictionary> = {
     contact: {
       eyebrow: "Contacto",
       title: "Hablemos de tu proyecto",
-      subtitle: "Estoy abierto a nuevos desafíos, proyectos y oportunidades.",
+      subtitle: "Estoy abierto a nuevos desafíos, proyectos y oportunidades. Respondo en un día hábil.",
       cta: "Enviar un correo",
       github: "GitHub",
       linkedin: "LinkedIn",
+      clickNote: "¿Necesitas software para tu empresa?",
+      clickCta: "Habla con Click.",
+      cv: "Descargar currículum",
+      form: {
+        title: "Envía un mensaje",
+        optional: "opcional",
+        name: "Nombre",
+        email: "Correo",
+        phone: "WhatsApp",
+        company: "Empresa",
+        subject: "Asunto",
+        budget: "Rango de inversión",
+        preference: "Prefiero respuesta por",
+        message: "Mensaje",
+        subjectPlaceholder: "Selecciona el asunto",
+        budgetPlaceholder: "Selecciona un rango",
+        messagePlaceholder: "Cuenta el contexto, el objetivo y el plazo que tienes en mente.",
+        subjects: {
+          job: "Vacante u oportunidad laboral",
+          freelance: "Proyecto freelance",
+          click: "Proyecto para mi empresa (Click.)",
+          partnership: "Alianza",
+          other: "Otro asunto",
+        },
+        budgets: {
+          upTo15: "Hasta R$ 15 mil",
+          from15to50: "R$ 15 mil a R$ 50 mil",
+          from50to150: "R$ 50 mil a R$ 150 mil",
+          over150: "Más de R$ 150 mil",
+          talk: "Prefiero conversar antes",
+        },
+        preferences: { email: "Correo", whatsapp: "WhatsApp" },
+        counter: "{n}/{max}",
+        minHint: "Mínimo de {min} caracteres",
+        errors: {
+          name: "Escribe tu nombre.",
+          email: "Escribe un correo válido.",
+          phone: "Escribe un WhatsApp válido, con código de área.",
+          subject: "Selecciona un asunto.",
+          message: "Escribe al menos {min} caracteres.",
+        },
+        send: "Enviar mensaje",
+        sending: "Enviando…",
+        success: "Mensaje enviado. Respondo en un día hábil.",
+        error: "No se pudo enviar ahora. Inténtalo de nuevo o escríbeme por WhatsApp.",
+        unavailable: "El envío automático no está disponible ahora. Escríbeme por WhatsApp.",
+        captcha: "No pudimos confirmar que no eres un robot. Inténtalo de nuevo o escríbeme por WhatsApp.",
+        whatsapp: "Enviar por WhatsApp",
+        whatsappHeading: "¡Hola, Thiago! Llegué por tu portafolio.",
+        recaptcha: "Protegido por reCAPTCHA: se aplican la {privacy} y los {terms} de Google.",
+        privacy: "Política de Privacidad",
+        terms: "Términos del Servicio",
+      },
     },
     footer: {
+      founder: "Fundador y CEO de",
       rights: "Todos los derechos reservados.",
       githubAria: "GitHub de Thiago Servoli",
       linkedinAria: "LinkedIn de Thiago Servoli",
@@ -664,24 +1116,48 @@ export const dictionaries: Record<Locale, Dictionary> = {
       back: "Volver a proyectos",
       visit: "Visitar proyecto",
       viewCode: "Ver código",
-      problemLabel: "Problema",
-      contributionLabel: "Contribución",
+      caseStudy: "Caso de estudio",
+      roleLabel: "Rol",
       technologiesLabel: "Tecnologías",
+      linksLabel: "Enlaces",
+      contextLabel: "Contexto",
+      challengeLabel: "Desafío",
+      solutionLabel: "Solución",
+      resultLabel: "Resultado",
+      galleryLabel: "Galería",
+      desktop: "Escritorio",
+      mobile: "Móvil",
+      next: "Siguiente proyecto",
       logoAlt: "Logo de {name}",
       screenshotAlt: "Captura del proyecto {name}",
     },
     common: {
       role: "Desarrollador Full Stack",
       location: "São Paulo - SP, Brasil",
+      chapter: "Capítulo",
+      cvHref: "/cv/thiago-servoli-resume.pdf",
     },
-    avatar: {
-      inicio: "¡Hola! Ese soy yo, en versión ilustrada.",
-      sobre: "Un poco sobre mí.",
-      stack: "Mis herramientas del día a día.",
-      projetos: "¡Échale un vistazo a estos proyectos!",
-      trajetoria: "Acompáñame por mi trayectoria.",
-      formacao: "Estudiar es parte del trabajo.",
-      contato: "¿Hablamos?",
+    click: {
+      eyebrow: "Emprendimiento",
+      role: "Fundador y CEO",
+      title: "Software a medida para quien no cabe en una plantilla",
+      intro:
+        "Click. diseña y construye sitios, sistemas, aplicaciones y automatizaciones para empresas que quieren operar mejor. Ingeniería sénior, diseño cuidadoso y plazos que se cumplen.",
+      roleTitle: "Mi rol",
+      roleText:
+        "Fundé Click. en 2026 para ayudar a las empresas a sacar su operación de las hojas de cálculo y de los procesos manuales. Diseño y construyo sitios, sistemas web, aplicaciones y automatizaciones a medida, del diagnóstico al lanzamiento. Como fundador, lidero la atención a los clientes, la arquitectura de las soluciones y el desarrollo.",
+      facts: [
+        { label: "Propuesta", value: "Alcance, plazo y valor cerrados tras el diagnóstico" },
+        { label: "Atención", value: "Remota, para todo Brasil" },
+      ],
+      ctaSite: "Conocer Click.",
+      ctaLinkedin: "Click. en LinkedIn",
+    },
+    notFound: {
+      eyebrow: "Página no encontrada",
+      title: "Esta página no está en el índice.",
+      text: "La dirección puede haber cambiado o no haber existido nunca. Todo lo demás está a un clic.",
+      home: "Volver al inicio",
     },
   },
 };

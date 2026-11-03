@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/ThemeContext";
@@ -15,7 +14,7 @@ const localeOptions: { locale: Locale; flag: string; label: string }[] = [
   { locale: "es", flag: "/images/flags/es.png", label: "Español" },
 ];
 
-const NAV_IDS = ["sobre", "stack", "projetos", "trajetoria", "contato"];
+const NAV_IDS = ["sobre", "click", "stack", "projetos", "trajetoria", "contato"];
 
 function LanguageSwitcher({ className }: { className?: string }) {
   const { locale, setLocale, t } = useLanguage();
@@ -80,11 +79,12 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [pastHero, setPastHero] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { t } = useLanguage();
+  const { t, href } = useLanguage();
   const active = useActiveSection(NAV_IDS);
 
   const links = [
     { id: "sobre", label: t.nav.about },
+    { id: "click", label: t.nav.click },
     { id: "stack", label: t.nav.stack },
     { id: "projetos", label: t.nav.projects },
     { id: "trajetoria", label: t.nav.experience },
@@ -118,16 +118,12 @@ export default function Navbar() {
       )}
     >
       <div className="mx-auto flex h-16 max-w-content items-center justify-between">
-        <a href="/#inicio" className="flex items-center text-[17px] font-bold tracking-tight text-fg">
-          {/* Mini-avatar: aparece quando a foto do hero sai da tela */}
+        <a href={href("/#inicio")} className="flex items-center gap-3 whitespace-nowrap text-[17px] font-bold tracking-tight text-fg">
           <span
-            className={cn(
-              "relative block h-8 overflow-hidden rounded-full ring-2 ring-primary/30 transition-all duration-500 ease-premium",
-              pastHero ? "mr-3 w-8 opacity-100" : "mr-0 w-0 opacity-0"
-            )}
+            className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-[12px] font-bold tracking-normal text-white"
             aria-hidden="true"
           >
-            <Image src="/images/profile.jpg" alt="" fill sizes="32px" className="object-cover" />
+            TS
           </span>
           Thiago Servoli
         </a>
@@ -138,7 +134,7 @@ export default function Navbar() {
             return (
               <a
                 key={link.id}
-                href={`/#${link.id}`}
+                href={href(`/#${link.id}`)}
                 aria-current={isActive ? "true" : undefined}
                 className={cn(
                   "relative rounded-md px-3 py-2 text-[15px] font-medium transition-colors",
@@ -160,9 +156,10 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <LanguageSwitcher />
           <ThemeToggle />
+          {/* Só em telas largas: entre 1024 e 1280px não cabe ao lado dos links */}
           <a
-            href="/#contato"
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
+            href={href("/#contato")}
+            className="hidden whitespace-nowrap rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 xl:block"
           >
             {t.nav.talk}
           </a>
@@ -190,7 +187,7 @@ export default function Navbar() {
           {links.map((link, i) => (
             <a
               key={link.id}
-              href={`/#${link.id}`}
+              href={href(`/#${link.id}`)}
               onClick={() => setMenuOpen(false)}
               className="flex items-center justify-between border-b border-line/10 py-4 text-lg font-medium text-fg animate-enter"
               style={{ animationDelay: `${i * 50}ms` }}
