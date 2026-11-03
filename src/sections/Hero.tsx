@@ -164,7 +164,14 @@ export default function Hero() {
                 badge: (
                   // Versão negativa do logo (creme sobre carvão), acima do tamanho mínimo de 80 px
                   <span className="flex h-12 w-40 shrink-0 items-center justify-center rounded-lg bg-click-coal px-6 text-click-cream">
-                    <span className="click-wordmark w-full" role="img" aria-label="Click." />
+                    <Image
+                      src="/images/brands/click-wordmark-cream.png"
+                      alt="Click."
+                      width={1200}
+                      height={312}
+                      sizes="112px"
+                      className="h-auto w-full"
+                    />
                   </span>
                 ),
                 title: t.hero.currentlyRole,

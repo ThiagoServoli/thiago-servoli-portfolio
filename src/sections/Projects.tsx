@@ -1,14 +1,16 @@
 "use client";
 
-import { useRef, type MouseEvent } from "react";
+import { useRef, useState, type MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Github } from "lucide-react";
 import { projects } from "@/data/projects";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import MobileToggle from "@/components/MobileToggle";
 import { chapterNumber } from "@/data/chapters";
 import { useLanguage } from "@/context/LanguageContext";
+import { cn } from "@/lib/utils";
 
 /** Captura de tela dentro de uma moldura de navegador, na proporção real da imagem */
 function BrowserMockup({ project, index }: { project: (typeof projects)[number]; index: number }) {
@@ -72,13 +74,24 @@ function BrowserMockup({ project, index }: { project: (typeof projects)[number];
   );
 }
 
-function ProjectRow({ project, index }: { project: (typeof projects)[number]; index: number }) {
+/** No celular, só os primeiros projetos aparecem; os demais abrem pelo botão */
+const VISIBLE_ON_MOBILE = 2;
+
+function ProjectRow({
+  project,
+  index,
+  collapsed,
+}: {
+  project: (typeof projects)[number];
+  index: number;
+  collapsed: boolean;
+}) {
   const { t, href } = useLanguage();
   const copy = t.projects.items[project.slug];
   const reversed = index % 2 === 1;
 
   return (
-    <article className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <article className={cn("grid items-center gap-10 lg:grid-cols-2 lg:gap-16", collapsed && "max-md:hidden")}>
       <Reveal direction={reversed ? "right" : "left"} className={reversed ? "lg:order-2" : ""}>
         <BrowserMockup project={project} index={index} />
       </Reveal>
@@ -156,6 +169,14 @@ function ProjectRow({ project, index }: { project: (typeof projects)[number]; in
 
 export default function Projects() {
   const { t } = useLanguage();
+  const [expanded, setExpanded] = useState(false);
+  const toggleRef = useRef<HTMLDivElement>(null);
+
+  const onToggle = () => {
+    setExpanded((value) => !value);
+    // Ao recolher, mantém o botão à vista (o conteúdo acima dele encolhe)
+    if (expanded) requestAnimationFrame(() => toggleRef.current?.scrollIntoView({ block: "center" }));
+  };
 
   return (
     <section id="projetos" className="relative px-6 py-28 lg:px-10">
@@ -164,11 +185,28 @@ export default function Projects() {
           <SectionHeading index={chapterNumber("projetos")} eyebrow={t.projects.eyebrow} title={t.projects.title} />
         </Reveal>
 
-        <div className="mt-16 space-y-24">
+        <div id="projetos-lista" className="mt-16 space-y-24">
           {projects.map((project, index) => (
-            <ProjectRow key={project.slug} project={project} index={index} />
+            <ProjectRow
+              key={project.slug}
+              project={project}
+              index={index}
+              collapsed={!expanded && index >= VISIBLE_ON_MOBILE}
+            />
           ))}
         </div>
+
+        {projects.length > VISIBLE_ON_MOBILE && (
+          <div ref={toggleRef} className="mt-16 flex justify-center md:hidden">
+            <MobileToggle
+              expanded={expanded}
+              onToggle={onToggle}
+              controls="projetos-lista"
+              showLabel={t.projects.showMore}
+              hideLabel={t.projects.showLess}
+            />
+          </div>
+        )}
       </div>
     </section>
   );

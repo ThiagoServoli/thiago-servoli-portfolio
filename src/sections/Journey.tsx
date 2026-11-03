@@ -6,6 +6,7 @@ import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import { chapterNumber } from "@/data/chapters";
 import { useLanguage } from "@/context/LanguageContext";
+import { cn } from "@/lib/utils";
 
 const DESKTOP = "(min-width: 1024px)";
 
@@ -97,13 +98,25 @@ export default function Journey() {
               evita cortar a borda dos cards) */}
           <div ref={viewportRef} className="mt-12 lg:-mx-4 lg:overflow-hidden lg:px-4 lg:pt-3">
             <div ref={trackRef} className="relative will-change-transform lg:w-max">
-              <ol className="flex flex-col gap-6 lg:flex-row lg:gap-8 lg:pb-20">
+              <ol className="flex flex-col-reverse gap-3 md:flex-col md:gap-6 lg:flex-row lg:gap-8 lg:pb-20">
                 {profile.timeline.map((item, i) => {
                   const copy = t.journey.items[i];
+                  // No celular, só os dois marcos mais recentes ficam em cartão completo
+                  const compact = i < total - 2;
                   return (
-                    <li key={item.year} className="relative lg:w-[27rem]">
-                      <article className="relative h-full rounded-2xl border border-line/10 bg-card p-7 transition-colors duration-300 hover:border-accent/30">
-                        <div className="flex items-center justify-between border-b border-line/10 pb-4">
+                    <li key={item.year} className={cn("relative lg:w-[27rem]", !compact && "max-md:mb-3")}>
+                      <article
+                        className={cn(
+                          "relative h-full rounded-2xl border border-line/10 bg-card p-7 transition-colors duration-300 hover:border-accent/30",
+                          compact ? "max-md:flex max-md:items-baseline max-md:gap-4 max-md:px-5 max-md:py-4" : "max-md:p-6"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "flex items-center justify-between border-b border-line/10 pb-4",
+                            compact && "max-md:hidden"
+                          )}
+                        >
                           <span className="text-xs font-bold tabular-nums tracking-[0.2em] text-accent">
                             {chapter}.{i + 1}
                           </span>
@@ -111,13 +124,33 @@ export default function Journey() {
                             {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
                           </span>
                         </div>
-                        <p className="mt-6 text-5xl font-bold tracking-tight text-accent">{item.year}</p>
-                        <h3 className="mt-4 text-xl font-bold leading-snug text-fg">{copy.title}</h3>
-                        {copy.place && (
-                          <p className="mt-1 text-[15px] font-medium text-fg3">{copy.place}</p>
-                        )}
-                        <p className="mt-4 text-[15px] leading-relaxed text-fg2">{copy.focus}</p>
-                        <ul className="mt-5 flex flex-wrap gap-2">
+                        <p
+                          className={cn(
+                            "mt-6 text-5xl font-bold tracking-tight text-accent",
+                            compact ? "max-md:mt-0 max-md:w-24 max-md:shrink-0 max-md:text-lg" : "max-md:text-4xl"
+                          )}
+                        >
+                          {item.year}
+                        </p>
+                        <div className="min-w-0">
+                          <h3
+                            className={cn(
+                              "mt-4 text-xl font-bold leading-snug text-fg",
+                              compact && "max-md:mt-0 max-md:text-[15px]"
+                            )}
+                          >
+                            {copy.title}
+                          </h3>
+                          {copy.place && (
+                            <p className={cn("mt-1 text-[15px] font-medium text-fg3", compact && "max-md:text-[13px]")}>
+                              {copy.place}
+                            </p>
+                          )}
+                        </div>
+                        <p className={cn("mt-4 text-[15px] leading-relaxed text-fg2", compact && "max-md:hidden")}>
+                          {copy.focus}
+                        </p>
+                        <ul className={cn("mt-5 flex flex-wrap gap-2", compact && "max-md:hidden")}>
                           {copy.tags.map((tag) => (
                             <li
                               key={tag}

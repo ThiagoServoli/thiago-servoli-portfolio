@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowUpRight, Download, Github, Linkedin, Mail, MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, Download, Github, Linkedin, Mail, MessageCircle, Send } from "lucide-react";
 import { profile } from "@/data/profile";
 import { buildMailto } from "@/lib/utils";
 import Reveal from "@/components/Reveal";
@@ -19,6 +20,15 @@ const ContactForm = dynamic(() => import("@/components/ContactForm"), {
 
 export default function Contact() {
   const { t } = useLanguage();
+  // No celular o formulário começa fechado, atrás de um botão
+  const [formOpen, setFormOpen] = useState(false);
+
+  useEffect(() => {
+    if (!formOpen) return;
+    const field = document.getElementById("contato-name");
+    field?.focus({ preventScroll: true });
+    document.getElementById("formulario-contato")?.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, [formOpen]);
 
   return (
     <section id="contato" className="px-6 py-28 lg:px-10">
@@ -103,7 +113,22 @@ export default function Contact() {
             </div>
 
             <div className="lg:col-span-6">
-              <ContactForm />
+              {!formOpen && (
+                <button
+                  type="button"
+                  onClick={() => setFormOpen(true)}
+                  aria-expanded={false}
+                  aria-controls="formulario-contato"
+                  className="relative flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-4 text-base font-semibold text-navy md:hidden"
+                >
+                  <span className="pulse-ring pointer-events-none absolute inset-0 rounded-xl" aria-hidden="true" />
+                  <Send size={18} aria-hidden="true" />
+                  {t.contact.form.send}
+                </button>
+              )}
+              <div id="formulario-contato" className={formOpen ? "scroll-mt-24" : "max-md:hidden"}>
+                <ContactForm />
+              </div>
             </div>
           </div>
 

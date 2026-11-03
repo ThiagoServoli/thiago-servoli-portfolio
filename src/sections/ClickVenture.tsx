@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { ArrowUpRight, Linkedin } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { click } from "@/data/click";
@@ -87,7 +88,14 @@ export default function ClickVenture() {
           <div className="lg:col-span-7">
             <Reveal>
               <h2>
-                <span className="click-wordmark w-[13rem] text-click-cream sm:w-[17rem]" role="img" aria-label="Click." />
+                <Image
+                  src="/images/brands/click-wordmark-cream.png"
+                  alt="Click."
+                  width={1200}
+                  height={312}
+                  sizes="(min-width: 640px) 272px, 208px"
+                  className="h-auto w-[13rem] sm:w-[17rem]"
+                />
               </h2>
               <p className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-click-cream/15 px-4 py-1.5 text-sm font-medium text-click-cream">
                 <span className="h-2 w-2 rounded-full bg-click-orange" aria-hidden="true" />

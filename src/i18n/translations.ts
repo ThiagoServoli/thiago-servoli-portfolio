@@ -74,6 +74,8 @@ export interface Dictionary {
     title: string;
     challengeLabel: string;
     roleLabel: string;
+    showMore: string;
+    showLess: string;
     viewProject: string;
     viewCode: string;
     previewAlt: string;
@@ -91,6 +93,8 @@ export interface Dictionary {
     eyebrowCerts: string;
     titleCerts: string;
     issuedAt: string;
+    show: string;
+    hide: string;
     items: { level: string; course: string }[];
     certifications: { title: string; issuedAt: string }[];
   };
@@ -287,6 +291,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "Projetos selecionados",
       challengeLabel: "Desafio",
       roleLabel: "Meu papel",
+      showMore: "Confira mais projetos",
+      showLess: "Ver menos projetos",
       viewProject: "Ver estudo de caso",
       viewCode: "Ver código",
       previewAlt: "Prévia do projeto {name}",
@@ -394,6 +400,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrowCerts: "Certificações",
       titleCerts: "Aprendizado contínuo",
       issuedAt: "Emitida em",
+      show: "Mostrar",
+      hide: "Ocultar",
       items: [
         { level: "Curso Superior de Tecnologia (CST)", course: "Análise e Desenvolvimento de Sistemas" },
         { level: "Curso Técnico Integrado", course: "Tecnologia da Informação" },
@@ -616,6 +624,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "Selected work",
       challengeLabel: "Challenge",
       roleLabel: "My role",
+      showMore: "See more projects",
+      showLess: "See fewer projects",
       viewProject: "View case study",
       viewCode: "View code",
       previewAlt: "Preview of the {name} project",
@@ -723,6 +733,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrowCerts: "Certifications",
       titleCerts: "Continuous learning",
       issuedAt: "Issued in",
+      show: "Show",
+      hide: "Hide",
       items: [
         { level: "Technology Degree (Associate)", course: "Systems Analysis and Development" },
         { level: "Integrated Technical Course", course: "Information Technology" },
@@ -945,6 +957,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "Proyectos seleccionados",
       challengeLabel: "Desafío",
       roleLabel: "Mi rol",
+      showMore: "Ver más proyectos",
+      showLess: "Ver menos proyectos",
       viewProject: "Ver caso de estudio",
       viewCode: "Ver código",
       previewAlt: "Vista previa del proyecto {name}",
@@ -1052,6 +1066,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrowCerts: "Certificaciones",
       titleCerts: "Aprendizaje continuo",
       issuedAt: "Emitida en",
+      show: "Mostrar",
+      hide: "Ocultar",
       items: [
         { level: "Curso Superior de Tecnología (CST)", course: "Análisis y Desarrollo de Sistemas" },
         { level: "Curso Técnico Integrado", course: "Tecnología de la Información" },

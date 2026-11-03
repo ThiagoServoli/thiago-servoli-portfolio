@@ -220,16 +220,7 @@ body {
   visibility: hidden;
 }
 
-/* ---------- Click. ----------
-   Logo oficial como máscara alfa: um único arquivo serve para todas as versões
-   de cor do manual (creme, carvão, laranja) via background-color. */
-.click-wordmark {
-  display: block;
-  aspect-ratio: 1200 / 312;
-  -webkit-mask: url("/images/brands/click-wordmark.png") center / contain no-repeat;
-  mask: url("/images/brands/click-wordmark.png") center / contain no-repeat;
-  background-color: currentColor;
-}
+/* ---------- Click. ---------- */
 
 /* Onda do clique: anéis que se expandem a partir do ponto laranja. Só
    transform/opacity; pausada quando a seção está fora da tela. */
@@ -247,7 +238,21 @@ body {
   15% { opacity: 1; }
   100% { transform: scale(1); opacity: 0; }
 }
+/* Anel pulsando devagar em volta do botão que abre o formulário (celular).
+   Só transform/opacity. */
+.pulse-ring {
+  border: 2px solid rgb(255 255 255 / 0.75);
+  animation: pulse-ring 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.75; }
+  70%, 100% { transform: scale(1.06, 1.3); opacity: 0; }
+}
 @media (prefers-reduced-motion: reduce) {
+  .pulse-ring {
+    animation: none;
+    opacity: 0;
+  }
   .click-wave-ring {
     animation: none;
     opacity: 0;

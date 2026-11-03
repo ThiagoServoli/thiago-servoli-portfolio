@@ -1,14 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import { education } from "@/data/education";
 import { certifications } from "@/data/certifications";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import MobileToggle from "@/components/MobileToggle";
+import { cn } from "@/lib/utils";
 import { chapterNumber } from "@/data/chapters";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Education() {
   const { t } = useLanguage();
+  // No celular, os dois blocos começam recolhidos
+  const [openEducation, setOpenEducation] = useState(false);
+  const [openCerts, setOpenCerts] = useState(false);
 
   return (
     <section id="formacao" className="px-6 py-28 lg:px-10">
@@ -16,7 +22,15 @@ export default function Education() {
         <Reveal direction="left">
           <SectionHeading index={`${chapterNumber("formacao")}.1`} eyebrow={t.education.eyebrowEducation} title={t.education.titleEducation} />
 
-          <div className="mt-10 space-y-4">
+          <MobileToggle
+            className="mt-8"
+            expanded={openEducation}
+            onToggle={() => setOpenEducation((value) => !value)}
+            controls="formacao-lista"
+            showLabel={`${t.education.show} (${education.length})`}
+            hideLabel={t.education.hide}
+          />
+          <div id="formacao-lista" className={cn("mt-10 space-y-4", !openEducation && "max-md:hidden", "max-md:mt-6")}>
             {education.map((item, i) => {
               const copy = t.education.items[i];
               return (
@@ -38,7 +52,15 @@ export default function Education() {
         <Reveal direction="right" delay={80}>
           <SectionHeading index={`${chapterNumber("formacao")}.2`} eyebrow={t.education.eyebrowCerts} title={t.education.titleCerts} />
 
-          <div className="mt-10 space-y-4">
+          <MobileToggle
+            className="mt-8"
+            expanded={openCerts}
+            onToggle={() => setOpenCerts((value) => !value)}
+            controls="certificacoes-lista"
+            showLabel={`${t.education.show} (${certifications.length})`}
+            hideLabel={t.education.hide}
+          />
+          <div id="certificacoes-lista" className={cn("mt-10 space-y-4", !openCerts && "max-md:hidden", "max-md:mt-6")}>
             {certifications.map((cert, i) => {
               const copy = t.education.certifications[i];
               return (
