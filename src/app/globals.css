@@ -200,6 +200,10 @@ body {
 .js .reveal.reveal-visible .rule-draw {
   transform: none;
 }
+/* Variante que se desenha da direita para a esquerda */
+.js .reveal .rule-draw.rule-draw-end {
+  transform-origin: right;
+}
 
 /* Máscara de linha para títulos revelados linha a linha (ver animate-line-up).
    O respiro inferior acomoda descendentes (g, p) com entrelinha apertada;

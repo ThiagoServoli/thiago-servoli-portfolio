@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import ChapterIndicator from "@/components/ChapterIndicator";
 import TechMarquee from "@/components/TechMarquee";
+import SectionDivider from "@/components/SectionDivider";
 import Hero from "@/sections/Hero";
 import About from "@/sections/About";
 import ClickVenture from "@/sections/ClickVenture";
@@ -27,6 +28,7 @@ export default function Home() {
         <Projects />
         <Journey />
         <Education />
+        <SectionDivider />
         <Contact />
       </main>
       <Footer />
